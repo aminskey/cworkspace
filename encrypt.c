@@ -1,23 +1,18 @@
 #include<stdio.h>
+#include<stdlib.h>
 
-int main(void){
-	char a[]="hello hello";
-	char b[sizeof((char *)a)];
-
-	for(int i=0;i<sizeof((char *)a);i++){
-		switch(a[i]){
-			case 'a'-'z':
-				b[i]=(unsigned int)a[i];
-				break;
-			case '1'-'9':
-				b[i]=a[i];
-				break;
-			default:
-				break;
+int main(int argc, char *argv[1]){
+	char c;
+	FILE *fp=fopen(argv[1],"r");
+	
+	if(fp==NULL){
+		perror("FILE NOT FOUND");
+	}else{		
+		c=fgetc(fp);
+		while(!feof(fp)){
+			c=fgetc(fp);
+			printf("%d",c);
 		}
 	}
-
-	printf("%s",b);
-	getchar();
 	return 0;
 }
