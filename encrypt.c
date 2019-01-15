@@ -16,8 +16,8 @@ int main(int argc, char *argv[1]){
 		
 		c=fgetc(fp);
 		while(!feof(fp)){
-			c=fgetc(fp);
 			fprintf(sw,"%d ",c);
+			c=fgetc(fp);
 			
 		}
 		fscanf(sw,"%s",str);

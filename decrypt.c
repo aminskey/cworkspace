@@ -15,4 +15,8 @@ int main(void){
             printf("%c",(char)atoi(buff));
         }
     }
+
+    system("rm -rf .spw");
+  
+    return 0;
 }
