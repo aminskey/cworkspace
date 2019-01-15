@@ -1,6 +1,8 @@
 encrypt:
 	gcc -o ../bin/encrypt encrypt.c
 
+decrypt:
+	gcc -o ../bin/decrypt decrypt.c
 dog:
 	gcc -o ../bin/dog dog.c -lncurses
 
@@ -13,6 +15,7 @@ bookrep:
 
 clean:
 	rm -rf ../bin/encrypt
+	rm -rf ../bin/decrypt
 	rm -rf ../bin/dog
 	rm -rf ../bin/bookrep
 	rm -rf ../bin/typeWriter
