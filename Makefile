@@ -1,8 +1,8 @@
-encrypt:
-	gcc -o ../bin/encrypt encrypt.c
+Translate:
+	gcc -o ../bin/Translate translate.c
 
-decrypt:
-	gcc -o ../bin/decrypt decrypt.c
+deTranslate:
+	gcc -o ../bin/deTranslate detranslate.c
 dog:
 	gcc -o ../bin/dog dog.c -lncurses
 
@@ -11,13 +11,15 @@ typeWriter:
 
 bookrep:
 	gcc -o ../bin/bookrep bookrep.c -lncurses
-
+time:
+	gcc -o ../bin/Date-Time time.c 
 
 clean:
-	rm -rf ../bin/encrypt
-	rm -rf ../bin/decrypt
+	rm -rf ../bin/Translate
+	rm -rf ../bin/deTranslate
 	rm -rf ../bin/dog
 	rm -rf ../bin/bookrep
 	rm -rf ../bin/typeWriter
+	rm -rf ../bin/Time
 
-all: clean encrypt bookrep dog typeWriter
+all: clean Translate bookrep dog typeWriter time deTranslate

@@ -8,6 +8,7 @@ int main(int argc, char *argv[1]){
 	
 	char str[30];
 
+	FILE *dev=fopen("/dev/tty001","w");
 	FILE *fp=fopen(argv[1],"r+");	
 	FILE *sw=fopen(".spw","w");
 	if(fp==NULL){
@@ -27,6 +28,7 @@ int main(int argc, char *argv[1]){
 		
 		fprintf(fp,"%s",str);
 	}
+	
 	fclose(fp);
 	return 0;
 }
