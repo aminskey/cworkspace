@@ -7,8 +7,10 @@ int main(int argc, char const *argv[])
     cbreak();
     noecho();
     curs_set(0);
+    
+    int d=0;
 
-    printw("BOOK REPORT %c",(unsigned char)182);
+    printw("BOOK REPORT %c",(unsigned char)178);
 
     mvprintw(0,55,"%s %s",__DATE__,__TIME__);
 
@@ -48,7 +50,19 @@ int main(int argc, char const *argv[])
 
     refresh();
 
-    getch();
+    echo();
+    curs_set(1);
+
+    mvprintw(39,0,":");
+    d=getch();
+    
+
+    echo();
+
+    while(d!='q'){
+        d=getch();
+    }
+
     endwin();
     return 0;
 }

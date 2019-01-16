@@ -7,7 +7,7 @@ int main(void){
     char buff[300];
 
     if(fp==NULL){
-        perror("sparrow file not found");
+        fprintf(stderr,"sparrow file unavailable");
     }else{
         while(!feof(fp)){
             fscanf(fp,"%s",buff);
