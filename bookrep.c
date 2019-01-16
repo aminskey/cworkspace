@@ -57,7 +57,7 @@ int main(int argc, char const *argv[])
     d=getch();
     
 
-    echo();
+    noecho();
 
     while(d!='q'){
         d=getch();
