@@ -5,10 +5,11 @@
 
 int main(int argc, char *argv[1]){
 	char c;
+	int num=0;
 	
 	char str[30];
 
-	FILE *dev=fopen("/dev/tty001","w");
+	
 	FILE *fp=fopen(argv[1],"r+");	
 	FILE *sw=fopen(".spw","w");
 	if(fp==NULL){
@@ -19,7 +20,7 @@ int main(int argc, char *argv[1]){
 		while(!feof(fp)){
 			fprintf(sw,"%d ",c);
 			c=fgetc(fp);
-			
+			num++;
 		}
 		fscanf(sw,"%s",str);
 		sleep(1);
@@ -30,5 +31,6 @@ int main(int argc, char *argv[1]){
 	}
 	
 	fclose(fp);
+	
 	return 0;
 }
