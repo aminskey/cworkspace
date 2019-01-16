@@ -4,7 +4,7 @@ it's possible for Mac.
     How?
         well you just enter terminal press Cmd+ ','
         and you go to the settings:
-            in the profile section click 'advanced' and there you will see what encoding set you terminal uses.
+            in the profile section click 'advanced' and there you will see what encoding set your terminal uses.
             change it to Western Dos latin 1
         if it's not there go to the Encoding section and select it..
 
