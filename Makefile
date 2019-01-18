@@ -1,6 +1,12 @@
 Translate:
 	gcc -o ../bin/Translate translate.c
 
+Time:
+	gcc -o ../bin/Date-Time time.c
+
+MoveProj:
+	gcc move.c -lncurses
+
 deTranslate:
 	gcc -o ../bin/deTranslate detranslate.c
 dog:
@@ -22,4 +28,4 @@ clean:
 	rm -rf ../bin/typeWriter
 	rm -rf ../bin/Time
 
-all: clean Translate bookrep dog typeWriter time deTranslate
+all: clean Translate bookrep dog typeWriter time deTranslate MoveProj
