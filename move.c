@@ -56,6 +56,8 @@ int main(int argc, char const *argv[])
 
     WINDOW *wp=newwin(5,11,20,65);
     
+    mvaddch(20,1,'X'); 
+
     refresh();
     
     keypad(wp,true);
@@ -92,7 +94,6 @@ int main(int argc, char const *argv[])
     }
     c=wgetch(wp);
 
-    
 
     while(c){
         mvprintw(0,120,"%dy %dx",y,x);
@@ -147,8 +148,9 @@ int main(int argc, char const *argv[])
             default:
                 break;
         }
-        
-        
+        if(mvinch(y,x)=='X'){
+            break;
+        }
     
     }
     
@@ -160,5 +162,5 @@ int main(int argc, char const *argv[])
 }
 int isMoveOk(int y, int x){
     int testch=mvinch(y,x);
-    return ((testch==' ')||(testch==(unsigned char)177));
+    return ((testch==' ')||(testch==(unsigned char)177)||(testch=='X'));
 }
