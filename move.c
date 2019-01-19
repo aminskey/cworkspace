@@ -10,12 +10,14 @@ int ship[4][10]={
     {0,0,0,92,219,219,47,0},
 };
 
+static int num=0;
+
 
 int main(int argc, char const *argv[])
 {
     int c=0;
     
-    int x,y;
+    unsigned int x,y;
 
     initscr();
     cbreak();
@@ -50,19 +52,23 @@ int main(int argc, char const *argv[])
     }
     for(int i=33;i<40;i++){
         for(int j=21;j<30;j++){
-            mvaddch(i,j,(unsigned char)177);
+            mvaddch(i,j,' ');
         }
     }
 
     WINDOW *wp=newwin(5,11,20,65);
     
-    mvaddch(20,1,'X'); 
+    
 
     refresh();
     
     keypad(wp,true);
 
     getbegyx(wp,y,x);
+
+redraw:
+    
+    mvaddch(20,3,'X');
 
     for(int i=0;i<4;i++){
         
@@ -96,7 +102,7 @@ int main(int argc, char const *argv[])
 
 
     while(c){
-        mvprintw(0,120,"%dy %dx",y,x);
+        mvprintw(0,115,"%dy %dx %dnum",y,x,num);
         refresh();
         
         if(c=='e')
@@ -129,7 +135,7 @@ int main(int argc, char const *argv[])
                 }
                 
             case KEY_LEFT:
-                if(x>0 && isMoveOk(y,x-3)==TRUE){
+                if(x>0 && (isMoveOk(y,x-3)&&isMoveOk(y+5,x-2))==TRUE){
                     x=x-2;
                     mvwin(wp,y,x);
 
@@ -138,7 +144,7 @@ int main(int argc, char const *argv[])
                     break; 
                 }
             case KEY_RIGHT:
-                if(x<130 && isMoveOk(y,x+12)==TRUE){
+                if(x<130 && (isMoveOk(y,x+12) && isMoveOk(y+5,x+12))==TRUE){
                     x=x+2; 
                     mvwin(wp,y,x);
                     break;
@@ -148,7 +154,48 @@ int main(int argc, char const *argv[])
             default:
                 break;
         }
-        if(mvinch(y,x)=='X'){
+        if((y<25 && y>15)&&( x<=3 && x>=1)){
+            num++;
+            clear();
+            for(int i=0;i<15;i++){
+                for(int j=0;j<130;j++){
+                    mvaddch(i,j,(unsigned char)176);
+                }
+            }
+            for(int i=15;i<40;i++){
+                for(int j=0;j<30;j++){
+                    if((j>0 && j<28)&& i>15 && i<39)
+                        mvaddch(i,j,' ');
+                    else
+                        mvaddch(i,j,(unsigned char)178);
+                    
+                    
+                }  
+            }
+            
+            wclear(wp);
+            y=20;
+            x=65;
+            goto redraw;
+            continue;
+        
+        }else if(num==2){
+            clear();
+            num++;
+            for(int i=0;i<20;i++){
+                for(int j=55;j<65;j++){
+                    mvaddch(i,j,(unsigned char)176);
+                }
+            }
+
+
+            
+            wclear(wp);
+            y=20;
+            x=65;
+            goto redraw;
+            continue;
+            getch();
             break;
         }
     
@@ -162,5 +209,5 @@ int main(int argc, char const *argv[])
 }
 int isMoveOk(int y, int x){
     int testch=mvinch(y,x);
-    return ((testch==' ')||(testch==(unsigned char)177)||(testch=='X'));
+    return ((testch==' ')||(testch==(unsigned char)177)||(testch=='X')||(testch==(unsigned char)254));
 }
