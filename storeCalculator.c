@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
     mvprintw(4,15,"ITEM");
     mvprintw(4,30,"COST");
     mvprintw(4,45,"ADDITION");
-    while(ln<=20){
+    while(strcmp(in,"STOP")!=TRUE){
         
         echo();
         mvscanw(j,15,"%s",in);
