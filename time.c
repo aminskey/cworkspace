@@ -2,7 +2,7 @@
 #include<string.h>
 
 int main(int argc, char *argv[]){
-    printf("%s\n",__TIMESTAMP__);
+    printf("%s %s\n",__DATE__,__TIME__);
     if(strcmp(argv[1],"--mdate")==0){
         printf("%s program made in 15/1/19\n",argv[0]);
     }else if(strcmp(argv[1]," ")){
