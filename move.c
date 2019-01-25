@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<ncurses.h>
 
+
 int isMoveOk(int, int);
 
 int ship[4][10]={
@@ -9,6 +10,8 @@ int ship[4][10]={
     {0,0,219,254,219,219,254,219},
     {0,0,0,92,219,219,47,0},
 };
+
+int in=177;
 
 static int num=0;
 
@@ -166,9 +169,12 @@ redraw:
                 for(int j=0;j<30;j++){
                     if((j>0 && j<28)&& i>15 && i<39)
                         mvaddch(i,j,' ');
-                    else
+                    else{
                         mvaddch(i,j,(unsigned char)178);
-                    
+                        if((i % 1 == 0) && j >= 28){
+                            mvaddch(i,j,(unsigned char)177);
+                        }
+                    }
                     
                 }  
             }
@@ -182,10 +188,21 @@ redraw:
         }else if(num==2){
             clear();
             num++;
-            for(int i=0;i<20;i++){
+            for(int i=0;i<30;i++){
                 for(int j=55;j<65;j++){
                     mvaddch(i,j,(unsigned char)176);
                 }
+            }
+            for(int i=0;i<55;i++){
+                mvaddch(30,i,(unsigned char)254);
+            }
+            for(int k=22;k<40;k++){
+                for(int l=0;l<10;l++)
+                    mvaddch(k,l,(unsigned char)178);
+            }
+            for(int k=22;k>5;k--){
+                for(int l=7;l<10;l++)
+                    mvaddch(k,l,'k');
             }
 
 
@@ -198,7 +215,9 @@ redraw:
             getch();
             break;
         }
-    
+        
+
+
     }
     
     wrefresh(wp);
@@ -209,5 +228,5 @@ redraw:
 }
 int isMoveOk(int y, int x){
     int testch=mvinch(y,x);
-    return ((testch==' ')||(testch==(unsigned char)177)||(testch=='X')||(testch==(unsigned char)254));
+    return ((testch==' ')||(testch==(unsigned char)177)||(testch=='X')||(testch=='k')||(testch==(unsigned char)254));
 }
