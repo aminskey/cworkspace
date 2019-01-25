@@ -3,7 +3,11 @@ Translate:
 
 Time:
 	gcc -o ../bin/Date-Time time.c
+MySh:
+	gcc -o ../bin/Myshell test.c
 
+StoreCal:
+	gcc -o ../bin/StoreCal storeCalculator.c
 MoveProj:
 	gcc move.c -lncurses
 
@@ -27,5 +31,7 @@ clean:
 	rm -rf ../bin/bookrep
 	rm -rf ../bin/typeWriter
 	rm -rf ../bin/Time
+	rm -rf ../bin/StoreCal
+	rm -rf ../bin/Myshell
 
 all: clean Translate bookrep dog typeWriter time deTranslate MoveProj
