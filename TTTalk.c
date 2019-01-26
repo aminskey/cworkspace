@@ -25,10 +25,10 @@ void putcTerm(void){
 		printf("TERMINAL ttys002 NOT ONLINE\n");
 	}
 	if(dev3==NULL){
-		printf("TERMINAL ttys003 NOT ONLINE\ngi");
+		printf("TERMINAL ttys003 NOT ONLINE\n");
 	}
 	if(dev4==NULL){
-		printf("TERMINAL ttys004 NOT ONLINE\ngi");
+		printf("TERMINAL ttys004 NOT ONLINE\n");
 	}
 
 	
