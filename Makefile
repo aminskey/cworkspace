@@ -9,7 +9,7 @@ MySh:
 StoreCal:
 	gcc -o ../bin/StoreCal storeCalculator.c -lncurses
 MoveProj:
-	gcc move.c -lncurses
+	gcc move.c -lncurses -o ../bin/MoveProj
 
 deTranslate:
 	gcc -o ../bin/deTranslate detranslate.c
