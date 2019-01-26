@@ -49,7 +49,8 @@ void putcTerm(void){
 		printf("TERMINAL ttys004 ONLINE\n");
 	}
 
-	
+	printf("\n");
+
 	while(a!=EOF)
 	{
 		a=getchar();
