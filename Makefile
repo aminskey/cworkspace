@@ -7,7 +7,7 @@ MySh:
 	gcc -o ../bin/Myshell test.c
 
 StoreCal:
-	gcc -o ../bin/StoreCal storeCalculator.c
+	gcc -o ../bin/StoreCal storeCalculator.c -lncurses
 MoveProj:
 	gcc move.c -lncurses
 
@@ -34,4 +34,4 @@ clean:
 	rm -rf ../bin/StoreCal
 	rm -rf ../bin/Myshell
 
-all: clean Translate bookrep dog typeWriter time deTranslate MoveProj
+all: clean Translate bookrep dog typeWriter time deTranslate MoveProj StoreCal
