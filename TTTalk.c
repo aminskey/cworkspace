@@ -13,28 +13,38 @@ void putcTerm(void){
 	FILE *dev1=fopen("/dev/ttys001","w+");
 	FILE *dev2=fopen("/dev/ttys002","w+");
 	FILE *dev3=fopen("/dev/ttys003","w+");
+	FILE *dev4=fopen("/dev/ttys004","w+");
 
 	if(fp==NULL){
 		printf("TERMINAL ttys000 NOT ONLINE\n");
 	}
-	else if(dev1==NULL){
+	if(dev1==NULL){
 		printf("TERMINAL ttys001 NOT ONLINE\n");
 	}
-	else if(dev2==NULL){
+	if(dev2==NULL){
 		printf("TERMINAL ttys002 NOT ONLINE\n");
 	}
-	else if(dev3==NULL){
+	if(dev3==NULL){
 		printf("TERMINAL ttys003 NOT ONLINE\ngi");
+	}
+	if(dev4==NULL){
+		printf("TERMINAL ttys004 NOT ONLINE\ngi");
 	}
 
 	
 	while(a!=EOF)
 	{
 		a=getchar();
-		fputc(a,fp);
-		fputc(a,dev1);
-		fputc(a,dev2);
-		fputc(a,dev3);
+		if(fp!=NULL)
+			fputc(a,fp);
+		if(dev1!=NULL)
+			fputc(a,dev1);
+		if(dev2!=NULL)
+			fputc(a,dev2);
+		if(dev3!=NULL)	
+			fputc(a,dev3);
+		if(dev4!=NULL)	
+			fputc(a,dev4);
 		
 	}
 
