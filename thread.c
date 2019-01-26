@@ -21,30 +21,41 @@ void putsTerm(const char *in){
 	
 	if(fp==NULL){
 		printf("TERMINAL ttys000 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys000 ONLINE\n");
 	}
 	if(dev1==NULL){
-		perror("TERMINAL ttys001 NOT ONLINE\n");
+		printf("TERMINAL ttys001 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys001 ONLINE\n");
 	}
 	if(dev2==NULL){
 		printf("TERMINAL ttys002 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys002 ONLINE\n");
 	}
 	if(dev3==NULL){
 		printf("TERMINAL ttys003 NOT ONLINE\n");
-	}if(dev4==NULL){
+	}else{
+		printf("TERMINAL ttys003 NOT ONLINE\n");
+	}
+	if(dev4==NULL){
+		printf("TERMINAL ttys004 NOT ONLINE\n");
+	}else{
 		printf("TERMINAL ttys004 NOT ONLINE\n");
 	}
 
 
 	if(fp!=NULL)
-		fprintf(fp,"%s\n",in);
+		fprintf(fp,"\n%s\n",in);
 	if(dev1!=NULL)	
-		fprintf(dev1,"%s\n",in);
+		fprintf(dev1,"\n%s\n",in);
 	if(dev2!=NULL)	
-		fprintf(dev2,"%s\n",in);
+		fprintf(dev2,"\n%s\n",in);
 	if(dev3!=NULL)	
-		fprintf(dev3,"%s\a\n",in);
+		fprintf(dev3,"\n%s\a\n",in);
 	if(dev4!=NULL)	
-		fprintf(dev4,"%s\a\n",in);
+		fprintf(dev4,"\n%s\a\n",in);
 	
 
 	fclose(fp);

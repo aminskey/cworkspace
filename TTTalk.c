@@ -25,18 +25,28 @@ void putcTerm(void){
 
 	if(fp==NULL){
 		printf("TERMINAL ttys000 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys000 ONLINE\n");
 	}
 	if(dev1==NULL){
 		printf("TERMINAL ttys001 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys001 ONLINE\n");
 	}
 	if(dev2==NULL){
 		printf("TERMINAL ttys002 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys002 ONLINE\n");
 	}
 	if(dev3==NULL){
 		printf("TERMINAL ttys003 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys003 ONLINE\n");
 	}
 	if(dev4==NULL){
 		printf("TERMINAL ttys004 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys004 ONLINE\n");
 	}
 
 	
