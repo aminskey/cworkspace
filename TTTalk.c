@@ -23,6 +23,8 @@ void putcTerm(void){
 	FILE *dev3=fopen("/dev/ttys003","w+");
 	FILE *dev4=fopen("/dev/ttys004","w+");
 
+	printf("\x1b[7m");
+
 	if(fp==NULL){
 		printf("TERMINAL ttys000 NOT ONLINE\n");
 	}else{
@@ -48,7 +50,7 @@ void putcTerm(void){
 	}else{
 		printf("TERMINAL ttys004 ONLINE\n");
 	}
-
+	printf("\x1b[0m");
 	printf("\n");
 
 	while(a!=EOF)
