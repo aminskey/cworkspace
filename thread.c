@@ -18,6 +18,8 @@ void putsTerm(const char *in){
 	FILE *dev2=fopen("/dev/ttys002","w+");
 	FILE *dev3=fopen("/dev/ttys003","w+");
 	FILE *dev4=fopen("/dev/ttys004","w+");
+	FILE *dev5=fopen("/dev/ttys005","w+");
+	FILE *dev6=fopen("/dev/ttys006","w+");
 	
 	if(fp==NULL){
 		printf("TERMINAL ttys000 NOT ONLINE\n");
@@ -44,6 +46,16 @@ void putsTerm(const char *in){
 	}else{
 		printf("TERMINAL ttys004 NOT ONLINE\n");
 	}
+	if(dev5==NULL){
+		printf("TERMINAL ttys005 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys005 NOT ONLINE\n");
+	}
+	if(dev6==NULL){
+		printf("TERMINAL ttys006 NOT ONLINE\n");
+	}else{
+		printf("TERMINAL ttys006 NOT ONLINE\n");
+	}
 
 
 	if(fp!=NULL)
@@ -56,6 +68,10 @@ void putsTerm(const char *in){
 		fprintf(dev3,"\n%s\a\n",in);
 	if(dev4!=NULL)	
 		fprintf(dev4,"\n%s\a\n",in);
+	if(dev5!=NULL)	
+		fprintf(dev5,"\n%s\a\n",in);
+	if(dev6!=NULL)	
+		fprintf(dev6,"\n%s\a\n",in);
 	
 
 	fclose(fp);
