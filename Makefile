@@ -34,4 +34,4 @@ clean:
 	rm -rf ../bin/StoreCal
 	rm -rf ../bin/Myshell
 
-all: clean Translate bookrep dog typeWriter time deTranslate MoveProj StoreCal
+all: clean Translate bookrep dog typeWriter time deTranslate MoveProj StoreCal MySh
