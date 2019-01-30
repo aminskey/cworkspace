@@ -4,7 +4,7 @@ Translate:
 Time:
 	gcc -o ../bin/Date-Time time.c
 MySh:
-	gcc -o ../bin/Myshell test.c
+	gcc -o ../bin/Myshell myShell.c
 
 StoreCal:
 	gcc -o ../bin/StoreCal storeCalculator.c -lncurses
