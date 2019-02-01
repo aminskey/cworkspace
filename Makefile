@@ -3,8 +3,15 @@ Translate:
 
 Time:
 	gcc -o ../bin/Date-Time time.c
+MyGameTheme:
+	gcc -o ../bin/MG intro.c -lncurses
+
+testSh:
+	gcc -o ../bin/Testsh myShell.c
+
 MySh:
-	gcc -o ../bin/Myshell myShell.c
+	gcc -o ../bin/WinSh test.c -lncurses
+
 
 StoreCal:
 	gcc -o ../bin/StoreCal storeCalculator.c -lncurses
@@ -32,6 +39,8 @@ clean:
 	rm -rf ../bin/typeWriter
 	rm -rf ../bin/Time
 	rm -rf ../bin/StoreCal
-	rm -rf ../bin/Myshell
+	rm -rf ../bin/WinSh
+	rm -rf ../bin/MG
+	rm -rf ../bin/Testsh
 
-all: clean Translate bookrep dog typeWriter time deTranslate MoveProj StoreCal MySh
+all: clean Translate bookrep dog typeWriter time deTranslate MoveProj StoreCal MySh MyGameTheme testSh
