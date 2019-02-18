@@ -224,7 +224,7 @@ start:
     ln=1;
     refresh();
     for(int i=0;i<ln;i++){
-        
+        fp=fopen(str,"r");
 
         mvwprintw(term,ln,1,"C://>");
         mvwscanw(term,ln,7,"%s",&str);
@@ -260,14 +260,12 @@ start:
         else if(strcmp(str,"V/S-Code")==false){
             system("open -a Visual\\ Studio\\ Code");
         }
-        /*else if(strcmp(str,dir->d_name)==false){
-            for(int i=0;i<100;i++){
-                
-            }
-            
+        else if(fp!=NULL){
+            sprintf(open+8,"%s",str);
+            system(open);
                 
             
-        }*/
+        }
         else if(strcmp(str,"StoreCal")==false){
             system(str);
             goto start1;
@@ -422,6 +420,7 @@ start:
         }
         else{
             continue;
+            fp=NULL;
             
         }
         wrefresh(cc); 
