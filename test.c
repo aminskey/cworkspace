@@ -31,8 +31,7 @@ int main(int argc, const char *argv[]){
     struct dirent *dir;
     int c=0;
     
-    char *sys=strdup(open);
-
+    
     in1=in2=0;
 
     initscr();
