@@ -11,7 +11,8 @@ testSh:
 
 MySh:
 	gcc -o ../bin/WinSh test.c -lncurses
-
+ncll:
+	gcc -o ../bin/N-ll sp.c -lncurses
 
 StoreCal:
 	gcc -o ../bin/StoreCal storeCalculator.c -lncurses
@@ -42,5 +43,6 @@ clean:
 	rm -rf ../bin/WinSh
 	rm -rf ../bin/MG
 	rm -rf ../bin/Testsh
+	rm -rf ../bin/N-ll
 
-all: clean Translate bookrep dog typeWriter time deTranslate MoveProj StoreCal MySh MyGameTheme testSh
+all: clean MySh ncll Translate bookrep dog typeWriter deTranslate MoveProj StoreCal MySh MyGameTheme testSh

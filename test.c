@@ -5,6 +5,7 @@
 #include<dirent.h>
 #include<stdlib.h>
 
+
 char str[1000]=" ";
 
 char str1[100];
@@ -17,21 +18,25 @@ int c=0;
 int wln=1, fc=0;
 char fc1=0; 
 
-char open[100]="open -e                ";
+char open[]="sudo ~/bin/dog                                                                                                                           ";
+char str2[]="~/bin/dog ~/cworkspace/commandError.er";
+char str3[1000];
 
-void *dog(void);
+void *ls(void);
 
 static int ln=1;
 
 int main(int argc, const char *argv[]){
 
-    FILE *fp;
 
+    FILE *fp;
     DIR *dp;
     struct dirent *dir;
+    
+
     int c=0;
     
-    
+
     in1=in2=0;
 
     initscr();
@@ -44,7 +49,7 @@ int main(int argc, const char *argv[]){
     WINDOW *cc=newwin(10,20,15,35);
     WINDOW *note=newwin(10,20,10,75);
     
-    init_pair(1,COLOR_WHITE,COLOR_BLUE);
+    init_pair(1,COLOR_WHITE,COLOR_BLUE); 
     init_pair(2,COLOR_BLACK,COLOR_WHITE);
     init_pair(3,COLOR_WHITE,COLOR_BLACK);
 
@@ -56,30 +61,27 @@ start1:
     clear();
     wclear(term);
 
-    attron(COLOR_PAIR(2));
-    for(int i = 0; i < 40; i++)
-    {
-        for(int j=0; j<130; j++)
-            mvprintw(i,j," ");
-    }
-    
-    
-    attroff(COLOR_PAIR(2));
-
-
     attron(COLOR_PAIR(1));
-    for(int i = 0; i < 40; i++)
+    for(int i = 0; i < getmaxy(stdscr); i++)
     {
         
-        for(int j=0; j<130;j++){
+        for(int j=0; j<getmaxx(stdscr);j++){
             mvprintw(i,j," ");
         }
         
+        
+       
     }
     
-    if(dp!=NULL){
+    
+        
+    
     
     attroff(COLOR_PAIR(1));
+
+    
+
+    if(dp!=NULL){
     
         if((dir=readdir(dp))!=NULL){
             for(int i=0;i<2;i++)
@@ -133,70 +135,9 @@ start1:
         attroff(COLOR_PAIR(1));
 
     }
-    dir=readdir(dp);
-    if(dp!=NULL){
-        attron(COLOR_PAIR(2));
-
-        for(int i=0;i<4;i++){
-            for(int j=0;j<5;j++){
-                mvprintw(i+16,j+2," ");
-                if(j>0 && j<4)
-                    mvprintw(i+16,j+2,"~");
-            
-            }
-        }
-        attroff(COLOR_PAIR(2));
-
-        
-        attron(COLOR_PAIR(1));
-        mvprintw(20,2,"%s",dir->d_name);
-        attroff(COLOR_PAIR(1));
     
     
-    }
-    dir=readdir(dp);
-    if(dp!=NULL){
-        attron(COLOR_PAIR(2));
-
-        for(int i=0;i<4;i++){
-            for(int j=0;j<5;j++){
-                mvprintw(i+24,j+2," ");
-                if(j>0 && j<4)
-                    mvprintw(i+24,j+2,"~");
-            
-            }
-        }
-        attroff(COLOR_PAIR(2));
-
-        
-        attron(COLOR_PAIR(1));
-        mvprintw(28,2,"%s",dir->d_name);
-        attroff(COLOR_PAIR(1));
     
-    
-    }
-    dir=readdir(dp);
-    if(dp!=NULL){
-        attron(COLOR_PAIR(2));
-
-        for(int i=0;i<4;i++){
-            for(int j=0;j<5;j++){
-                mvprintw(i+30,j+2," ");
-                if(j>0 && j<4)
-                    mvprintw(i+30,j+2,"~");
-            
-            }
-        }
-        attroff(COLOR_PAIR(2));
-
-        
-        attron(COLOR_PAIR(1));
-        mvprintw(34,2,"%s",dir->d_name);
-        attroff(COLOR_PAIR(1));
-    
-    
-    }
-
     
 
     
@@ -223,10 +164,11 @@ start:
     ln=1;
     refresh();
     for(int i=0;i<ln;i++){
-        fp=fopen(str,"r");
+        fp=NULL;
 
         mvwprintw(term,ln,1,"C://>");
         mvwscanw(term,ln,7,"%s",&str);
+        fp=fopen(str,"r");
         if(ln<8)
             ln=ln+1;
         
@@ -249,7 +191,7 @@ start:
             system("open http://pilehaveskolen.m.skoleintra.dk/");
         }
         else if(strcmp(str,"bash")==false){
-            
+            noecho();
             system("bash");
             goto start1;
         }
@@ -259,18 +201,12 @@ start:
         else if(strcmp(str,"V/S-Code")==false){
             system("open -a Visual\\ Studio\\ Code");
         }
-        else if(fp!=NULL){
-            sprintf(open+8,"%s",str);
-            system(open);
-                
-            
-        }
         else if(strcmp(str,"StoreCal")==false){
             system(str);
             goto start1;
         }
         else if(strcmp(str,"MGameT")==false){
-            system("MG");
+            system(str2);
             goto start1;
         }else if(strcmp(str,"Reload-Workspace")==false){
             
@@ -285,17 +221,17 @@ start:
             goto start1;
         }
         else if(strcmp(str,"AsciiTable")==false){
-            system(str);
+            fp=fopen("~/bin/AsciiTable","r");
+            if(fp!=NULL){
+                system(str);
+            }else if(fp==NULL){
+                system(str2);
+            }
             goto start1;
         }
         
         else if(strcmp(str,"MoveEx")==false){
             system("MoveProj");
-            goto start1;
-        }
-        else if(strcmp(str,"Login")==false){
-            system("S-Login");
-            
             goto start1;
         }
         else if(strcmp(str,"Book-ReportEx")==false){
@@ -357,6 +293,7 @@ start:
             wrefresh(cc);
 
         }else if(strcmp(str,"notes")==false){
+
             wattron(note,COLOR_PAIR(1));
             box(note,0,0);
             wattroff(note,COLOR_PAIR(1));
@@ -365,7 +302,7 @@ start:
 
             mvwscanw(note,1,1,"%s",str1);
             fp=fopen(str1,"w+");
-
+again:
             a=b=0;
             getmaxyx(note,a,b);
 
@@ -382,7 +319,7 @@ start:
             c=0;
             
             wmove(note,1,1);
-
+         
             while(c!=KEY_F(10)){
                 while(fc<3){
                     fc1=fgetc(fp);
@@ -392,37 +329,60 @@ start:
                     fc++;
                     
                 }
-                wln=0;
+                
                 wattron(note,COLOR_PAIR(2));
                 if(c=='\n'){
                     wmove(note,wln+1,1);
                     wln=wln+1;
                 }
-                
+                if(wln>5){
+                    goto again;
+                } 
                 
 
 
                 echo();
-                c=wgetch(note);
-                fputc(c,fp);
+                wln+=wln;
+                mvwscanw(note,wln,1,"%s",str3);
+                fprintf(fp,"%s",str3);
                 noecho();
                 wattroff(note,COLOR_PAIR(2));
+                c=wgetch(note);
+
                 
+
+                              
             }
-            echo();
-            wclear(note); 
+            echo(); 
+            wclear(note);
+
+            fclose(fp);
             
             goto start;
             
 
             
         }
-        else{
-            continue;
-            fp=NULL;
+        else if(fp!=NULL){
+            sprintf(open+15,"%s",str);
+            wattron(term,A_INVIS);
+            system(open);
+            wattroff(term,A_INVIS);
+            goto start1;
+        }
+        else if(strcmp(str,"ll")==FALSE){
+            system("~/bin/N-ll");
+            goto start1;
+        }else if(fp==NULL)
+        {
             
         }
-        wrefresh(cc); 
+        else{
+            continue;
+        }
+        fclose(fp); 
+        wrefresh(cc);
+        
     }
     
     if(strcmp(str,"exit")==false)
