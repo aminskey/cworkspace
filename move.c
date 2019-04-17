@@ -79,7 +79,9 @@ redraw:
         {
             switch(ship[i][j]){
                 case 0:
-                    wprintw(wp," ");
+                    wattron(wp,A_INVIS);
+		    wprintw(wp," ");
+		    wattroff(wp,A_INVIS);
                     break;
                 case 47:
                     wprintw(wp,"%c",47);

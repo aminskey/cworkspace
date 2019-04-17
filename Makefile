@@ -3,8 +3,6 @@ Translate:
 
 Time:
 	gcc -o ../bin/Date-Time time.c
-MyGameTheme:
-	gcc -o ../bin/MG intro.c -lncurses
 
 testSh:
 	gcc -o ../bin/Testsh myShell.c
@@ -32,6 +30,9 @@ bookrep:
 time:
 	gcc -o ../bin/Date-Time time.c 
 
+AsciiTable:
+	gcc -o ../bin/AsciiTable AsciiTable.c -lncurses
+
 clean:
 	rm -rf ../bin/Translate
 	rm -rf ../bin/deTranslate
@@ -44,5 +45,6 @@ clean:
 	rm -rf ../bin/MG
 	rm -rf ../bin/Testsh
 	rm -rf ../bin/N-ll
+	rm -rf ../bin/AsciiTable
 
-all: clean MySh ncll Translate bookrep dog typeWriter deTranslate MoveProj StoreCal MySh MyGameTheme testSh
+all: clean MySh ncll Translate bookrep dog typeWriter deTranslate MoveProj StoreCal time AsciiTable testSh

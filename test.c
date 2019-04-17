@@ -19,7 +19,7 @@ int wln=1, fc=0;
 char fc1=0; 
 
 char open[]="sudo ~/bin/dog                                                                                                                           ";
-char str2[]="~/bin/dog ~/cworkspace/commandError.er";
+char str2[]="dog ~/cworkspace/commandError.er";
 char str3[1000];
 
 void *ls(void);
@@ -30,6 +30,7 @@ int main(int argc, const char *argv[]){
 
 
     FILE *fp;
+    
     DIR *dp;
     struct dirent *dir;
     
@@ -45,7 +46,7 @@ int main(int argc, const char *argv[]){
     cbreak();
     
     curs_set(0);
-    WINDOW *term=newwin(10,30,20,65);
+    WINDOW *term=newwin(15,60,20,65);
     WINDOW *cc=newwin(10,20,15,35);
     WINDOW *note=newwin(10,20,10,75);
     
@@ -221,12 +222,7 @@ start:
             goto start1;
         }
         else if(strcmp(str,"AsciiTable")==false){
-            fp=fopen("~/bin/AsciiTable","r");
-            if(fp!=NULL){
-                system(str);
-            }else if(fp==NULL){
-                system(str2);
-            }
+            system(str);
             goto start1;
         }
         
@@ -375,7 +371,7 @@ again:
             goto start1;
         }else if(fp==NULL)
         {
-            
+           continue; 
         }
         else{
             continue;
