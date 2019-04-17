@@ -52,12 +52,12 @@ void putcTerm(void){
 	}else{
 		printf("TERMINAL ttys004 ONLINE\n");
 	}
-	if(dev4==NULL){
+	if(dev5==NULL){
 		printf("TERMINAL ttys005 NOT ONLINE\n");
 	}else{
 		printf("TERMINAL ttys005 ONLINE\n");
 	}
-	if(dev4==NULL){
+	if(dev6==NULL){
 		printf("TERMINAL ttys006 NOT ONLINE\n");
 	}else{
 		printf("TERMINAL ttys006 ONLINE\n");
@@ -78,6 +78,10 @@ void putcTerm(void){
 			fputc(a,dev3);
 		if(dev4!=NULL)	
 			fputc(a,dev4);
+		if(dev5!=NULL)	
+			fputc(a,dev5);
+		if(dev6!=NULL)	
+			fputc(a,dev6);
 		
 	}
 
@@ -85,6 +89,9 @@ void putcTerm(void){
 	fclose(dev1);
 	fclose(dev2);
 	fclose(dev3);
+	fclose(dev4);
+	fclose(dev5);
+	fclose(dev6);
 	
 
 }
