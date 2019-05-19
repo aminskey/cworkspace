@@ -33,14 +33,24 @@ int main(int argc, char *argv[]){
     }else{
         while(!feof(fp))
         {
-            ln++;
+            
             file=fgetc(fp);
             printw("%c",file);
-            if(ln % 699==0){
+	   
+	    if(file == 10){
+		ln++;
+	    	delay_output(10);
+		refresh();
+	    }
+
+
+	    if(ln  == getmaxy(stdscr)){
                 getch();
-                clear();
-            }
-        }
+		clear();
+		ln=0;
+	    }            
+
+	}
         printw("\b");
 
         curs_set(0);
