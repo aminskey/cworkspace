@@ -113,7 +113,7 @@ int main(void)
 	attron(A_REVERSE);
 	printw("Our control system is being Hacked\n");
 	getch();
-	system(" ~/cprog/cworkspace/dog ~/cprog/hacked && ~/cprog/cworkspace/dog /usr/include/ncurses.h && ~/cprog/cworkspace/dog /usr/include/stdio.h && ~/cprog/cworkspace/dog /usr/include/stdlib.h");
+	system(" ~/cworkspace/dog /usr/include/ncurses.h && ~/cworkspace/dog /usr/include/stdio.h && ~/cworkspace/dog /usr/include/stdlib.h");
 	clear();
 
 	printw("The Engine Exploded");
