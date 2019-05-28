@@ -1,4 +1,5 @@
 #include<stdio.h>
+#include<string.h>
 #include<unistd.h>
 #include<ncurses.h>
 
@@ -45,7 +46,7 @@ int main(int argc, char *argv[]){
 
 
 	    if(ln  == getmaxy(stdscr)){
-                getch();
+                //getch();
 		clear();
 		ln=0;
 	    }            
@@ -60,7 +61,7 @@ int main(int argc, char *argv[]){
         
         
         wattron(win,A_REVERSE);
-        mvwprintw(win,2,15,"FILE :: %s",argv[1]);
+        mvwprintw(win,2,(getmaxx(win) - strlen(argv[1]))/2,"FILE :: %s",argv[1]);
         wattroff(win,A_REVERSE);
         
         wrefresh(win);
@@ -70,7 +71,7 @@ int main(int argc, char *argv[]){
         
     }
     fclose(fp);
-    getch();
+    //getch();
     endwin();
     return 0;
 }
