@@ -8,8 +8,8 @@
 
 void *sound(void)
 {
-	while(1)
-		system("afplay ~/Downloads/Elevator.wav");
+	
+	system("afplay ~/Downloads/Elevator.wav");
 
 }
 
@@ -113,7 +113,7 @@ int main(void)
 	attron(A_REVERSE);
 	printw("Our control system is being Hacked\n");
 	getch();
-	system(" ~/cworkspace/dog /usr/include/ncurses.h && ~/cworkspace/dog /usr/include/stdio.h && ~/cworkspace/dog /usr/include/stdlib.h");
+	system(" ~/cworkspace/dog /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/ncurses.h && ~/cworkspace/dog /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdio.h && ~/cworkspace/dog /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/stdlib.h");
 	clear();
 
 	printw("The Engine Exploded");
@@ -160,7 +160,7 @@ end:
 	wclear(ans);
 
 	box(ans,0,0);
-	mvwprintw(ans,(getmaxy(ans)/2)-1,(getmaxx(ans)-strlen("G A M E	O V E R"))/2,"G A M E     O V E R");
+	mvwprintw(ans,(getmaxy(ans)/2)-1,(getmaxx(ans)-strlen("G A M E     O V E R"))/2,"G A M E     O V E R");
 	wrefresh(ans);
 	getch();
 	endwin();
