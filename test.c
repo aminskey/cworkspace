@@ -44,6 +44,7 @@ int main(int argc, const char *argv[]){
     noecho();
     start_color();
     cbreak();
+
     
     curs_set(0);
     WINDOW *term=newwin(15,60,20,65);
@@ -360,7 +361,7 @@ again:
             
         }
         else if(fp!=NULL){
-            sprintf(open+15,"%s",str);
+            sprintf(open+15,"%s/%s",argv[1],str);
             wattron(term,A_INVIS);
             system(open);
             wattroff(term,A_INVIS);
