@@ -18,7 +18,7 @@ int main(int argc, char *argv[1]){
 		
 		c=fgetc(fp);
 		while(!feof(fp)){
-			fprintf(sw,"%d ",c);
+			fprintf(sw,"%x ",(int)c);
 			c=fgetc(fp);
 			num++;
 		}

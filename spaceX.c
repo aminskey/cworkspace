@@ -122,7 +122,7 @@ int main(void)
 	clear();
 
 again:
-	printw("You have a cargo ship on dock it can withstand 100 tons\npeople are screaming and shouting; panicing.\nWill you save the people or panic?\n");
+	printw("You have a cargo ship on dock it can withstand 100 tons\npeople are screaming and shouting; panicking.\nWill you save the people or panic?\n");
 
 	wclear(ans);
 
