@@ -2,6 +2,7 @@
 #include<ncurses.h>
 #include<string.h>
 #include<stdlib.h>
+#include<unistd.h>
 
 int main(void)
 {
@@ -14,6 +15,11 @@ int main(void)
         short a,b, c;
         int i=0;
         char s[2048]=" ";
+	char pwd[4096];
+
+
+	getwd(pwd);
+
 
         a=82;
         b=140;
@@ -49,18 +55,16 @@ int main(void)
         while(1){
                 mvprintw(0+i,0,"Cprog://> ");
                 scanw("%s",s);
+		sprintf(s," ");
                 if(strcmp(s,"help")==false)
                 {
-                        printw("HELP - ....... you just called this one\nexit - ...It's quite obvious\n---%cNo Other Commands Yet%c---",(unsigned char)185,(unsigned char)2$
+                        printw("HELP - ....... you just called this one\nexit - ...It's quite obvious\n---%cNo Other Commands Yet%c---",(unsigned char)185,(unsigned char)204);
                         i=i+3;
 
                 }
                 if(strcmp(s,"exit")==false)
                 {
                         break;
-                }else{
-                        printw("Syntax Error:\"%s\"",s);
-                        i=i+2;
                 }
 
                 if(strcmp(s,"clear")==false)
@@ -68,6 +72,19 @@ int main(void)
                         i=0;
                         clear();
                 }
+		if(strcmp(s,"console")==false)
+		{
+			scanw(s);
+			system(s);
+			
+			getch();
+			clear();
+			i=0;
+		}
+		/*if(strcmp(s,"pwd")==false)
+		{
+			printw("%s",s);
+		}*/
         }
 
 

@@ -4,15 +4,15 @@
 int main(void){
     FILE *fp=fopen(".spw","r");
 
-    char buff[300];
+    int buff;
 
     if(fp==NULL){
         fprintf(stderr,"sparrow file unavailable");
     }else{
         while(!feof(fp)){
-            fscanf(fp,"%s",buff);
+            fscanf(fp,"%x",buff);
 
-            printf("%c",(char)atoi(buff));
+            printf("%c",(char)buff);
         }
     }
 
