@@ -33,7 +33,7 @@ int main(void)
 	init_pair(1, COLOR_WHITE,COLOR_CYAN);
 	
 
-	MEVENT ev;
+	MEVENT mv;
 
 	mousemask(ALL_MOUSE_EVENTS, NULL);
 
@@ -94,28 +94,12 @@ int main(void)
 		}
 		if(c == KEY_MOUSE)
 		{
-			/*int d=0;
-			int i=1;
-			d=wgetch(men);*/
-			if(getmouse(&ev) == OK)
+			if(getmouse(&mv) == OK)
 			{
-				if((ev.bstate >= 4 || ev.bstate == BUTTON1_PRESSED) && (ev.x > 1 && ev.x < strlen("start")) && ev.y > getmaxy(stdscr)-1)
-				{	
-				
-					wattron(men, A_REVERSE);	
-					
-					mvwprintw(men,1,1,"Start");
-						
-					wattroff(men, A_REVERSE);
-					wrefresh(men);
-					
-				}else if(ev.bstate == 1){
-					mvwprintw(men,1,1,"Start");				
-				}else{
-					mvwprintw(men,1,1,"Start");
-				}
-				
+				if((mv.y > 1 && mv.y < getmaxy(men)) && (mv.x > 1 && mv.x < 7))
+					printw("Start!!");
 			}
+
 			
 		}
 	}

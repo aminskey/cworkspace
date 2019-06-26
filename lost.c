@@ -179,6 +179,7 @@ start:
 	mvwprintw(win,getmaxy(win)/2,(getmaxx(win)-strlen("you made it, you opened the secret door!"))/2,"You Made It, You Opened The Secret Door!");
 	wrefresh(win);
 	wattroff(win,COLOR_PAIR(a));
+
 	
 	refresh();
 	delay_output(3000);

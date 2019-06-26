@@ -54,10 +54,9 @@ int main(int argc, char const *argv[])
     curs_set(1);
 
     mvprintw(39,0,":");
-    d=getch();
-    
 
     noecho();
+    d=getch();
 
     while(d!='q'){
         d=getch();
