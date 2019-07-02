@@ -51,7 +51,7 @@ int main(int argc, const char *argv[]){
     WINDOW *cc=newwin(10,20,15,35);
     WINDOW *note=newwin(10,20,10,75);
     
-    init_pair(1,COLOR_WHITE,COLOR_BLUE); 
+    init_pair(1,COLOR_WHITE,COLOR_CYAN); 
     init_pair(2,COLOR_BLACK,COLOR_WHITE);
     init_pair(3,COLOR_WHITE,COLOR_BLACK);
 
@@ -68,7 +68,7 @@ start1:
     {
         
         for(int j=0; j<getmaxx(stdscr);j++){
-            mvprintw(i,j," ");
+            mvprintw(i,j,"%c",(unsigned char)176);
         }
         
         

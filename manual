@@ -1,0 +1,11 @@
+This is a manual for Archive.
+
+When using Archive You should have a directory called .archive in your home directory, or else Archive wont be able to find your requested files.
+
+How search files:
+
+Archive will only find files in the .archive directory.
+
+If you want to exit write end so that the File serving system will close (Aka 'Local File Server')
+
+That's it

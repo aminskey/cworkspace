@@ -92,6 +92,9 @@ start:
 
 	echo();
 	while(1){
+		sprintf(srch," ");
+
+
 		mvwscanw(search,1,1,"%s",s);
 
 
@@ -149,7 +152,7 @@ loop:
 				if(c == 10)
 				{
 					ln++;
-					col=0;
+					col=-1;
 				}
 				if(c == 9)
 				{
@@ -167,7 +170,7 @@ loop:
 			}
 
 			attroff(COLOR_PAIR(a));
-
+			getch();
 			goto start;
 		}
 	}
