@@ -40,7 +40,7 @@ int main(void)
 
 	srand(time(NULL));
 
-	a=rand()%4;
+	a=rand()%7;
 
 
 	int const b=rand()%getmaxx(stdscr);

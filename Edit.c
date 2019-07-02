@@ -173,7 +173,6 @@ start:
 
 		FILE *frp=fopen(fn,"r");
 
-		int c=0;
 
 		wattron(dt,COLOR_PAIR(2));
 
@@ -182,7 +181,8 @@ start:
 			goto loop;
 
 		}
-		do{
+		int c=fgetc(frp);
+		while(!feof(frp)){
 			c=fgetc(frp);
 
 			mvwprintw(dt,fy,fx,"%c",c);
@@ -200,7 +200,7 @@ start:
 				break;
 
 			fx++;
-		}while(!feof(frp));
+		}
 
 		fclose(frp);
 		wattroff(dt, COLOR_PAIR(2));
@@ -210,6 +210,7 @@ start:
 loop:
 		while(1)
 		{
+
 			noecho();
 			curs_set(1);
 			d=wgetch(dt);
@@ -257,10 +258,13 @@ loop:
 			{
 				if(getmouse(&mvnt) == OK)
 				{
-					wmove(dt,mvnt.y,mvnt.x);
+					wmove(dt,y=mvnt.y - 2,x=mvnt.x - 2);
 					wrefresh(dt);
 				}
 			}
+			else if(d == 9)
+				wmove(dt,y,x=x+8);
+
 			else{
 				++x;
 				wprintw(dt,"%c",d);

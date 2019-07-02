@@ -4,11 +4,15 @@
 #include <unistd.h>
 
 int main() {
-   char pwd[2000];
+    char pwd[2000];
+
     initscr();
     cbreak();
+
     DIR *dp;
     struct dirent *dir;
+
+    int ln=0;
 
     getcwd(pwd,sizeof(pwd));
     dp=opendir(pwd);
@@ -17,7 +21,13 @@ int main() {
     }else{
         while((dir=readdir(dp))!=NULL){
             printw("%s\n",dir->d_name);
-        }
+            ln++;
+	    if(ln > getmaxy(stdscr)-1){
+		getch();
+		clear();
+	    	ln=0;
+	    }
+	}
     }
 
 
