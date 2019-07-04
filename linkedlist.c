@@ -63,6 +63,7 @@ int main(void)
                         printf("%c",(unsigned char)207);
         }
 
+	printf("\n");
 	return 0;
 
 
