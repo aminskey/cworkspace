@@ -6,7 +6,6 @@ struct Node {
 	int key;
 	char *pName;
 	struct Node *next;
-	struct Node *prev;
 
 };
 
@@ -15,7 +14,7 @@ struct Node {
 void printList(void);
 
 // Add a node to the end of the list
-void addNode(int key, char *pName);
+struct Node *addNode(struct Node *n, int key, char *pName);
 
 // Add a node after the specified Node in  the list
 //void addAfterNode(struct Node** first, int data, char *name);
@@ -30,15 +29,18 @@ void removeNode(int key);
 //void isCircularList(void); 
 
 // Initialize the list
-void init(void);
+void initlist(void);
 
+
+void freeNode(struct Node *n);
 // Head node
 struct Node *head=NULL;
 
 
-void init (void)
+void initlist (void)
 {
-	addNode(-1,"First Patient");
+	head=(struct Node*)malloc(sizeof(struct Node));
+	addNode(head,0,"First Patient");
 
 }
 
@@ -46,12 +48,11 @@ void init (void)
 int main(void)
 {
 
-	init();
+	initlist();
 	printList();
 
+	freeNode(head);
 	return 0;
-
-
 }
 
 void printList()
@@ -64,19 +65,27 @@ void printList()
 	}
 }
 
-void addNode(int key, char *pName)
+struct Node *addNode(struct Node *n,int key, char *pName)
 {
-	struct Node *node=(struct Node*)malloc(sizeof(struct Node));
-	struct Node *last = head;
+	if(n == NULL){
+		n=head;
+	}else{
+		while(n->next != NULL)
+			n = n->next;
+	}
 
-	if(head == NULL)
-		node=NULL;
+	n=(struct Node*)malloc(sizeof(struct Node));
 
-	while(last->next != NULL)
-		last = last->next;
-	node = last->next;
+	n->key=key;
+	n->pName=pName;
 
-	node->pName=pName;
-	node->key=key;
+	return n;
+}
+void freeNode(struct Node *n){
 
+	if(n == NULL)
+		perror("Cannot free NULL");
+	else{
+		free(n);
+	}
 }

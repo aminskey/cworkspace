@@ -46,7 +46,7 @@ int main(int argc, char *argv[]){
 
 
 	    if(ln  == getmaxy(stdscr)){
-                //getch();
+                getch();
 		clear();
 		ln=0;
 	    }            
@@ -71,7 +71,7 @@ int main(int argc, char *argv[]){
         
     }
     fclose(fp);
-    //getch();
+    getch();
     endwin();
     return 0;
 }
