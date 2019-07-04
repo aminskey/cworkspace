@@ -162,8 +162,25 @@ loop:
 				if(ln == getmaxy(stdscr)-1)
 				{
 					ln=0;
-					getch();
+					keypad(stdscr,true);
+					noecho();
+					int d=getch();
+
+
+					/*while(1){
+						d=getch();
+						if(d == KEY_UP){
+							c=0;
+							fseek(fp,0L,SEEK_SET);
+							goto loop;
+						}else if(d == KEY_DOWN){
+							goto loop;
+						}else if(d == 'q')
+							break;
+					}*/
 					goto loop;
+
+					echo();
 				}else{
 					mvprintw(ln,col,"%c",c);
 				}
