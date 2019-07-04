@@ -234,7 +234,10 @@ loop:
 
 			else if(d == KEY_F(10)){
 				break;
-			}else if(d == KEY_DOWN)
+			}else if(d == KEY_F(1)){
+				break;
+			}
+			else if(d == KEY_DOWN)
 			{
 				wmove(dt,++y,x);
 				wrefresh(dt);
@@ -281,20 +284,23 @@ loop:
 		FILE *fp=fopen(fn,"w+");
 
 		wmove(dt,0,0);
-
-		for(int i=0;i<getmaxy(dt);i++)
-		{
-
-			fprintf(fp,"\n");
-
-			for(int j=0;j<getmaxx(dt);j++)
+		if(d == KEY_F(10)){
+			for(int i=0;i<getmaxy(dt);i++)
 			{
-				t=winch(dt);
-				fprintf(fp,"%c",t);
-				mvwprintw(dt,i,j,"%c",t);
+
+				fprintf(fp,"\n");
+
+				for(int j=0;j<getmaxx(dt);j++)
+				{
+					t=winch(dt);
+					fprintf(fp,"%c",t);
+					mvwprintw(dt,i,j,"%c",t);
+				}
+				wrefresh(ed);
+				wrefresh(dt);
+
 			}
-			wrefresh(ed);
-			wrefresh(dt);
+		}else{
 
 		}
 
