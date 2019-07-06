@@ -52,6 +52,7 @@ int main(int argc, const char *argv[]){
     WINDOW *note=newwin(10,20,10,75);
     
     init_pair(1,COLOR_WHITE,COLOR_CYAN); 
+    init_pair(4,COLOR_WHITE,COLOR_BLUE);
     init_pair(2,COLOR_BLACK,COLOR_WHITE);
     init_pair(3,COLOR_WHITE,COLOR_BLACK);
 
@@ -113,9 +114,9 @@ start1:
         
 
         
-        attron(COLOR_PAIR(1));
+        attron(COLOR_PAIR(4));
         mvprintw(6,2,"%s",dir->d_name);
-        attroff(COLOR_PAIR(1));
+        attroff(COLOR_PAIR(4));
 
     }
     dir=readdir(dp);
@@ -144,10 +145,10 @@ start1:
 
     
 
-    wattron(term,COLOR_PAIR(1));
+    wattron(term,COLOR_PAIR(4));
     box(term,0,0);
     wrefresh(term);
-    wattroff(term,COLOR_PAIR(1));
+    wattroff(term,COLOR_PAIR(4));
 
     
 
@@ -235,13 +236,17 @@ start:
             system("Bookrep");
             goto start1;
         }
+	else if(strcmp(str,"Archive")==false){
+		system("Archive");
+		goto start1;
+	}
         else if(strcmp(str,"calculator")==false){
             
 
             
-            wattron(cc,COLOR_PAIR(1));
+            wattron(cc,COLOR_PAIR(4));
             box(cc,0,0);
-            wattroff(cc,COLOR_PAIR(1));
+            wattroff(cc,COLOR_PAIR(4));
 
 
             wattron(cc,COLOR_PAIR(3));
@@ -291,9 +296,9 @@ start:
 
         }else if(strcmp(str,"notes")==false){
 
-            wattron(note,COLOR_PAIR(1));
+            wattron(note,COLOR_PAIR(4));
             box(note,0,0);
-            wattroff(note,COLOR_PAIR(1));
+            wattroff(note,COLOR_PAIR(4));
 
             
 
