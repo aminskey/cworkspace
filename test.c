@@ -288,7 +288,7 @@ start:
             wattron(cc,COLOR_PAIR(1));
             for(int i=0;i<a;i++){
                 for(int j=0;j<b;j++){
-                    mvwprintw(cc,i,j," ");
+                    mvwprintw(cc,i,j,"%c",(unsigned char)176);
                 }
             }
             wattroff(cc,COLOR_PAIR(1));
@@ -372,7 +372,7 @@ again:
             wattroff(term,A_INVIS);
             goto start1;
         }
-        else if(strcmp(str,"ll")==FALSE){
+        else if(strcmp(str,"ll")==false){
             system("~/bin/N-ll");
             goto start1;
         }else if(fp==NULL)
