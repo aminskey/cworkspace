@@ -40,7 +40,7 @@ int main(void)
 
 	srand(time(NULL));
 
-	a=rand()%7;
+	a=rand()%4;
 
 
 	int const b=rand()%getmaxx(stdscr);
@@ -83,7 +83,7 @@ start:
 	attroff(COLOR_PAIR(a));
 	
 	refresh();
-	delay_output(1000);
+	delay_output(800);
 
 	attron(COLOR_PAIR(a));
 	mvprintw(d,b," ");
@@ -174,17 +174,28 @@ start:
 	wattroff(win,A_REVERSE);
 	wrefresh(win);
 
-	
+
 	wattron(win,COLOR_PAIR(a=rand()%3));
 	mvwprintw(win,getmaxy(win)/2,(getmaxx(win)-strlen("you made it, you opened the secret door!"))/2,"You Made It, You Opened The Secret Door!");
+	mvwprintw(win,getmaxy(win)/2+3,(getmaxx(win)-strlen("F6 to Exit | F5 to restart"))/2,"F6 to Exit | F5 to restart");
 	wrefresh(win);
 	wattroff(win,COLOR_PAIR(a));
 
-	
+
 	refresh();
 	delay_output(3000);
-	
-	getch();
+
+	c=0;
+
+	while(1){
+		if(c==KEY_F(5))
+			goto start;
+		if(c==KEY_F(6))
+			break;
+		c=getch();
+	}
+
+
 	endwin();
 }
 
