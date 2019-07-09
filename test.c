@@ -373,7 +373,7 @@ again:
             goto start1;
         }
         else if(strcmp(str,"ll")==false){
-            system("~/bin/N-ll");
+            system("~/bin/dir");
             goto start1;
         }else if(fp==NULL)
         {

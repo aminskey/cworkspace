@@ -1,13 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-
-struct Node {
-
-	int key;
-	char *pName;
-	struct Node *next;
-
-};
+#include <stdio.h>
+#include <stdlib.h>
+#include "libs/node.h"
 
 
 // Prints the list from the Head Node to the End of the list
@@ -29,43 +22,46 @@ void removeNode(int key);
 //void isCircularList(void); 
 
 // Initialize the list
-void initlist(void);
+struct Node* initlist(int key, char *data, char *name);
 
 
-void freeNode(struct Node *n);
-// Head node
-struct Node *head=NULL;
-
-
-void initlist (void)
+struct Node *initlist(int key, char *data, char *name)
 {
-	head=(struct Node*)malloc(sizeof(struct Node));
-	addNode(head,0,"First Patient");
 
+	extern struct Node *head;
+
+	head->key=key;
+	head->data=data;
+	head->name=name;
+
+	return head;
 }
 
 
 int main(void)
 {
+	//struct Node *head=(struct Node*)malloc(sizeof(struct Node));
 
-	initlist();
-	printList();
+	initlist(12,"This Is The First Node in the List","Head Node");
 
 	freeNode(head);
+
 	return 0;
+
 }
 
-void printList()
+/*void printList()
 {
+
 	while(head != NULL)
 	{
 		printf("%d\t%c\t%s\n", head->key, (unsigned char)179 ,head->pName);
 		head = head->next;
 
 	}
-}
+}*/
 
-struct Node *addNode(struct Node *n,int key, char *pName)
+/*struct Node *addNode(struct Node *n,int key, char *pName)
 {
 	if(n == NULL){
 		n=head;
@@ -80,12 +76,4 @@ struct Node *addNode(struct Node *n,int key, char *pName)
 	n->pName=pName;
 
 	return n;
-}
-void freeNode(struct Node *n){
-
-	if(n == NULL)
-		perror("Cannot free NULL");
-	else{
-		free(n);
-	}
-}
+}*/

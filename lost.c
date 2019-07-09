@@ -43,14 +43,16 @@ int main(void)
 	a=rand()%4;
 
 
-	int const b=rand()%getmaxx(stdscr);
-        int const d=rand()%getmaxy(stdscr);
 
+	int d,b;
 
 	int c=0;
 
 
 start:
+	b=rand()%getmaxy(stdscr)-5;
+	d=rand()%getmaxx(stdscr)-5;
+
 	attron(COLOR_PAIR(a));
         wpaint(stdscr,getmaxy(stdscr),getmaxx(stdscr),32);
 
