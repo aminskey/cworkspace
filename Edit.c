@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<unistd.h>
+#include<stdlib.h>
 
 int main(void)
 {
@@ -16,6 +17,7 @@ int main(void)
 	init_pair(1,COLOR_WHITE, COLOR_BLUE);
 	init_pair(2,COLOR_WHITE, COLOR_RED);
 	init_pair(3,COLOR_WHITE, COLOR_GREEN);
+	init_pair(4,COLOR_BLACK, COLOR_BLUE);
 
 
 	char fn[2020];
@@ -30,7 +32,9 @@ int main(void)
 	WINDOW *nf=newwin(8,50,getmaxy(stdscr)/2,(getmaxx(stdscr)-30)/2);
 	WINDOW *ed=newwin(getmaxy(stdscr)-2,getmaxx(stdscr)-2,1,1);
 	WINDOW *dt=derwin(ed,getmaxy(ed)-2,getmaxx(ed)-2,1,1);
+	WINDOW *cmp=newwin(10,40,10,30);
 
+	clear();
 	attron(COLOR_PAIR(1));
 
 	for(int i=0;i<getmaxy(stdscr);i++)
@@ -169,7 +173,7 @@ start:
 		keypad(dt,true);
 		char *s;
 
-		int fy=0,fx=0;
+		int fy=1,fx=0;
 
 		FILE *frp=fopen(fn,"r");
 
@@ -185,21 +189,15 @@ start:
 		while(!feof(frp)){
 			c=fgetc(frp);
 
-			mvwprintw(dt,fy,fx,"%c",c);
 
-/*			if(c == 10)
-			{
+			if(c == '\n'){
 				fy++;
-				wmove(dt,fy,0);
-				c=fgetc(frp);
-				mvwprintw(dt,fy,fx,"%c",c);
-
+				fx=0;
 			}
-*/
-			if(fy > getmaxy(dt) - 1)
-				break;
 
+			mvwprintw(dt,fy,fx,"%c",c);
 			fx++;
+
 		}
 
 		fclose(frp);
@@ -279,12 +277,20 @@ loop:
 		}
 		int t=0;
 
-		wattron(dt,COLOR_PAIR(3));
+		// wattron(dt,COLOR_PAIR(3));
 
-		FILE *fp=fopen(fn,"w+");
 
 		wmove(dt,0,0);
 		if(d == KEY_F(10)){
+			FILE *fp=fopen(fn,"w+");
+
+
+			char str[100];
+			char comp[200];
+			char run[100];
+			char jrun[100];
+
+
 			for(int i=0;i<getmaxy(dt);i++)
 			{
 
@@ -300,13 +306,70 @@ loop:
 				wrefresh(dt);
 
 			}
+
+			fclose(fp);
+
+			wattron(cmp, COLOR_PAIR(1));
+
+			for(int i=0;i<getmaxy(cmp);i++)
+				for(int j=0;j<getmaxx(cmp);j++)
+					mvwprintw(cmp,i,j," ");
+
+
+			sprintf(str,"%c Compile / Run %s %c",(unsigned char)240,nm,(unsigned char)240);
+
+			refresh();
+			box(cmp,0,0);
+			wrefresh(cmp);
+
+			mvwprintw(cmp,0,(getmaxx(cmp)-strlen(str))/2,"%s",str);
+			mvwprintw(cmp,2,(getmaxx(cmp)-strlen("Compiler / Interpreter:"))/2, "Compiler: / Interpreter");
+			echo();
+
+
+			mvwscanw(cmp,3,(getmaxx(cmp)-strlen("Compiler"))/3,"%s",comp);
+			if(strcmp(comp,"NoCompile")==false){
+				// Do nothing
+			}else{
+				clear();
+				refresh();
+				sprintf(run,"%s %s", comp, fn);
+				echo();
+				system(run);
+
+				if(strcmp(comp,"gcc")==false)
+					system("./a.out");
+				if(strcmp(comp,"g++")==false)
+					system("./a.out");
+				if(strcmp(comp,"javac")==false)
+				{
+					sprintf(jrun,"java %s",fn-5);
+					system(jrun);
+				}
+			}
+
+			wattroff(cmp,COLOR_PAIR(1));
+			wrefresh(cmp);
+
+			mvprintw(getmaxy(stdscr)/2,(getmaxx(stdscr)-strlen("Press \'r\' to restart\t\tPress Anything Else To Continue"))/2,"Press \'r\' to restart\t\tPress Anything Else To Continue");
+			noecho();
+			int ch=getch();
+			if(ch=='r')
+			{
+				endwin();
+				main();
+			}
+
+			else{
+
+			}
+
 		}else{
 
 		}
 
-		wattroff(dt,COLOR_PAIR(3));
+		//wattroff(dt,COLOR_PAIR(3));
 
-		fclose(fp);
 
 	}
 
@@ -314,4 +377,6 @@ loop:
 
 no:
 	endwin();
+
+	return 0;
 }
