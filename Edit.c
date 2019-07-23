@@ -238,8 +238,9 @@ loop:
 			wattron(dt,COLOR_PAIR(2));
 
 
+			/*KEY_BACKSPACE FOR LINUX AND OTHERS, KEY_DC FOR MAC*/
 
-			if(d == 127){
+			if(d == 127 || d == KEY_DC || d == 7 || d == KEY_BACKSPACE){
 
 				mvwprintw(dt,y,x," ");
 				wmove(dt,y,x--);
