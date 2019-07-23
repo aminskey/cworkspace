@@ -357,7 +357,10 @@ loop:
 					sprintf(run,"%s %s -lncurses",comp, fn);
 				if(strcmp(comp,"g++")==false)
 					sprintf(run,"%s %s -lncurses",comp, fn);
+				system("clear");
+				endwin();
 				system(run);
+
 
 				if(strcmp(comp,"gcc")==false)
 					system("./a.out");
@@ -368,12 +371,17 @@ loop:
 					sprintf(jrun,"java %s",fn-5);
 					system(jrun);
 				}
+				sleep(1);
+				usleep(500);
 			}
 
 			wattroff(cmp,COLOR_PAIR(1));
 			wrefresh(cmp);
 
-			getch();
+			initscr();
+			noecho();
+			cbreak();
+
 			clear();
 
 			mvprintw(getmaxy(stdscr)/2,(getmaxx(stdscr)-strlen("Press \'r\' to restart\t\tPress Anything Else To Continue"))/2,"Press \'r\' to restart\t\tPress Anything Else To Continue");
