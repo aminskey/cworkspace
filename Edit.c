@@ -47,6 +47,10 @@ int main(void)
 
 	mvprintw(0,(getmaxx(stdscr)-strlen("  Project editor  "))/2,"%c Project Editor %c", (unsigned char)185, (unsigned char)204);
 
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F10 TO COMPILE, RUN, SAVE AND EXIT"))/5,"F10 to Compile, Run, And Save + Exit");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F9 to Save and Exit"))/2,"F9 to Save And Exit");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F1 for Direct Exit"))-40,"F1 For Direct Exit");
+
 	attroff(COLOR_PAIR(1));
 
 start:
@@ -173,7 +177,7 @@ start:
 		keypad(dt,true);
 		char *s;
 
-		int fy=1,fx=0;
+		int fy=0,fx=0;
 
 		FILE *frp=fopen(fn,"r");
 
@@ -185,8 +189,11 @@ start:
 			goto loop;
 
 		}
-		int c=fgetc(frp);
+		int c=0;
+		/*=fgetc(frp);*/
+
 		while(!feof(frp)){
+
 			c=fgetc(frp);
 
 
@@ -194,13 +201,23 @@ start:
 				fy++;
 				fx=0;
 			}
-
 			mvwprintw(dt,fy,fx,"%c",c);
-			fx++;
+                        fx++;
 
 		}
 
 		fclose(frp);
+		int fc=0;
+
+		for(int i=0;i<getmaxy(dt);i++){
+			for(int j=0;j<getmaxx(dt);j++)
+               		{
+                		fc=winch(dt);
+                        	mvwprintw(dt,i,j,"%c",fc);
+                	}
+		}
+
+
 		wattroff(dt, COLOR_PAIR(2));
 
 		wmove(dt,0,0);
@@ -234,8 +251,9 @@ loop:
 				break;
 			}else if(d == KEY_F(1)){
 				break;
-			}
-			else if(d == KEY_DOWN)
+			}else if(d == KEY_F(9)){
+				break;
+			}else if(d == KEY_DOWN)
 			{
 				wmove(dt,++y,x);
 				wrefresh(dt);
@@ -323,7 +341,7 @@ loop:
 			wrefresh(cmp);
 
 			mvwprintw(cmp,0,(getmaxx(cmp)-strlen(str))/2,"%s",str);
-			mvwprintw(cmp,2,(getmaxx(cmp)-strlen("Compiler / Interpreter:"))/2, "Compiler: / Interpreter");
+			mvwprintw(cmp,2,(getmaxx(cmp)-strlen("Compiler / Interpreter:"))/2, "Compiler / Interpreter:");
 			echo();
 
 
@@ -335,6 +353,10 @@ loop:
 				refresh();
 				sprintf(run,"%s %s", comp, fn);
 				echo();
+				if(strcmp(comp,"gcc")==false)
+					sprintf(run,"%s %s -lncurses",comp, fn);
+				if(strcmp(comp,"g++")==false)
+					sprintf(run,"%s %s -lncurses",comp, fn);
 				system(run);
 
 				if(strcmp(comp,"gcc")==false)
@@ -351,6 +373,9 @@ loop:
 			wattroff(cmp,COLOR_PAIR(1));
 			wrefresh(cmp);
 
+			getch();
+			clear();
+
 			mvprintw(getmaxy(stdscr)/2,(getmaxx(stdscr)-strlen("Press \'r\' to restart\t\tPress Anything Else To Continue"))/2,"Press \'r\' to restart\t\tPress Anything Else To Continue");
 			noecho();
 			int ch=getch();
@@ -364,7 +389,30 @@ loop:
 
 			}
 
-		}else{
+		}if(d == KEY_F(9))
+		{
+			FILE *fp=fopen(fn,"w+");
+
+			for(int i=0;i<getmaxy(dt);i++)
+                        {
+
+                                fprintf(fp,"\n");
+
+                                for(int j=0;j<getmaxx(dt);j++)
+                                {
+                                        t=winch(dt);
+                                        fprintf(fp,"%c",t);
+                                        mvwprintw(dt,i,j,"%c",t);
+                                }
+                                wrefresh(ed);
+                                wrefresh(dt);
+
+                        }
+
+                        fclose(fp);
+		}
+
+		else{
 
 		}
 
