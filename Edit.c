@@ -314,6 +314,7 @@ loop:
 			char comp[200];
 			char run[100];
 			char jrun[100];
+			char nasmrun[100];
 
 
 			for(int i=0;i<getmaxy(dt);i++)
@@ -364,6 +365,10 @@ loop:
 					sprintf(run,"%s %s -lncurses",comp, fn);
 				if(strcmp(comp,"g++")==false)
 					sprintf(run,"%s %s -lncurses",comp, fn);
+				if(strcmp(comp,"nasm")==false)
+					sprintf(run,"%s %s -o %s",comp, fn, fn - 2);
+
+
 				system("clear");
 				endwin();
 				system(run);
@@ -377,6 +382,13 @@ loop:
 				{
 					sprintf(jrun,"java %s",fn-5);
 					system(jrun);
+				}
+				if(strcmp(comp,"nasm")==false)
+				{
+					sprintf(nasmrun,"ld %s.o -o %s ; ./%s",fn-2, fn - 2, fn-2);
+					system(nasmrun);
+
+
 				}
 				sleep(1);
 				usleep(500);
