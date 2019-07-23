@@ -50,7 +50,8 @@ int main(int argc, const char *argv[]){
     WINDOW *term=newwin(15,60,20,65);
     WINDOW *cc=newwin(10,20,15,35);
     WINDOW *note=newwin(10,20,10,75);
-    
+    WINDOW *edit=newwin(10,30,1,(getmaxx(stdscr)-20)/2);
+
     init_pair(1,COLOR_WHITE,COLOR_CYAN); 
     init_pair(4,COLOR_WHITE,COLOR_BLUE);
     init_pair(2,COLOR_BLACK,COLOR_WHITE);
@@ -67,19 +68,31 @@ start1:
     attron(COLOR_PAIR(1));
     for(int i = 0; i < getmaxy(stdscr); i++)
     {
-        
-        for(int j=0; j<getmaxx(stdscr);j++){
-            mvprintw(i,j,"%c",(unsigned char)176);
+        for(int j=0; j<getmaxx(stdscr);j++){ 
+		mvprintw(i,j,"%c",(unsigned char)176);
+
         }
-        
-        
-       
+
+
     }
-    
-    
-        
-    
-    
+
+    refresh();
+    wattron(edit, COLOR_PAIR(4));
+
+    box(edit,0,0);
+
+
+    mvwprintw(edit,0,(getmaxx(edit)-strlen("  Editor  "))/2,"%c Editor %c",(unsigned char)185, (unsigned char )204);
+
+    wattroff(edit, COLOR_PAIR(4));
+
+    mvwprintw(edit,5,(getmaxx(edit)-strlen("MS-DOS Like Editor"))/2,"MS-DOS Like Editor");
+    mvwprintw(edit,7,(getmaxx(edit)-strlen("With Compile Options"))/2,"With Compile Options");
+
+
+    wrefresh(edit);
+
+
     attroff(COLOR_PAIR(1));
 
     
@@ -365,6 +378,11 @@ again:
 
             
         }
+	else if(strcmp(str,"Edit")==false)
+	{
+		system("~/bin/Edit");
+		goto start1;
+	}
         else if(fp!=NULL){
             sprintf(open+15,"%s/%s",argv[1],str);
             wattron(term,A_INVIS);
