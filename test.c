@@ -82,7 +82,7 @@ start1:
     box(edit,0,0);
 
 
-    mvwprintw(edit,0,(getmaxx(edit)-strlen("  Editor  "))/2,"%c Editor %c",(unsigned char)185, (unsigned char )204);
+    mvwprintw(edit,0,(getmaxx(edit)-strlen("  Edit  "))/2,"%c Edit %c",(unsigned char)185, (unsigned char )204);
 
     wattroff(edit, COLOR_PAIR(4));
 
