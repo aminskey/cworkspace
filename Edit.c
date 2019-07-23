@@ -4,12 +4,15 @@
 #include<unistd.h>
 #include<stdlib.h>
 
+
 int main(void)
 {
+
 
 	initscr();
 	cbreak();
 	noecho();
+
 
 	curs_set(0);
 	start_color();
@@ -192,17 +195,20 @@ start:
 		int c=0;
 		/*=fgetc(frp);*/
 
+
+		rewind(frp);
+		wmove(dt,0,0);
 		while(!feof(frp)){
 
 			c=fgetc(frp);
 
 
 			if(c == '\n'){
-				fy++;
+				++fy;
 				fx=0;
 			}
-			mvwprintw(dt,fy,fx,"%c",c);
-                        fx++;
+			mvwprintw(dt,fy-1,fx,"%c",c);
+                        ++fx;
 
 		}
 
@@ -302,6 +308,7 @@ loop:
 		if(d == KEY_F(10)){
 			FILE *fp=fopen(fn,"w+");
 
+			rewind(fp);
 
 			char str[100];
 			char comp[200];
@@ -316,7 +323,7 @@ loop:
 
 				for(int j=0;j<getmaxx(dt);j++)
 				{
-					t=winch(dt);
+					t=mvwinch(dt,i,j);
 					fprintf(fp,"%c",t);
 					mvwprintw(dt,i,j,"%c",t);
 				}
@@ -400,6 +407,7 @@ loop:
 		}if(d == KEY_F(9))
 		{
 			FILE *fp=fopen(fn,"w+");
+			rewind(fp);
 
 			for(int i=0;i<getmaxy(dt);i++)
                         {
