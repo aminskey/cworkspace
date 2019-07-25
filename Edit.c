@@ -166,6 +166,7 @@ start:
 		delwin(nf);
 		refresh();
 
+edit:
 		wattron(ed,COLOR_PAIR(2));
 		for(int i=0;i<getmaxy(ed);i++)
 			for(int j=0;j<getmaxx(ed);j++)
@@ -182,8 +183,10 @@ start:
 		keypad(dt,true);
 		char *s;
 
-		int fy=0,fx=0;
+		int fy,fx;
 
+		fy=0;
+		fx=0;
 		FILE *frp=fopen(fn,"r");
 
 
@@ -263,6 +266,8 @@ loop:
 			}else if(d == KEY_F(9)){
 				break;
 			}else if(d == KEY_F(5)){
+				break;
+			}else if(d == KEY_F(6)){
 				break;
 			}else if(d == KEY_DOWN)
 			{
@@ -408,13 +413,33 @@ loop:
 
 			clear();
 
-			mvprintw(getmaxy(stdscr)/2,(getmaxx(stdscr)-strlen("Press \'r\' to restart\t\tPress Anything Else To Continue"))/2,"Press \'r\' to restart\t\tPress Anything Else To Continue");
+			mvprintw(getmaxy(stdscr)/2,(getmaxx(stdscr)-strlen("Press \'r\' to edit\t\tAnything Else To Continue"))/2,"Press \'r\' to edit\t\tAnything Else To Continue");
 			noecho();
 			int ch=getch();
 			if(ch=='r')
 			{
-				endwin();
-				main();
+
+				clear();
+        			attron(COLOR_PAIR(1));
+
+	        		for(int i=0;i<getmaxy(stdscr);i++)
+        			{
+                			for(int j=0;j<getmaxx(stdscr);j++)
+                        			mvprintw(i,j," ");
+        			}
+
+        			box(stdscr,0,0);
+
+        			mvprintw(0,(getmaxx(stdscr)-strlen("  Project editor  "))/2,"%c Project Editor %c", (unsigned char)185, (unsigned char)204);
+
+        			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F10 - SAVE, COMPILE & RUN"))/6,"F10 - Save, Compile & Run");
+        			mvprintw(getmaxy(stdscr)-1,((getmaxx(stdscr)-strlen("F9 - Save and Exit"))/3)+3,"F9 - Save And Exit");
+        			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F1 - Exit"))/2,"F1 - Exit");
+        			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F5 - Open / New File"))/2 + getmaxx(stdscr)/4, "F5 - Open / New File");
+        			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F6 - Save"))/2 + getmaxx(stdscr)/8, "F6 - Save");
+
+       				attroff(COLOR_PAIR(1));
+				goto edit;
 			}
 
 			else{
@@ -448,6 +473,30 @@ loop:
 		{
 			endwin();
 			main();
+		}if(d == KEY_F(6))
+		{
+	                FILE *fp=fopen(fn,"w+");
+                        rewind(fp);
+
+                        for(int i=0;i<getmaxy(dt);i++)
+                        {
+
+                                fprintf(fp,"\n");
+
+                                for(int j=0;j<getmaxx(dt);j++)
+                                {
+                                        t=winch(dt);
+                                        fprintf(fp,"%c",t);
+                                        mvwprintw(dt,i,j,"%c",t);
+                                }
+                                wrefresh(ed);
+                                wrefresh(dt);
+
+                        }
+
+                        fclose(fp);
+
+			goto edit;
 		}
 		else{
 
