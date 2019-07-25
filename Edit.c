@@ -25,9 +25,9 @@ int main(void)
 
 	char fn[2020];
 
-//	MEVENT mvnt;
+	MEVENT mvnt;
 
-//	mousemask(ALL_MOUSE_EVENTS, NULL);
+	mousemask(ALL_MOUSE_EVENTS, NULL);
 
 
 
@@ -50,9 +50,11 @@ int main(void)
 
 	mvprintw(0,(getmaxx(stdscr)-strlen("  Project editor  "))/2,"%c Project Editor %c", (unsigned char)185, (unsigned char)204);
 
-	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F10 TO COMPILE, RUN, SAVE AND EXIT"))/5,"F10 to Compile, Run, And Save + Exit");
-	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F9 to Save and Exit"))/2,"F9 to Save And Exit");
-	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F1 for Direct Exit"))-40,"F1 For Direct Exit");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F10 - SAVE, COMPILE & RUN"))/6,"F10 - Save, Compile & Run");
+	mvprintw(getmaxy(stdscr)-1,((getmaxx(stdscr)-strlen("F9 - Save and Exit"))/3)+3,"F9 - Save And Exit");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F1 - Exit"))/2,"F1 - Exit");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F5 - New File"))/2 + getmaxx(stdscr)/4, "F5 - New File");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F6 - Save"))/2 + getmaxx(stdscr)/8, "F6 - Save");
 
 	attroff(COLOR_PAIR(1));
 
@@ -176,7 +178,7 @@ start:
 
 		int d=0;
 		int x=0,y=0;
-//		wmove(dt,mvnt.y,mvnt.x);
+		wmove(dt,mvnt.y,mvnt.x);
 		keypad(dt,true);
 		char *s;
 
@@ -260,6 +262,8 @@ loop:
 				break;
 			}else if(d == KEY_F(9)){
 				break;
+			}else if(d == KEY_F(5)){
+				break;
 			}else if(d == KEY_DOWN)
 			{
 				wmove(dt,++y,x);
@@ -292,7 +296,7 @@ loop:
 				wmove(dt,y,x=x+8);
 
 			else{
-				++x;
+				x++;
 				wprintw(dt,"%c",d);
 			}
 			wattroff(dt,COLOR_PAIR(2));
@@ -440,7 +444,11 @@ loop:
 
                         fclose(fp);
 		}
-
+		if(d == KEY_F(5))
+		{
+			endwin();
+			main();
+		}
 		else{
 
 		}
