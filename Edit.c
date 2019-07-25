@@ -25,9 +25,9 @@ int main(void)
 
 	char fn[2020];
 
-	MEVENT mvnt;
+//	MEVENT mvnt;
 
-	mousemask(ALL_MOUSE_EVENTS, NULL);
+//	mousemask(ALL_MOUSE_EVENTS, NULL);
 
 
 
@@ -176,7 +176,7 @@ start:
 
 		int d=0;
 		int x=0,y=0;
-		wmove(dt,mvnt.y,mvnt.x);
+//		wmove(dt,mvnt.y,mvnt.x);
 		keypad(dt,true);
 		char *s;
 
@@ -280,7 +280,7 @@ loop:
 				wmove(dt,y,++x);
 				wrefresh(dt);
 			}
-			else if(d == KEY_MOUSE)
+/* 	 		else if(d == KEY_MOUSE)
 			{
 				if(getmouse(&mvnt) == OK)
 				{
@@ -288,7 +288,7 @@ loop:
 					wrefresh(dt);
 				}
 			}
-			else if(d == 9)
+*/			else if(d == 9)
 				wmove(dt,y,x=x+8);
 
 			else{
