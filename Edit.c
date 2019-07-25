@@ -53,7 +53,7 @@ int main(void)
 	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F10 - SAVE, COMPILE & RUN"))/6,"F10 - Save, Compile & Run");
 	mvprintw(getmaxy(stdscr)-1,((getmaxx(stdscr)-strlen("F9 - Save and Exit"))/3)+3,"F9 - Save And Exit");
 	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F1 - Exit"))/2,"F1 - Exit");
-	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F5 - New File"))/2 + getmaxx(stdscr)/4, "F5 - New File");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F5 - Open / New File"))/2 + getmaxx(stdscr)/4, "F5 - Open / New File");
 	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F6 - Save"))/2 + getmaxx(stdscr)/8, "F6 - Save");
 
 	attroff(COLOR_PAIR(1));
