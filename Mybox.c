@@ -26,7 +26,7 @@ int main(void)
         WINDOW *hw=newwin(getmaxy(stdscr)/4,getmaxx(stdscr)/4,0,0);
 
         system("~/bin/cimg .myBox/info/.info");
-intro:
+
         refresh();
         wattron(hw,COLOR_PAIR(1));
         box(hw,0,0);
@@ -41,7 +41,7 @@ intro:
                         mvwprintw(hw,a,b," ");
         }
 
-        mvwprintw(hw,0,(getmaxx(hw)-strlen("  MyBox v1.5  "))/2,"%c MyBox v1.5 %c",(unsigned char)185,(unsigned char)204);
+        mvwprintw(hw,0,(getmaxx(hw)-strlen("  BoxEmu  "))/2,"%c BoxEmu %c",(unsigned char)185,(unsigned char)204);
         mvwprintw(hw,2,1,"Type help for help");
         wrefresh(hw);
         wattroff(hw, COLOR_PAIR(1));
@@ -58,8 +58,8 @@ intro:
 
                 if(strcmp(s,"HELP")==false || strcmp(s,"help")==false)
                 {
-                       printw("DIR - DISPLAY FILES IN DIRECTORY\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLEAR - Will Clear The screen\nPWD - Print Current Directory\nConsole - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nPAUSE - Will Wait For A Keystroke\n---%cNo Other Commands Yet%c---",(unsigned char)185,(unsigned char)204);
-                       i=i+14;
+                       printw("VER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLEAR - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nPAUSE - Will Wait For A Keystroke\n");
+                       i=i+17;
 
                 }if(strcmp(s,"PAUSE")==false || strcmp(s,"pause")==false)
 		{
@@ -76,6 +76,7 @@ intro:
                 }
 		if(strcmp(s,"CONSOLE")==false || strcmp(s,"console")==false)
 		{
+			sprintf(s," ");
 			scanw(s);
 			system(s);
 
@@ -92,7 +93,27 @@ intro:
 			i=0;
 		}if(strcmp(s, "INTRO")==false || strcmp(s, "intro")==false)
 		{
-			goto intro;
+				clear();
+			        refresh();
+			        wattron(hw,COLOR_PAIR(1));
+        			box(hw,0,0);
+        			wattroff(hw,COLOR_PAIR(1));
+        			wrefresh(hw);
+
+
+        			wattron(hw,COLOR_PAIR(1));
+        			for(int a=1;a<getmaxy(hw)-1; a++)
+        			{
+                			for(int b=1;b<getmaxx(hw)-1;b++)
+                        			mvwprintw(hw,a,b," ");
+        			}
+
+			        mvwprintw(hw,0,(getmaxx(hw)-strlen("  BoxEmu  "))/2,"%c BoxEmu %c",(unsigned char)185,(unsigned char)204);
+			        mvwprintw(hw,2,1,"Type help for help");
+			        wrefresh(hw);
+			        wattroff(hw, COLOR_PAIR(1));
+			        echo();
+				i=20;
 		}if(strcmp(s, "DIR")==false || strcmp(s, "dir")==false){
 			/*system("~/bin/dir");
 			clear();*/
@@ -116,7 +137,7 @@ intro:
 				}
 			}
 			i++;
-
+			closedir(dp);
 		}if(strcmp(s, "WIN")==false || strcmp(s, "win")==false){
 			sprintf(str,"~/bin/WinSh %s",pwd);
 			system(str);
@@ -144,6 +165,46 @@ intro:
 			system(str);
 			clear();
 			i=i+3;
+		}if(strcmp(s,"VER") == false || strcmp(s,"ver")==false){
+			printw("BoxEmu v0.1 = MyBox v1.6 beta\n\n\tSUPERSIX");
+			i=i+3;
+		}if(strcmp(s, "RM") == false || strcmp(s, "rm")==false){
+			sprintf(s, " ");
+			scanw("%s",s);
+			int retrn=remove(s);
+			if(retrn == -1)
+				printw("Cannot Remove Requested File");
+			i=i+4;
+
+		}if(strcmp(s, "FIND")==false || strcmp(s, "find")==false){
+			sprintf(s, " ");
+			scanw("%s",s);
+			i++;
+			if((dp=opendir(pwd))==NULL){
+				printw("Cannot Open Direcotry");
+			}
+			while((dir=readdir(dp)) != NULL){
+				if(strncmp(s,dir->d_name,strlen(s))==false){
+					printw("%s\n",dir->d_name);
+					i++;
+				}
+			}
+			closedir(dp);
+		}if(strcmp(s,"TOUCH")==false || strcmp(s,"touch")==false){
+			sprintf(s," ");
+			scanw("%s",s);
+			FILE *chk=fopen(s,"r");
+			if(chk != NULL)
+			{
+				printw("FILE ALL READY EXISTS");
+			}else if(chk == NULL)
+			{
+				FILE *fp=fopen(s,"w+");
+				fclose(fp);
+			}
+			fclose(chk);
+			i=i+2;
+
 		}else{
 			i=i+1;
 		}

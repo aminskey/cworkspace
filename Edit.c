@@ -213,7 +213,7 @@ edit:
 				fx=0;
 			}
 			mvwprintw(dt,fy-1,fx,"%c",c);
-                        ++fx;
+                        fx++;
 
 		}
 
