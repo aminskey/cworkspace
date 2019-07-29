@@ -78,8 +78,10 @@ int main(void)
 		{
 			sprintf(s," ");
 			scanw(s);
+			endwin();
 			system(s);
 
+			initscr();
 			getch();
 			clear();
 			i=0;
@@ -88,7 +90,9 @@ int main(void)
 			printw("%s",pwd);
 			i=i+2;
 		}if(strcmp(s, "EDIT")==false || strcmp(s, "edit")==false){
+			endwin();
 			system("~/bin/Edit");
+			initscr();
 			clear();
 			i=0;
 		}if(strcmp(s, "INTRO")==false || strcmp(s, "intro")==false)

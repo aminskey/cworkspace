@@ -439,6 +439,7 @@ loop:
         			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F6 - Save"))/2 + getmaxx(stdscr)/8, "F6 - Save");
 
        				attroff(COLOR_PAIR(1));
+				refresh();
 				goto edit;
 			}
 
