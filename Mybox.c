@@ -58,8 +58,8 @@ int main(void)
 
                 if(strcmp(s,"HELP")==false || strcmp(s,"help")==false)
                 {
-                       printw("VER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLEAR - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nPAUSE - Will Wait For A Keystroke\n");
-                       i=i+17;
+                       printw("TOUCH - create new file\nVER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLEAR - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nPAUSE - Will Wait For A Keystroke\n");
+                       i=i+18;
 
                 }if(strcmp(s,"PAUSE")==false || strcmp(s,"pause")==false)
 		{
