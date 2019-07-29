@@ -126,11 +126,12 @@ int main(void)
 			if((dp=opendir(pwd)) == NULL){
 				printw("OOPS .. Something Went Wrong");
 			}
+			i+=1;
 			while((dir=readdir(dp)) != NULL)
 			{
 				mvprintw(i,c,"%s",dir->d_name);
-				c=c+20;
-				if(c % 2 == 0)
+				c+=40;
+				if(c % 3 == 0)
 				{
 					i++;
 					printw("\n");
