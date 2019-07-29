@@ -63,9 +63,11 @@ int main(void)
 
                 }if(strcmp(s,"PAUSE")==false || strcmp(s,"pause")==false)
 		{
+			noecho();
 			printw("Press Any Thing to Continue ...");
 			getch();
 			i=i+2;
+			echo();
 		}if(strcmp(s,"EXIT")==false || strcmp(s, "exit")==false)
                 {
                         break;
