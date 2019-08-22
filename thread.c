@@ -79,7 +79,8 @@ void putsTerm(const char *in){
 	fclose(dev2);
 	fclose(dev3);
 	fclose(dev4);
-	
+	fclose(dev5);
+	fclose(dev6)
 	
 }
 
