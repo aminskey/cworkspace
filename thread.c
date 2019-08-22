@@ -80,7 +80,7 @@ void putsTerm(const char *in){
 	fclose(dev3);
 	fclose(dev4);
 	fclose(dev5);
-	fclose(dev6)
+	fclose(dev6);
 	
 }
 
