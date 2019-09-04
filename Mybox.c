@@ -164,7 +164,7 @@ int main(void)
 			clear();
 			i=i+3;
 		}if(strcmp(s,"VER") == false || strcmp(s,"ver")==false){
-			printw("BoxEmu v0.1 = MyBox v1.6 beta\n\n\tSUPERSIX");
+			printw("BoxEmu v0.4 = MyBox v2.0 beta\n\n\tMark Four");
 			i=i+3;
 		}if(strcmp(s, "RM") == false || strcmp(s, "rm")==false){
 			sprintf(s, " ");
@@ -190,6 +190,10 @@ int main(void)
 			closedir(dp);
 		}if(strcmp(s,"nano")==false || strcmp(s,"NANO")==false){
 			system("nano");
+			clear();
+			i=0;
+		}if(strcmp(s,"emacs")==false || strcmp(s,"EMACS")==false){
+			system("emacs");
 			clear();
 			i=0;
 		}if(strcmp(s,"gcc")==false || strcmp(s,"GCC")==false){
