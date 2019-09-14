@@ -61,7 +61,6 @@ storeCal:
 	gcc -o ../bin/StoreCal storeCalculator.c -lncurses
 typeWrite:
 	gcc -o ../bin/typeWriter typeWriter.c -lncurses
-
 clean:
 	rm -rf ../bin/Translate
 	rm -rf ../bin/deTranslate

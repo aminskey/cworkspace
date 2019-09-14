@@ -50,7 +50,7 @@ int main(void)
 
 	mvprintw(0,(getmaxx(stdscr)-strlen("  Project editor  "))/2,"%c Project Editor %c", (unsigned char)185, (unsigned char)204);
 
-	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F10 - SAVE, COMPILE & RUN"))/6,"F10 - Save, Compile & Run");
+	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F4 - SAVE, COMPILE & RUN"))/6,"F4 - Save, Compile & Run");
 	mvprintw(getmaxy(stdscr)-1,((getmaxx(stdscr)-strlen("F9 - Save and Exit"))/3)+3,"F9 - Save And Exit");
 	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F1 - Exit"))/2,"F1 - Exit");
 	mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F5 - Open / New File"))/2 + getmaxx(stdscr)/4, "F5 - Open / New File");
@@ -259,7 +259,7 @@ loop:
 				x=0;
 			}
 
-			else if(d == KEY_F(10)){
+			else if(d == KEY_F(4)){
 				break;
 			}else if(d == KEY_F(1)){
 				break;
@@ -289,7 +289,7 @@ loop:
 				wmove(dt,y,++x);
 				wrefresh(dt);
 			}
-/* 	 		else if(d == KEY_MOUSE)
+ 	 		else if(d == KEY_MOUSE)
 			{
 				if(getmouse(&mvnt) == OK)
 				{
@@ -297,7 +297,7 @@ loop:
 					wrefresh(dt);
 				}
 			}
-*/			else if(d == 9)
+			else if(d == 9)
 				wmove(dt,y,x=x+8);
 
 			else{
@@ -315,7 +315,7 @@ loop:
 
 
 		wmove(dt,0,0);
-		if(d == KEY_F(10)){
+		if(d == KEY_F(4)){
 			FILE *fp=fopen(fn,"w+");
 
 			rewind(fp);
@@ -432,7 +432,7 @@ loop:
 
         			mvprintw(0,(getmaxx(stdscr)-strlen("  Project editor  "))/2,"%c Project Editor %c", (unsigned char)185, (unsigned char)204);
 
-        			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F10 - SAVE, COMPILE & RUN"))/6,"F10 - Save, Compile & Run");
+        			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F4 - SAVE, COMPILE & RUN"))/6,"F4 - Save, Compile & Run");
         			mvprintw(getmaxy(stdscr)-1,((getmaxx(stdscr)-strlen("F9 - Save and Exit"))/3)+3,"F9 - Save And Exit");
         			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F1 - Exit"))/2,"F1 - Exit");
         			mvprintw(getmaxy(stdscr)-1,(getmaxx(stdscr)-strlen("F5 - Open / New File"))/2 + getmaxx(stdscr)/4, "F5 - Open / New File");

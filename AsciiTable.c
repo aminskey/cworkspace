@@ -41,7 +41,7 @@ int main(void){
     }
     refresh();
     c=wgetch(ea);
-    if(c==KEY_F(10)){
+    if(c==KEY_F(4)){
         wattron(ea,COLOR_PAIR(2));
         for(int i=0;i<getmaxy(ea);i++){
             for(int j=0;j<getmaxx(ea);j++){

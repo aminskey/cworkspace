@@ -6,6 +6,6 @@ How search files:
 
 Archive will only find files in the .archive directory.
 
-If you want to exit write end so that the File serving system will close (Aka 'Local File Server')
+If you want to exit; write end so that the File serving system will close (Aka 'Local File Server')
 
 That's it
