@@ -59,6 +59,9 @@ read:
 	gcc read.c -o ../bin/binaryFileTotext
 storeCal:
 	gcc -o ../bin/StoreCal storeCalculator.c -lncurses
+createHello:
+	gcc Hello.c -lncurses; ./a.out
+
 typeWrite:
 	gcc -o ../bin/typeWriter typeWriter.c -lncurses
 clean:
@@ -89,4 +92,4 @@ clean:
 	rm -rf ../bin/AsciiTable
 	rm -rf ../bin
 
-all: clean createBin OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BoxEmu Edit Archive getMax hRead imgRead lost read storeCal 
+all: clean createBin OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BoxEmu Edit Archive getMax hRead imgRead lost read storeCal createHello
