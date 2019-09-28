@@ -1,3 +1,8 @@
+enc:
+	gcc enc.c -o ../bin/Encrypt
+dnc:
+	gcc dnc.c -o ../bin/Decrypt
+
 OpsTable:
 	gcc table2-1.c -lncurses -o ../bin/OpsTable
 
@@ -92,4 +97,4 @@ clean:
 	rm -rf ../bin/AsciiTable
 	rm -rf ../bin
 
-all: clean createBin OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BoxEmu Edit Archive getMax hRead imgRead lost read storeCal createHello
+all: clean createBin OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BoxEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
