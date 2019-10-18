@@ -30,6 +30,8 @@ int main(int argc, char *argv[])
         int i=0;
         char s[2048]=" ";
 	char pwd[4096];
+	char run[100];
+
 
 	const char drvz[200] = "/mnt";
 	const char drve[200] = "/bin";
@@ -406,8 +408,8 @@ int main(int argc, char *argv[])
 
         	if(strcmp(s,"HELP")==false || strcmp(s,"help")==false)
         	{
-                       printw("WHEREDRV - show where the drives are located\nGCC - compile c programs\nNANO - The system file editor\nTOUCH - create new file\nVER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLS - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nEMACS - RUN EMACS\nPAUSE - Will Wait For A Keystroke\n");
-                       i=i+22;
+                       printw("RUN - run a command with parameters on the computer\nWHEREDRV - show where the drives are located\nGCC - compile c programs\nNANO - The system file editor\nTOUCH - create new file\nVER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLS - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nEMACS - RUN EMACS\nPAUSE - Will Wait For A Keystroke\n");
+                       i=i+23;
 
         	}if(!strcmp(s,"INTRO")||!strcmp(s,"intro")){
 			endwin();
@@ -432,6 +434,20 @@ int main(int argc, char *argv[])
 			getch();
 			i=i+2;
 			echo();
+		}if(!strcmp(s,"RUN")||!strcmp(s,"run")){
+
+			scanw("%s %s",s,str);
+			sprintf(run,"%s/%s %s",pwd,s,str);
+
+			endwin();
+			system(run);
+
+			initscr();
+			clear();
+
+			sprintf(str," ");
+
+			i=0;
 		}if(strcmp(s,"EXIT")==false || strcmp(s, "exit")==false)
                 {
                         break;
@@ -576,7 +592,7 @@ int main(int argc, char *argv[])
 			clear();
 			i=i+3;
 		}if(strcmp(s,"VER") == false || strcmp(s,"ver")==false){
-			printw("BoxEmu v0.6.1 alpha\n\n\t SUPER SIX");
+			printw("BoxEmu v0.6.2 alpha\n\n\t SUPER SIX");
 			i=i+3;
 		}if(strcmp(s, "RM") == false || strcmp(s, "rm")==false){
 			sprintf(s, " ");
