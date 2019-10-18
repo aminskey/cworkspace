@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<ncurses.h>
 #include<string.h>
-#include<stdlib.h>
+#include<stdlib.h>	// For Them Viewing the code please feel free to fork and change the call function!
 #include<unistd.h>
 #include<dirent.h>
 #include<sys/stat.h>
