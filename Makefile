@@ -43,8 +43,8 @@ bookrep:
 
 AsciiTable:
 	gcc -o ../bin/AsciiTable AsciiTable.c -lncurses
-BoxEmu:
-	gcc -o ../bin/BoxEmu Mybox.c -lncurses
+BOXEmu:
+	gcc -o ../bin/BOXEmu Mybox.c -lncurses
 Edit:
 	gcc -o ../bin/Edit Edit.c -lncurses
 AsciiHex:
@@ -97,4 +97,4 @@ clean:
 	rm -rf ../bin/AsciiTable
 	rm -rf ../bin
 
-all: clean createBin OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BoxEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
+all: clean createBin OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello

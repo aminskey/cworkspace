@@ -22,7 +22,7 @@ int main(void)
 
 	int a=0;
 	
-	char plc=(unsigned char)178;	
+	char plc='-';
 	int px=getmaxx(stdscr)/2;
 	int py=getmaxy(stdscr)/2;
 
@@ -106,7 +106,7 @@ start:
 
 	while(1)
 	{
-
+		plc='-';
 		if(py == d && px == b)
 			break;
 
@@ -121,6 +121,7 @@ start:
 
 					py=py;
 				}else{
+					plc=124;
 					py=py-1;
 				}
 				
@@ -130,6 +131,7 @@ start:
 				{
 					py=py;
                                 }else{
+					plc=124;
 					py=py+1;
 				}				
 
@@ -169,7 +171,7 @@ start:
 	refresh();
 	wattron(win,A_REVERSE);
 
-	wpaint(win,getmaxy(win),getmaxx(win),(unsigned char)176);
+	wpaint(win,getmaxy(win),getmaxx(win),32);
 	box(win,0,0);
 
 
