@@ -666,7 +666,6 @@ int main(int argc, char *argv[])
 			}
 			fclose(chk);
 			i=i+2;
-
 		}if(!strcmp(s,"Z:") || !strcmp(s,"z:")){
 			sprintf(drv,"Z:\\");
 			int cd=chdir(drvz);
