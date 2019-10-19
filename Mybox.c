@@ -413,7 +413,7 @@ int main(int argc, char *argv[])
 		}
         	if(strcmp(s,"HELP")==false || strcmp(s,"help")==false)
         	{
-                       printw("MKDIR - Create Directory\nRUN - run a command with parameters on the computer\nWHEREDRV - show where the drives are located\nGCC - compile c programs\nNANO - The system file editor\nTOUCH - create new file\nVER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLS - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nEMACS - RUN EMACS\nPAUSE - Will Wait For A Keystroke\n");
+                       printw("LL - like dir but shows file permissions\nMKDIR - Create Directory\nRUN - run a command with parameters on the computer\nWHEREDRV - show where the drives are located\nGCC - compile c programs\nNANO - The system file editor\nTOUCH - create new file\nVER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLS - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nEMACS - RUN EMACS\nPAUSE - Will Wait For A Keystroke\n");
                        i=i+25;
 
         	}if(!strcmp(s,"INTRO")||!strcmp(s,"intro")){
