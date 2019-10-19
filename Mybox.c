@@ -406,7 +406,15 @@ int main(int argc, char *argv[])
 
 		}
 		if(!strcmp(s,"LL")||!strcmp(s,"ll")){
-			system("ls -al >> out");
+			FILE *fp=fopen("./out","w+");
+			int rm=remove(fp);
+			if(rm == -1){
+				printw("something Went wrong!: %d",rm);
+				i=i+2;
+				continue;
+			}
+
+			system("ls -al >> ./out");
 			system("dog out");
 			clear();
 			i=0;
