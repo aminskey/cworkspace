@@ -406,8 +406,9 @@ int main(int argc, char *argv[])
 
 		}
 		if(!strcmp(s,"LL")||!strcmp(s,"ll")){
-			system("sudo ls -al >> out");
-			system("sudo dog out");
+			system("rm -rf ./out");
+			system("ls -al >> ./out");
+			system("dog ./out");
 
 			clear();
 			i=0;
