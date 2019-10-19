@@ -18,7 +18,7 @@ int main(int argc, char *argv[]){
 
      FILE *fp=fopen(argv[1],"r");
 
-    WINDOW *win=newwin(9,70,10,50);
+    WINDOW *win=newwin(9,70,10,100);
 
     if(fp==NULL){
         refresh();

@@ -405,11 +405,16 @@ int main(int argc, char *argv[])
 				break;
 
 		}
-
+		if(!strcmp(s,"LL")||!strcmp(s,"ll")){
+			system("ls -al >> out");
+			system("dog out");
+			clear();
+			i=0;
+		}
         	if(strcmp(s,"HELP")==false || strcmp(s,"help")==false)
         	{
-                       printw("RUN - run a command with parameters on the computer\nWHEREDRV - show where the drives are located\nGCC - compile c programs\nNANO - The system file editor\nTOUCH - create new file\nVER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLS - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nEMACS - RUN EMACS\nPAUSE - Will Wait For A Keystroke\n");
-                       i=i+23;
+                       printw("MKDIR - Create Directory\nRUN - run a command with parameters on the computer\nWHEREDRV - show where the drives are located\nGCC - compile c programs\nNANO - The system file editor\nTOUCH - create new file\nVER - Display Version\nFIND - find files with the same name / letter \nRM - Remove File\nDIR - Display Files In Directory\nTYPE - read file\nARCHIVE - File Search Engine\nCD - Change Current Directory\nHELP - ....... you just called this one\nEXIT - ...It's quite obvious\nCLS - Will Clear The screen\nPWD - Print Current Directory\nCONSOLE - Run Command On Console\nWIN - Will Run Desktop\nEDIT - A Full Screen Editor\nINTRO - BOXEmu Introduction\nEMACS - RUN EMACS\nPAUSE - Will Wait For A Keystroke\n");
+                       i=i+25;
 
         	}if(!strcmp(s,"INTRO")||!strcmp(s,"intro")){
 			endwin();
@@ -434,6 +439,13 @@ int main(int argc, char *argv[])
 			getch();
 			i=i+2;
 			echo();
+		}if(!strcmp(s,"MKDIR")||!strcmp(s,"mkdir")){
+			scanw("%s",str);
+			int mk=mkdir(str,S_IROTH);
+			if(mk == EOF){
+				printw("Something Went Wrong: %d",EOF);
+			}
+			i=i+3;
 		}if(!strcmp(s,"RUN")||!strcmp(s,"run")){
 
 			scanw("%s %s",s,str);
@@ -443,11 +455,21 @@ int main(int argc, char *argv[])
 			system(run);
 
 			initscr();
+			getch();
 			clear();
 
 			sprintf(str," ");
 
 			i=0;
+		}if(!strcmp(s,"CHMOD")||!strcmp(s,"chmod")){
+			int dgt=0,ch=0;
+
+			scanw("%s %d",str,dgt);
+			ch=chmod(str,dgt);
+			if(ch==-1){
+				printw("Something Went Wrong: %d",ch);
+			}
+			i=i+3;
 		}if(strcmp(s,"EXIT")==false || strcmp(s, "exit")==false)
                 {
                         break;
