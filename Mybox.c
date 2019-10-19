@@ -605,7 +605,7 @@ int main(int argc, char *argv[])
 			sprintf(str,"~/bin/dog %s",s);
 			system(str);
 			clear();
-			i=i+3;
+			i=0;
 		}if(strcmp(s,"VER") == false || strcmp(s,"ver")==false){
 			printw("BoxEmu v0.6.2 alpha\n\n\t SUPER SIX");
 			i=i+3;
