@@ -406,16 +406,9 @@ int main(int argc, char *argv[])
 
 		}
 		if(!strcmp(s,"LL")||!strcmp(s,"ll")){
-			FILE *fp=fopen("./out","w+");
-			int rm=remove(fp);
-			if(rm == -1){
-				printw("something Went wrong!: %d",rm);
-				i=i+2;
-				continue;
-			}
+			system("sudo ls -al >> out");
+			system("sudo dog out");
 
-			system("ls -al >> ./out");
-			system("dog out");
 			clear();
 			i=0;
 		}
@@ -469,15 +462,6 @@ int main(int argc, char *argv[])
 			sprintf(str," ");
 
 			i=0;
-		}if(!strcmp(s,"CHMOD")||!strcmp(s,"chmod")){
-			int dgt=0,ch=0;
-
-			scanw("%s %d",str,dgt);
-			ch=chmod(str,dgt);
-			if(ch==-1){
-				printw("Something Went Wrong: %d",ch);
-			}
-			i=i+3;
 		}if(strcmp(s,"EXIT")==false || strcmp(s, "exit")==false)
                 {
                         break;
