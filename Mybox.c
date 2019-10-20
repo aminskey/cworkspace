@@ -544,8 +544,10 @@ int main(int argc, char *argv[])
 
 			initscr();
 			getch();
+
 			clear();
 			i=0;
+
 		}if(strcmp(s, "PWD")==false || strcmp(s, "pwd")==false)
 		{
 			printw("%s",pwd);

@@ -106,7 +106,7 @@ start:
 
 	while(1)
 	{
-		plc='-';
+		plc=(unsigned char)178;
 		if(py == d && px == b)
 			break;
 
@@ -121,7 +121,6 @@ start:
 
 					py=py;
 				}else{
-					plc=124;
 					py=py-1;
 				}
 				
@@ -131,7 +130,6 @@ start:
 				{
 					py=py;
                                 }else{
-					plc=124;
 					py=py+1;
 				}				
 
