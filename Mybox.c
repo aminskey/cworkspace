@@ -535,9 +535,12 @@ int main(int argc, char *argv[])
 		if(strcmp(s,"CONSOLE")==false || strcmp(s,"console")==false)
 		{
 			sprintf(s," ");
-			scanw("%s",s);
+			scanw("%s %s",s,str);
 			endwin();
-			system(s);
+
+			sprintf(run,"%s %s",s,str);
+
+			system(run);
 
 			initscr();
 			getch();
