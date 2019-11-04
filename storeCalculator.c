@@ -21,6 +21,7 @@ int main(int argc, char *argv[])
     float add=0;
     float a2=0;
 
+    float flowerp=5.75;
     float cgum=17.5;
     float cab=12.95;
     float cola=05.5;
@@ -106,6 +107,14 @@ int main(int argc, char *argv[])
             strcat(buff,in);
             add=cola+add;
            
+            a2=add;
+            j++;
+        }else if(strcmp(in,"FLOWER-POT")==false){
+            mvprintw(j,55,"%f$",flowerp);
+            mvprintw(j,100,"%f$",flowerp);
+            strcat(buff,in);
+            add=flowerp+add;
+
             a2=add;
             j++;
         }else if(strcmp(in,"CHEETOS")==false){
