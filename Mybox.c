@@ -457,6 +457,7 @@ int main(int argc, char *argv[])
 			system(run);
 
 			initscr();
+			printw("Press Anything to continue");
 			getch();
 			clear();
 
@@ -543,6 +544,7 @@ int main(int argc, char *argv[])
 			system(run);
 
 			initscr();
+			printw("Press Anything To Continue");
 			getch();
 
 			clear();
@@ -612,7 +614,7 @@ int main(int argc, char *argv[])
 			clear();
 			i=0;
 		}if(strcmp(s,"VER") == false || strcmp(s,"ver")==false){
-			printw("BoxEmu v0.6.2 alpha\n\n\t SUPER SIX");
+			printw("BoxEmu v0.6.3 alpha\n\n\t SUPER SIX");
 			i=i+3;
 		}if(strcmp(s, "RM") == false || strcmp(s, "rm")==false){
 			sprintf(s, " ");
