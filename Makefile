@@ -1,3 +1,6 @@
+desk:
+	gcc drvConf.c desk.c -lncurses -o ../bin/Desk
+
 enc:
 	gcc enc.c -o ../bin/Encrypt
 dnc:
@@ -10,6 +13,8 @@ FourTerm:
 	gcc thread.c -o ../bin/FourTerm
 tty:
 	gcc -o ../bin/TTYTALK TTTalk.c
+graph:
+	gcc graph.c -o ../bin/graphprog
 
 createBin:
 	mkdir ../bin
@@ -44,7 +49,7 @@ bookrep:
 AsciiTable:
 	gcc -o ../bin/AsciiTable AsciiTable.c -lncurses
 BOXEmu:
-	gcc -o ../bin/BOXEmu Mybox.c -lncurses
+	gcc -o ../bin/BOXEmu drvConf.c Mybox.c -lncurses
 Edit:
 	gcc -o ../bin/Edit Edit.c -lncurses
 AsciiHex:
@@ -82,6 +87,7 @@ clean:
 	rm -rf ../bin/BoxEmu
 	rm -rf ../bin/Edit
 	rm -rf ../bin/AsciiHex
+	rm -rf ../bin/graphprog
 	rm -rf ../bin/Archive
 	rm -rf ../bin/HexRead
 	rm -rf ../bin/cimg
@@ -97,4 +103,4 @@ clean:
 	rm -rf ../bin/AsciiTable
 	rm -rf ../bin
 
-all: clean createBin OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
+all: clean createBin desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello

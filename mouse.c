@@ -11,7 +11,7 @@ void wpaint(WINDOW *,int, int, short);
 int a[]={176,177,178};
 
 
-char p[8][20]={
+char p[8][24]={
 "##########",
 "#         #",
 "#         #",
@@ -35,7 +35,7 @@ int main(void)
 
 	MEVENT mv;
 
-	mousemask(ALL_MOUSE_EVENTS, NULL);
+	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 	WINDOW *lg=newwin(getmaxy(stdscr)/2,getmaxx(stdscr)/2,(getmaxy(stdscr)/2-getmaxy(stdscr)/4),(getmaxx(stdscr)/2-getmaxx(stdscr)/4));
 
@@ -79,32 +79,34 @@ int main(void)
 
 	wattron(men, A_REVERSE);
         refresh();
-        box(men,0,0);                
+        box(men,0,0);
 	wpaint(men,getmaxy(men),getmaxx(men),COLOR_PAIR(1));
 	mvwprintw(men,1,1,"Start");
 	wrefresh(men);
         wattroff(men, A_REVERSE);
+
+	printf("\033[?1003h");
 
 	while(1)
 	{
 		c=getch();
 
 		if(c == KEY_F(12)){
-			break;	
+			break;
 		}
 		if(c == KEY_MOUSE)
 		{
-			if(getmouse(&mv) == OK)
-			{
-				if((mv.y > 1 && mv.y < getmaxy(men)) && (mv.x > 1 && mv.x < 7))
-					printw("Start!!");
+			if(getmouse(&mv) == OK){
+				if(((mv.y >= (getmaxy(stdscr)-getmaxy(men))) && (mv.x >= 1 || mv.x <= 7)) && mv.bstate >= BUTTON1_PRESSED)
+					mvwprintw(men,1,1,"Start!!");
 			}
 
-			
+
 		}
 	}
 
-	
+	printf("\033[?1003l");
+
 	endwin();
 	return 0;
 }

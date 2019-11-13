@@ -33,11 +33,11 @@ int main(int argc, char *argv[])
 	char run[100];
 
 
-	const char drvz[200] = "/mnt";
-	const char drve[200] = "/bin";
-	const char drvc[200] = "/home/amin";
-	const char drvd[200] = "/media/amin";
-	const char drva[200] = "/";
+	extern const char drvz[];
+	extern const char drve[];
+	extern const char drvc[];
+	extern const char drvd[];
+	extern const char drva[];
 
 	char drivs[]="ACDEZ";
 	char drv[200];
