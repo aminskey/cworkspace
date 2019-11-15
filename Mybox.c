@@ -586,10 +586,10 @@ int main(int argc, char *argv[])
 			i++;
 			closedir(dp);
 		}if(strcmp(s, "WIN")==false || strcmp(s, "win")==false){
-			sprintf(str,"~/bin/WinSh %s",pwd);
-			system(str);
+			system("Desk");
 			clear();
 			i=0;
+
 		}if(i > getmaxy(stdscr)-1){
 			clear();
 			i=0;
