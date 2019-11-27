@@ -307,34 +307,11 @@ int drvchck(void){
         extern const char drve[];
         extern const char drvz[];
 
-        if((cd=chdir(drva)) != 0){
-                return cd;
-        }else{
-                return EOF;
-        }
-        if((cd=chdir(drvc)) != 0){
-                return cd;
-        }else{
-                return EOF;
-        }
-        if((cd=chdir(drvd)) != 0){
-                return cd;
-        }else{
-                return EOF;
-        }
-        if((cd=chdir(drve)) != 0){
-                return cd;
-        }else{
-                return EOF;
-        }
-        if((cd=chdir(drvz)) != 0){
-                return cd;
-        }else{
-                return EOF;
-        }
-
-
-
+	return !(cd=chdir(drva));
+	return !(cd=chdir(drvc));
+	return !(cd=chdir(drvd));
+	return !(cd=chdir(drve));
+	return !(cd=chdir(drvz));
 
 }
 void term(void){
@@ -377,7 +354,6 @@ void term(void){
 
 
         while(1){
-
 		getcwd(cwd,180);
 
                 if(!drvchck())
@@ -437,19 +413,19 @@ void term(void){
                         }
                         while((dir=readdir(dp)) != NULL){
                                 imy++;
-                                if(imy >= 3){
+                                if(imy >= 1){
                                         wprintw(iterm,"\n");
 
+                                        ++dln;
                                         imy=0;
-					dln++;
                                 }
-                                if(dln >= getmaxy(iterm)-2){
+                                if(dln >= getmaxy(iterm)-1){
                                         wprintw(iterm,"\nPress Anything To Continue!!");
                                         getch();
                                         wclear(iterm);
                                 }
 
-				wprintw(iterm,"%s ",dir->d_name,imy);
+				wprintw(iterm,"%s - %d\t",dir->d_name,imy);
 			}
 			wprintw(iterm,"\n");
   	        	closedir(dp);
@@ -498,3 +474,4 @@ void wprcs(WINDOW *src){
         wattroff(src,COLOR_PAIR(1));
         wrefresh(src);
 }
+
