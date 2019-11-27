@@ -1,5 +1,5 @@
 desk:
-	gcc drvConf.c editor.c desk.c -lncurses -o ../bin/Desk
+	gcc drvConf.c desk.c -lncurses -o ../bin/Desk
 
 enc:
 	gcc enc.c -o ../bin/Encrypt

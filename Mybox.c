@@ -561,8 +561,6 @@ int main(int argc, char *argv[])
 			clear();
 			i=0;
 		}if(strcmp(s, "DIR")==false || strcmp(s, "dir")==false){
-			/*system("~/bin/dir");
-			clear();*/
 			if((dp=opendir(pwd)) == NULL){
 				printw("OOPS .. Something Went Wrong");
 			}
