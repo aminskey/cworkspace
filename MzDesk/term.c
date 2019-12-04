@@ -13,6 +13,7 @@ extern char drvd[];
 extern char drve[];
 extern char drvz[];
 extern char quote[];
+extern char home[];
 
 extern int main();
 extern int drvchck();
@@ -27,6 +28,7 @@ void term(void){
         char cmd[30];
         char arg1[30];
         char arg2[30];
+        char str[30];
 
         int ln=0;
         int cd=0;
@@ -40,15 +42,15 @@ void term(void){
         if(!drvchck())
                 bluescreen(quote);
 
-        WINDOW *term=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
-        WINDOW *iterm=derwin(term,getmaxy(term)-2,getmaxx(term)-2,1,1);
+        WINDOW *wterm=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
+        WINDOW *iterm=derwin(wterm,getmaxy(wterm)-2,getmaxx(wterm)-2,1,1);
 
         start_color();
         init_pair(1,COLOR_WHITE,COLOR_CYAN);
 
-        box(term,0,0);
-        mvwprintw(term,0,(getmaxx(term)-strlen("BOXEmu Terminal"))/2,"BOXEmu Terminal");
-        wrefresh(term);
+        box(wterm,0,0);
+        mvwprintw(wterm,0,(getmaxx(wterm)-strlen("BOXEmu Terminal"))/2,"BOXEmu Terminal");
+        wrefresh(wterm);
 
         echo();
         curs_set(1);
@@ -125,6 +127,7 @@ void term(void){
                         wprintw(iterm,"%s\n",cwd);
                 }if(!strcmp(cmd,"cls")||!strcmp(cmd,"CLS")){
 			wclear(iterm);
+                        ln=0;
 		}if(!strcmp(cmd,"dir")||!strcmp(cmd,"DIR")){
 			int dr=dir(iterm, arg1,ln);
 			if(dr==-1){
@@ -137,7 +140,7 @@ void term(void){
                         int f=more(iterm, arg1, ln);
                         if(f == -1)               
                         {
-                                wprintw(iterm,"Cannot Open Requested File - \"--help\" for help\n");
+                                wprintw(iterm,"[more] : Cannot Open Requested File -\'%s\' - \"--help\" for help\n",arg1);
                         }if(f==-2){
                                 wprintw(iterm,"[Usage] : more [filename] --help --version\n");
                         }if(f==-3){
@@ -145,6 +148,30 @@ void term(void){
                         }else{
                                 ln=f;
                         }
+                }if(!strcmp(cmd,"help")||!strcmp(cmd,"HELP")){
+                        wprintw(iterm,"Help v 1.1\n\n");
+                        ln+=2;
+                        if(!strcmp(arg1,"_")){        
+                                sprintf(str,"%s/.BOXEmu/commands.txt",home);
+                                int f=more(iterm,str,ln);
+                                if(f == -1){
+                                        wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);
+                                }else{
+                                        ln=f;
+                                }
+                                continue;
+                        }
+                        sprintf(str,"%s/.BOXEmu/%s.txt",home,arg1);
+                        int f=more(iterm,str,ln);
+                        if(f == -1){
+                                wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);
+                        }else{
+                                ln=f;
+                        }
+                        sprintf(str," ");
+                }if(!strcmp(cmd,"reset")||!strcmp(cmd,"RESET")){
+                        term();
+                        exit(0);
                 }
                 if(ln >= getmaxy(iterm)-1){
                         ln=0;
@@ -202,13 +229,12 @@ int more(WINDOW *src, char *f, int ln){
                 return -1;
         }
 
+
         while(!feof(fp)){
                 buff = fgetc(fp);
                 wprintw(src,"%c",buff);
                 i++;
-                if(i >= getmaxx(src) -1){
-                        ln++;
-                }
+
                 if(buff == '\n'){
                         ln++;
                 }
@@ -218,7 +244,7 @@ int more(WINDOW *src, char *f, int ln){
                         ln=0;
                 }
         }
-        wprintw(src,"\n---%s---",f);
+        wprintw(src,"\n---%s---\n",f);
         fclose(fp);
 
         return (ln++);

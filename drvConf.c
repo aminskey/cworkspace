@@ -3,3 +3,4 @@ char drvc[20] = "/home/amin";
 char drvd[20] = "/media/amin";
 char drve[20] = "/bin";
 char drvz[100] = "/usr/lib";
+char home[20] = "/home/amin";

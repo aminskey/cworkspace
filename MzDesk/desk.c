@@ -15,6 +15,7 @@ extern const char drvc[];
 extern const char drvd[];
 extern const char drve[];
 extern const char drvz[];
+extern const char home[];
 
 char quote[]="YOUR DRIVES ARE DOWN, EDIT THE \'drvConf\' C FILE AND BUILD AGAIN";
 
@@ -34,9 +35,12 @@ void paint(char ch, short clr){
 }
 
 int main(void){
+        char str[20]=" ";
+
+        sprintf(str,"%s/.BOXEmu/dat",home);
 
         // add home dir name
-        FILE *fp=fopen("/home/amin/.BOXEmu/dat","r+");
+        FILE *fp=fopen(str,"r+");
         if(fp == NULL){
                 bluescreen("Data file doesn\'t exist - Background file");
                 exit(0);
