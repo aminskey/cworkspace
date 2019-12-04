@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 		perror("CANNOT OPEN");
 	while((dir=readdir(dp))!=NULL){
 		printf("%s\n",dir->d_name);
-		
+
 	}
 
 	closedir(dp);

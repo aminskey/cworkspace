@@ -18,10 +18,12 @@ extern int main();
 extern int drvchck();
 extern int bluescreen();
 
-void term(void){
-        DIR *dp;
-        struct dirent *dir;
+int dir(WINDOW *,char *,int);
+int more(WINDOW *, char *, int);
 
+void Mzpause(WINDOW *);
+
+void term(void){
         char cmd[30];
         char arg1[30];
         char arg2[30];
@@ -32,11 +34,8 @@ void term(void){
         char cwd[100];
 
         char cdrv='C';
-        char drvstate=0;
+        int drvstate=0;
 
-	int dln, imy;
-
-	dln=imy=0;
 
         if(!drvchck())
                 bluescreen(quote);
@@ -62,39 +61,55 @@ void term(void){
 
                 if(!drvchck())
                         bluescreen(quote);
+                
+                
+                wprintw(iterm,"%c:\\>",cdrv);
+                wscanw(iterm,"%s %s %s",cmd,arg1,arg2);
+                ln++;
+
+                if(!strcmp(cmd,"A:")||!strcmp(cmd,"a:")){
+                        drvstate=1;
+                }if(!strcmp(cmd,"C:")||!strcmp(cmd,"c:")){
+                        drvstate=2;
+                }if(!strcmp(cmd,"D:")||!strcmp(cmd,"d:")){
+                        drvstate=3;
+                }if(!strcmp(cmd,"E:")||!strcmp(cmd,"e:")){
+                        drvstate=4;
+                }if(!strcmp(cmd,"Z:")||!strcmp(cmd,"z:")){
+                        drvstate=5;
+                }
 
                 switch(drvstate){
-                        case 0:
-                                cd=chdir(cwd);
-                                break;
-
                         case 1:
                                 cdrv='A';
+				cd=chdir(drva);
                                 drvstate=0;
                                 break;
                         case 2:
                                 cdrv='C';
+				cd=chdir(drvc);
                                 drvstate=0;
                                 break;
                         case 3:
                                 cdrv='D';
+				cd=chdir(drvd);
                                 drvstate=0;
                                 break;
                         case 4:
                                 cdrv='E';
+				cd=chdir(drve);
                                 drvstate=0;
                                 break;
                         case 5:
                                 cdrv='Z';
+				cd=chdir(drvz);
                                 drvstate=0;
                                 break;
                         default:
+				cd=chdir(cwd);
                                 break;
                 }
 
-                wprintw(iterm,"%c:\\>",cdrv);
-                wscanw(iterm,"%s %s %s",cmd,arg1,arg2);
-                ln++;
 
                 if(!strcmp(cmd,"exit") || !strcmp(cmd,"EXIT")){
                         if(!strcmp(arg1,"_")){
@@ -111,43 +126,25 @@ void term(void){
                 }if(!strcmp(cmd,"cls")||!strcmp(cmd,"CLS")){
 			wclear(iterm);
 		}if(!strcmp(cmd,"dir")||!strcmp(cmd,"DIR")){
-
-                        if((dp=opendir(arg1)) == NULL){
-                                wprintw(iterm,"Something Went Wrong !!\n");
-                        }
-                        while((dir=readdir(dp)) != NULL){
-                                imy++;
-                                if(imy >= 1){
-                                        wprintw(iterm,"\n");
-
-                                        ++dln;
-                                        imy=0;
-                                }
-                                if(dln > getmaxy(iterm)-1){
-                                        wprintw(iterm,"\nPress Anything To Continue!!");
-                                        getch();
-                                        wclear(iterm);
-                                }
-
-				wprintw(iterm,"%s - %d\t",dir->d_name,imy);
+			int dr=dir(iterm, arg1,ln);
+			if(dr==-1){
+				wprintw(iterm,"Oopsy Something went wrong!!\n");
 			}
-			wprintw(iterm,"\n");
-  	        	closedir(dp);
-                }if(!strcmp(cmd,"A:")||!strcmp(cmd,"a:")){
-                        int cd=chdir(drva);
-                        drvstate=1;
-                }if(!strcmp(cmd,"C:")||!strcmp(cmd,"c:")){
-                        int cd=chdir(drvc);
-                        drvstate=2;
-                }if(!strcmp(cmd,"D:")||!strcmp(cmd,"d:")){
-                        int cd=chdir(drvd);
-                        drvstate=3;
-                }if(!strcmp(cmd,"E:")||!strcmp(cmd,"e:")){
-                        int cd=chdir(drve);
-                        drvstate=4;
-                }if(!strcmp(cmd,"Z:")||!strcmp(cmd,"z:")){
-                        int cd=chdir(drvz);
-                        drvstate=5;
+                        else{
+                                ln=dr;
+                        }
+                }if(!strcmp(cmd,"more")||!strcmp(cmd,"MORE")){
+                        int f=more(iterm, arg1, ln);
+                        if(f == -1)               
+                        {
+                                wprintw(iterm,"Cannot Open Requested File - \"--help\" for help\n");
+                        }if(f==-2){
+                                wprintw(iterm,"[Usage] : more [filename] --help --version\n");
+                        }if(f==-3){
+                                wprintw(iterm,"[Version]: 1\n");
+                        }else{
+                                ln=f;
+                        }
                 }
                 if(ln >= getmaxy(iterm)-1){
                         ln=0;
@@ -160,4 +157,74 @@ void term(void){
         noecho();
         curs_set(0);
 
+}
+int dir(WINDOW *src, char d[],int ln){
+
+	int i=0;
+
+	DIR *dp;
+	struct dirent *dir;
+
+	if((dp=opendir(d)) == NULL){
+		return -1;
+	}
+
+	while((dir=readdir(dp)) != NULL){
+		wprintw(src,"%25s",dir->d_name);
+		i++;
+		if(i>=2){
+			ln++;
+			wprintw(src,"\n");
+			i=0;
+		}
+
+		if(ln >= getmaxy(src) - 2){
+			Mzpause(src);
+			wclear(src);
+			ln=0;
+		}
+	}
+        wprintw(src,"\n");
+        closedir(dp);
+
+        return ln;
+}
+int more(WINDOW *src, char *f, int ln){
+        int i=0;
+        char buff;
+
+        FILE *fp=fopen(f,"r+");
+        if(!strcmp(f,"--help")){
+                return -2;
+        }if(!strcmp(f,"--version")){
+                return -3;
+        }if(fp == NULL){
+                return -1;
+        }
+
+        while(!feof(fp)){
+                buff = fgetc(fp);
+                wprintw(src,"%c",buff);
+                i++;
+                if(i >= getmaxx(src) -1){
+                        ln++;
+                }
+                if(buff == '\n'){
+                        ln++;
+                }
+                if(ln>=getmaxy(src)-1){
+                        Mzpause(src);
+                        wclear(src);
+                        ln=0;
+                }
+        }
+        wprintw(src,"\n---%s---",f);
+        fclose(fp);
+
+        return (ln++);
+
+}
+void Mzpause(WINDOW *src){
+	wprintw(src,"\nPress Anything To Continue ...");
+	wgetch(src);
 }

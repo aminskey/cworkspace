@@ -98,7 +98,7 @@ start:
 		mvwscanw(search,1,1,"%s",s);
 
 
-		sprintf(srch,"/Users/Amin/.archive/%s",s);
+		sprintf(srch,"~/.archive/%s",s);
 
 		if(strcmp(s,"end")==false)
 			break;

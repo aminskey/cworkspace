@@ -35,12 +35,18 @@ void paint(char ch, short clr){
 
 int main(void){
 
-
+        // add home dir name
+        FILE *fp=fopen("/home/amin/.BOXEmu/dat","r+");
+        if(fp == NULL){
+                bluescreen("Data file doesn\'t exist - Background file");
+                exit(0);
+        }
 
         int c=0;
         char in[50];
         char secin[50];
 
+        int ch=0;
 
         time_t lctime;
         struct tm * loctime;
@@ -81,8 +87,10 @@ int main(void){
         init_pair(3,COLOR_WHITE, COLOR_BLACK);
         init_pair(4,COLOR_BLUE, COLOR_WHITE);
 
+        fscanf(fp,"%d",&ch);
+        fclose(fp);
 
-        paint(32,1);
+        paint(ch,1);
 
         refresh();
         wpaint(menu,32,4);
@@ -203,10 +211,10 @@ int main(void){
                         ststate=1;
                 }
                 if(ststate==1){
-                        wpaint(mb2,32,1);
-                        wpaint(optm,32,1);
-                        wpaint(srch,32,1);
-                        wpaint(opoff,32,1);
+                        wpaint(mb2,ch,1);
+                        wpaint(optm,ch,1);
+                        wpaint(srch,ch,1);
+                        wpaint(opoff,ch,1);
 
 
                         wrefresh(srch);
