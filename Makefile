@@ -1,5 +1,5 @@
 desk:
-	gcc drvConf.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/Desk
+	gcc drvConf.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/MzDesk
 
 enc:
 	gcc enc.c -o ../bin/Encrypt
@@ -49,7 +49,7 @@ bookrep:
 AsciiTable:
 	gcc -o ../bin/AsciiTable AsciiTable.c -lncurses
 BOXEmu:
-	gcc -o ../bin/BOXEmu drvConf.c Mybox.c -lncurses
+	gcc -o ../bin/MzDos drvConf.c Mybox.c -lncurses
 Edit:
 	gcc -o ../bin/Edit Edit.c -lncurses
 AsciiHex:
@@ -84,7 +84,7 @@ clean:
 	rm -rf ../bin/StoreCal
 	rm -rf ../bin/WinSh
 	rm -rf ../bin/MG
-	rm -rf ../bin/BoxEmu
+	rm -rf ../bin/MzDos
 	rm -rf ../bin/Edit
 	rm -rf ../bin/AsciiHex
 	rm -rf ../bin/graphprog
@@ -101,6 +101,7 @@ clean:
 	rm -rf ../bin/TTYTALK
 	rm -rf ../bin/N-ll
 	rm -rf ../bin/AsciiTable
+	rm -rf ../bin/MzDesk
 	rm -rf ../bin
 
 all: clean createBin desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
