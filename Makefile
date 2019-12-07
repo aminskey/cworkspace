@@ -1,5 +1,5 @@
 desk:
-	gcc drvConf.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/MzDesk
+	gcc drvConf.c MzDesk/appinfo.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/MzDesk
 
 enc:
 	gcc enc.c -o ../bin/Encrypt

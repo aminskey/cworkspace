@@ -17,14 +17,16 @@ extern const char drve[];
 extern const char drvz[];
 extern const char home[];
 
+
 char quote[]="YOUR DRIVES ARE DOWN, EDIT THE \'drvConf\' C FILE AND BUILD AGAIN";
 
 int drvchck(void);
 void bluescreen(char *s);
 void wpaint(WINDOW *,char, short);
 void paint(char , short);
-void term(void);
+int term(WINDOW *);
 void wprcs(WINDOW *src);
+void appinfo(WINDOW *);
 
 int ststate=1;
 
@@ -37,7 +39,7 @@ void paint(char ch, short clr){
 int main(void){
         char str[20]=" ";
 
-        sprintf(str,"%s/.BOXEmu/dat",home);
+        sprintf(str,"%s/.Mzdos/dat",home);
 
         // add home dir name
         FILE *fp=fopen(str,"r+");
@@ -50,7 +52,12 @@ int main(void){
         char in[50];
         char secin[50];
 
+	int res;
         int ch=0;
+	int col=0;
+
+	short fs=0;
+	short ss=0;
 
         time_t lctime;
         struct tm * loctime;
@@ -72,10 +79,13 @@ int main(void){
         WINDOW *mb2=newwin(24,24,(MAXY-getmaxy(menu)-24),0);
         WINDOW *optm=derwin(mb2,3,getmaxx(mb2)-2,1,1);
         WINDOW *opoff=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm),1);
-        WINDOW *oped=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm)*2,1);
         WINDOW *oprs=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm)*3,1);
+	WINDOW *opbd=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*2,1);
         WINDOW *info=newwin(10,20,rand()%MAXY/2,rand()%MAXX/2);
-        WINDOW *srch=newwin(3,getmaxx(mb2)-2,rand()%MAXY/2,rand()%MAXX/2);
+        WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
+	WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
+
+	extern WINDOW *wterm;
 
         MEVENT evnt;
 
@@ -85,16 +95,20 @@ int main(void){
         if(!drvchck())
                 bluescreen(quote);
 
+        fscanf(fp,"%d %d %hd %hd",&ch,&col,&fs,&ss);
+        fclose(fp);
+
+
         start_color();
         init_pair(1,COLOR_WHITE, COLOR_CYAN);
         init_pair(2,COLOR_WHITE, COLOR_BLUE);
         init_pair(3,COLOR_WHITE, COLOR_BLACK);
         init_pair(4,COLOR_BLUE, COLOR_WHITE);
+	init_pair(5,COLOR_WHITE, COLOR_RED);
+	init_pair(col,fs,ss);
 
-        fscanf(fp,"%d",&ch);
-        fclose(fp);
 
-        paint(ch,1);
+        paint(ch,col);
 
         refresh();
         wpaint(menu,32,4);
@@ -132,7 +146,13 @@ int main(void){
                                                 ststate=0;
                                                 wrefresh(menu);
                                         }
-                                }
+		                }
+				if((evnt.bstate >= BUTTON1_PRESSED) && res == 1){
+					res=0;
+					if((evnt.y >= getbegy(trm) && evnt.y <= getmaxy(trm)) && (evnt.x >= getbegx(trm)||evnt.x <= getmaxx(trm))){
+						res=term(trm);
+					}
+				}
                         }else{
                                 bluescreen("DESKTOP HAS CRASHED, BECAUSE THERE IS NO MOUSE");
                         }
@@ -164,11 +184,20 @@ int main(void){
                         wattron(optm,COLOR_PAIR(4));
 
                         box(optm,0,0);
-                        mvwprintw(optm,1,1,"BOXEmu Terminal");
+                        mvwprintw(optm,1,1,"MZDos Prompt");
 
 
                         wattroff(optm,COLOR_PAIR(4));
                         wrefresh(optm);
+
+			wpaint(opbd,32,4);
+			wattron(opbd,COLOR_PAIR(4));
+
+			box(opbd,0,0);
+			mvwprintw(opbd,1,1,"App Info");
+
+			wattroff(opbd,COLOR_PAIR(4));
+			wrefresh(opbd);
 
                         wpaint(opoff,32,4);
                         wattron(opoff,COLOR_PAIR(4));
@@ -178,15 +207,6 @@ int main(void){
 
                         wattroff(opoff,COLOR_PAIR(4));
                         wrefresh(opoff);
-
-                        wpaint(oped,32,4);
-                        wattron(oped,COLOR_PAIR(4));
-
-                        box(oped,0,0);
-                        mvwprintw(oped,1,1,"Project Editor");
-
-                        wattroff(oped,COLOR_PAIR(4));
-                        wrefresh(oped);
 
                         wpaint(oprs,32,4);
                         wattron(oprs,COLOR_PAIR(4));
@@ -213,12 +233,13 @@ int main(void){
                         wrefresh(srch);
 
                         ststate=1;
+			noecho();
                 }
                 if(ststate==1){
-                        wpaint(mb2,ch,1);
-                        wpaint(optm,ch,1);
-                        wpaint(srch,ch,1);
-                        wpaint(opoff,ch,1);
+                        wpaint(mb2,ch,col);
+                        wpaint(optm,ch,col);
+                        wpaint(srch,ch,col);
+                        wpaint(opoff,ch,col);
 
 
                         wrefresh(srch);
@@ -233,10 +254,10 @@ int main(void){
                         wrefresh(menu);
 
                 }
-                if(!strcmp(in,"BOXEmu")){
-                        if(!strcmp(secin,"Terminal"))
+                if(!strcmp(in,"MZDos")){
+                        if(!strcmp(secin,"Prompt"))
                         {
-                                term();
+                                res=term(trm);
 
                         }
                 }
@@ -249,23 +270,26 @@ int main(void){
                                 return 0;
                         }
                 }
-                if(!strcmp(in,"Project"))
-                {
-                        if(!strcmp(secin,"Editor"))
-                                wprcs(note);
-                }
                 if(!strcmp(in,"Reset")){
                         if(!strcmp(secin,"Computer")){
                                 main();
                                 return 0;
                         }
                 }
+		if(!strcmp(in,"App")){
+			if(!strcmp(secin,"Info")){
+				appinfo(trm);
+			}
+		}
                 if(c==KEY_F(9))
                         break;
                 if(c==KEY_F(12)){
                         main();
                         return 0;
                 }
+		sprintf(in," ");
+		sprintf(secin," ");
+		c=0;
         }
 
         endwin();
@@ -326,21 +350,3 @@ int drvchck(void){
 	return !(cd=chdir(drvz));
 
 }
-void wprcs(WINDOW *src){
-        WINDOW *sub=derwin(src,getmaxy(src)-2,getmaxx(src)-2,1,1);
-
-        init_pair(1,COLOR_MAGENTA,COLOR_CYAN);
-        init_pair(2,COLOR_WHITE,COLOR_BLUE);
-
-        refresh();
-        wattron(src,COLOR_PAIR(1));
-
-        box(src,0,0);
-        wpaint(sub,176,2);
-
-        mvwprintw(src,0,(getmaxx(src)-strlen("# Project Editor #"))/2,"%c Project Editor %c",(unsigned char)185,(unsigned char)204);
-
-        wattroff(src,COLOR_PAIR(1));
-        wrefresh(src);
-}
-

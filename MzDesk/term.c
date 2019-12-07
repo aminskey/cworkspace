@@ -22,16 +22,20 @@ extern int bluescreen();
 int dir(WINDOW *,char *,int);
 int more(WINDOW *, char *, int);
 
+void locdrv(WINDOW *);
 void Mzpause(WINDOW *);
 
-void term(void){
+int term(WINDOW *wterm){
         char cmd[30];
-        char arg1[30];
-        char arg2[30];
-        char str[30];
+        char arg1[130];
+        char arg2[130];
+        char arg3[130];
+        char arg4[130];
+        char str[130];
 
         int ln=0;
         int cd=0;
+	int st=0;
 
         char cwd[100];
 
@@ -42,15 +46,18 @@ void term(void){
         if(!drvchck())
                 bluescreen(quote);
 
-        WINDOW *wterm=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
-        WINDOW *iterm=derwin(wterm,getmaxy(wterm)-2,getmaxx(wterm)-2,1,1);
+	WINDOW *iterm=derwin(wterm,getmaxy(wterm)-2,getmaxx(wterm)-2,1,1);
 
         start_color();
         init_pair(1,COLOR_WHITE,COLOR_CYAN);
 
+	wclear(wterm);
+	wclear(iterm);
+
         box(wterm,0,0);
         mvwprintw(wterm,0,(getmaxx(wterm)-strlen("BOXEmu Terminal"))/2,"BOXEmu Terminal");
         wrefresh(wterm);
+
 
         echo();
         curs_set(1);
@@ -58,15 +65,16 @@ void term(void){
         chdir(drvc);
 
 
+
         while(1){
 		getcwd(cwd,180);
 
                 if(!drvchck())
                         bluescreen(quote);
-                
-                
+
+
                 wprintw(iterm,"%c:\\>",cdrv);
-                wscanw(iterm,"%s %s %s",cmd,arg1,arg2);
+                wscanw(iterm,"%s %s %s %s %s",cmd,arg1,arg2,arg3,arg4);
                 ln++;
 
                 if(!strcmp(cmd,"A:")||!strcmp(cmd,"a:")){
@@ -138,7 +146,7 @@ void term(void){
                         }
                 }if(!strcmp(cmd,"more")||!strcmp(cmd,"MORE")){
                         int f=more(iterm, arg1, ln);
-                        if(f == -1)               
+			if(f == -1)
                         {
                                 wprintw(iterm,"[more] : Cannot Open Requested File -\'%s\' - \"--help\" for help\n",arg1);
                         }if(f==-2){
@@ -151,8 +159,8 @@ void term(void){
                 }if(!strcmp(cmd,"help")||!strcmp(cmd,"HELP")){
                         wprintw(iterm,"Help v 1.1\n\n");
                         ln+=2;
-                        if(!strcmp(arg1,"_")){        
-                                sprintf(str,"%s/.BOXEmu/commands.txt",home);
+                        if(!strcmp(arg1,"_")){
+                                sprintf(str,"%s/.Mzdos/commands.txt",home);
                                 int f=more(iterm,str,ln);
                                 if(f == -1){
                                         wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);
@@ -161,7 +169,7 @@ void term(void){
                                 }
                                 continue;
                         }
-                        sprintf(str,"%s/.BOXEmu/%s.txt",home,arg1);
+                        sprintf(str,"%s/.Mzdos/%s.txt",home,arg1);
                         int f=more(iterm,str,ln);
                         if(f == -1){
                                 wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);
@@ -170,9 +178,19 @@ void term(void){
                         }
                         sprintf(str," ");
                 }if(!strcmp(cmd,"reset")||!strcmp(cmd,"RESET")){
-                        term();
+                        term(wterm);
                         exit(0);
-                }
+                }if(!strcmp(cmd,"console")||!strcmp(cmd,"CONSOLE")){
+                        sprintf(str,"%s %s %s",arg1,arg2,arg3);
+                        system(str);
+                }if(!strcmp(cmd,"winout")||!strcmp(cmd,"WINOUT")){
+			mvwprintw(wterm,0,0,"*");
+			wrefresh(wterm);
+			st=1;
+			break;
+		}if(!strcmp(cmd,"wheredrv")||!strcmp(cmd,"WHEREDRV")){
+			locdrv(iterm);
+		}
                 if(ln >= getmaxy(iterm)-1){
                         ln=0;
                         wclear(iterm);
@@ -183,6 +201,8 @@ void term(void){
         }
         noecho();
         curs_set(0);
+
+	return st;
 
 }
 int dir(WINDOW *src, char d[],int ln){
@@ -232,7 +252,6 @@ int more(WINDOW *src, char *f, int ln){
 
         while(!feof(fp)){
                 buff = fgetc(fp);
-                wprintw(src,"%c",buff);
                 i++;
 
                 if(buff == '\n'){
@@ -243,6 +262,7 @@ int more(WINDOW *src, char *f, int ln){
                         wclear(src);
                         ln=0;
                 }
+		wprintw(src,"%c",buff);
         }
         wprintw(src,"\n---%s---\n",f);
         fclose(fp);
@@ -250,7 +270,57 @@ int more(WINDOW *src, char *f, int ln){
         return (ln++);
 
 }
+void locdrv(WINDOW *src){
+	char drives[]={'A','C','D','E','Z'};
+	char *drvs[]={0,0,0,0,0};
+
+	drvs[0]=drva;
+	drvs[1]=drvc;
+	drvs[2]=drvd;
+	drvs[3]=drve;
+	drvs[4]=drvz;
+
+	for(int i=0;i<30;i++){
+		wprintw(src,"%c",(unsigned char)205);
+		if(i == 15)
+			wprintw(src,"%c",(unsigned char)206);
+	}
+	wprintw(src,"\nDRIVES");
+	for(int i=strlen("\n WHERE"); i<30-strlen("DRIVES");i++){
+		wprintw(src," ");
+		if(i == 16){
+			wprintw(src,"%c",(unsigned char)186);
+		}
+	}
+	wprintw(src," WHERE\n");
+        for(int i=0;i<30;i++){
+                wprintw(src,"%c",(unsigned char)205);
+                if(i == 15)
+                        wprintw(src,"%c",(unsigned char)206);
+        }
+	wprintw(src,"\n");
+
+	for(int i=0;i<5;i++){
+		wprintw(src,"DRIVE %c",drives[i]);
+		for(int i=strlen("DRIVE #");i<20;i++){
+			wprintw(src," ");
+			if(i == 15){
+				wprintw(src,"%c",(unsigned char)186);
+			}
+		}
+		wprintw(src,"%s\n",drvs[i]);
+	}
+
+        for(int i=0;i<30;i++){
+                wprintw(src,"%c",(unsigned char)205);
+                if(i == 15)
+                        wprintw(src,"%c",(unsigned char)206);
+        }
+	wprintw(src,"\n");
+
+
+}
 void Mzpause(WINDOW *src){
-	wprintw(src,"\nPress Anything To Continue ...");
+	wprintw(src,"\tPress Anything To Continue ...");
 	wgetch(src);
 }

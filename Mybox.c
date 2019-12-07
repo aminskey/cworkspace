@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
 	DIR *dp;
 	struct dirent *dir;
 
-	crt("~/.BOXEmu/");
-	system("~/bin/cimg ~/.BOXEmu/intro.img");
+	crt("~/.Mzdos/");
+	system("~/bin/cimg ~/.Mzdos/intro.img");
 
         initscr();
         noecho();
