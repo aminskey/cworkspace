@@ -21,12 +21,14 @@ extern const char home[];
 char quote[]="YOUR DRIVES ARE DOWN, EDIT THE \'drvConf\' C FILE AND BUILD AGAIN";
 
 int drvchck(void);
+int term(WINDOW *);
+
 void bluescreen(char *s);
 void wpaint(WINDOW *,char, short);
 void paint(char , short);
-int term(WINDOW *);
 void wprcs(WINDOW *src);
 void appinfo(WINDOW *);
+void clock(WINDOW *);
 
 int ststate=1;
 
@@ -37,6 +39,9 @@ void paint(char ch, short clr){
 }
 
 int main(void){
+	if(!drvchck())
+		bluescreen(quote);
+
         char str[20]=" ";
 
         sprintf(str,"%s/.Mzdos/dat",home);
@@ -81,7 +86,7 @@ int main(void){
         WINDOW *opoff=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm),1);
         WINDOW *oprs=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm)*3,1);
 	WINDOW *opbd=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*2,1);
-        WINDOW *info=newwin(10,20,rand()%MAXY/2,rand()%MAXX/2);
+        WINDOW *info=newwin(MAXY/4,MAXY/2,rand()%MAXY/2,rand()%MAXX/2);
         WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
 	WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
 
@@ -278,7 +283,7 @@ int main(void){
                 }
 		if(!strcmp(in,"App")){
 			if(!strcmp(secin,"Info")){
-				appinfo(trm);
+				appinfo(info);
 			}
 		}
                 if(c==KEY_F(9))
@@ -328,7 +333,6 @@ void bluescreen(char *s){
         getch();
         endwin();
 
-        perror("Something Went Wrong");
         exit(EOF);
 
 }

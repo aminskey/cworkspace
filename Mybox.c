@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
 	extern const char drvd[];
 	extern const char drva[];
 
+	extern const char home[];
+
 	char drivs[]="ACDEZ";
 	char drv[200];
 	char drvl[20];
@@ -65,7 +67,10 @@ int main(int argc, char *argv[])
                         mvwprintw(hw,a,b," ");
         }
 
-        mvwprintw(hw,0,(getmaxx(hw)-strlen("  BoxEmu  "))/2,"%c BoxEmu %c",(unsigned char)185,(unsigned char)204);
+	char str11[100]=" ";
+	sprintf(str11,"%c %s %c",(unsigned char)185,argv[0],(unsigned char)204);
+
+        mvwprintw(hw,0,(getmaxx(hw)-strlen(str11))/2,"%s",str11);
         mvwprintw(hw,2,1,"Type help for help");
         wrefresh(hw);
         wattroff(hw, COLOR_PAIR(1));
@@ -351,11 +356,11 @@ int main(int argc, char *argv[])
 
 			if(inc==32)
 			{
-						for(int a=1;a<getmaxy(hw)-1; a++)
-						{
-								for(int b=1;b<getmaxx(hw)-1;b++)
-										mvwprintw(msg,a,b," ");
-						}
+				for(int a=1;a<getmaxy(hw)-1; a++)
+				{
+					for(int b=1;b<getmaxx(hw)-1;b++)
+						mvwprintw(msg,a,b," ");
+				}
 				wrefresh(msg);
 				sprintf(drv," ");
 			}if(inc=='r'){
@@ -420,12 +425,9 @@ int main(int argc, char *argv[])
 
         	}if(!strcmp(s,"INTRO")||!strcmp(s,"intro")){
 			endwin();
-			system("~/bin/cimg ~/.BOXEmu/intro.img");
-		}/*if(!strcmp(s,"RESCAN")||!strcmp(s,"rescan")){
-			goto scan;
-		}*/
-
-		if(strcmp(s,"CALL")==false || strcmp(s,"call")==false){
+			sprintf(str,"cimg %s/.MzDos/intro.img",home);
+			system(str);
+		}if(strcmp(s,"CALL")==false || strcmp(s,"call")==false){
 			sprintf(s," ");
 			scanw(s);
 			call(s);

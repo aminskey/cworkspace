@@ -3,6 +3,8 @@
 #include<string.h>
 #include<unistd.h>
 #include<stdlib.h>
+#include<sys/stat.h>
+#include<sys/types.h>
 
 #define MAXY getmaxy(stdscr)
 #define MAXX getmaxx(stdscr)
@@ -24,6 +26,8 @@ int more(WINDOW *, char *, int);
 
 void locdrv(WINDOW *);
 void Mzpause(WINDOW *);
+
+
 
 int term(WINDOW *wterm){
         char cmd[30];
@@ -89,34 +93,39 @@ int term(WINDOW *wterm){
                         drvstate=5;
                 }
 
+		if(!drvchck()){
+			bluescreen(quote);
+		}
+
                 switch(drvstate){
                         case 1:
                                 cdrv='A';
-				cd=chdir(drva);
+				chdir(drva);
                                 drvstate=0;
                                 break;
                         case 2:
                                 cdrv='C';
-				cd=chdir(drvc);
+				chdir(drvc);
                                 drvstate=0;
                                 break;
                         case 3:
                                 cdrv='D';
-				cd=chdir(drvd);
+				chdir(drvd);
                                 drvstate=0;
                                 break;
                         case 4:
                                 cdrv='E';
-				cd=chdir(drve);
+				chdir(drve);
                                 drvstate=0;
                                 break;
                         case 5:
                                 cdrv='Z';
-				cd=chdir(drvz);
+				chdir(drvz);
                                 drvstate=0;
                                 break;
                         default:
-				cd=chdir(cwd);
+				drvstate=0;
+				chdir(cwd);
                                 break;
                 }
 
@@ -138,7 +147,7 @@ int term(WINDOW *wterm){
                         ln=0;
 		}if(!strcmp(cmd,"dir")||!strcmp(cmd,"DIR")){
 			int dr=dir(iterm, arg1,ln);
-			if(dr==-1){
+			if(dr<=-1){
 				wprintw(iterm,"Oopsy Something went wrong!!\n");
 			}
                         else{
@@ -190,6 +199,24 @@ int term(WINDOW *wterm){
 			break;
 		}if(!strcmp(cmd,"wheredrv")||!strcmp(cmd,"WHEREDRV")){
 			locdrv(iterm);
+		}if(!strcmp(cmd,"del")||!strcmp(cmd,"DEL")){
+			int rm=remove(arg1);
+			if(rm == -1){
+				wprintw(iterm,"Cannot delete %s: %d",arg1,rm);
+			}
+			wprintw(iterm,"\n");
+		}if(!strcmp(cmd,"cd")||!strcmp(cmd,"CD")||!strcmp(cmd,"chdir")||!strcmp(cmd,"CHDIR")){
+			int cd=chdir(arg1);
+			if(cd == -1){
+				wprintw(iterm,"Cannot Access Directory: %d\n",cd);
+			}
+		}
+		if(!strcmp(cmd,"mkdir")||!strcmp(cmd,"MKDIR")){
+			int stat=mkdir(arg1,0777);
+			if(stat == -1){
+				wprintw(iterm,"Ooops Cannot Create Directory: %d",stat);
+			}
+			wprintw(iterm,"\n");
 		}
                 if(ln >= getmaxy(iterm)-1){
                         ln=0;
@@ -197,6 +224,8 @@ int term(WINDOW *wterm){
                 }
 
                 sprintf(cmd," ");
+//		sprintf(arg1," ");
+//		sprintf(arg2," ");
                 wrefresh(iterm);
         }
         noecho();
