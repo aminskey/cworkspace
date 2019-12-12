@@ -28,7 +28,8 @@ void wpaint(WINDOW *,char, short);
 void paint(char , short);
 void wprcs(WINDOW *src);
 void appinfo(WINDOW *);
-void clock(WINDOW *);
+void mzclock(WINDOW *);
+void apphelp(WINDOW *);
 
 int ststate=1;
 
@@ -86,9 +87,11 @@ int main(void){
         WINDOW *opoff=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm),1);
         WINDOW *oprs=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm)*3,1);
 	WINDOW *opbd=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*2,1);
+	WINDOW *opcl=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*4,1);
         WINDOW *info=newwin(MAXY/4,MAXY/2,rand()%MAXY/2,rand()%MAXX/2);
         WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
 	WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
+	WINDOW *clck=newwin(3,20,rand()%MAXY/2,rand()%MAXX/2);
 
 	extern WINDOW *wterm;
 
@@ -204,6 +207,15 @@ int main(void){
 			wattroff(opbd,COLOR_PAIR(4));
 			wrefresh(opbd);
 
+			wpaint(opcl,32,4);
+			wattron(opcl,COLOR_PAIR(4));
+
+			box(opcl,0,0);
+			mvwprintw(opcl,1,1,"Clock");
+
+			wattroff(opcl,COLOR_PAIR(4));
+			wrefresh(opcl);
+
                         wpaint(opoff,32,4);
                         wattron(opoff,COLOR_PAIR(4));
 
@@ -285,6 +297,8 @@ int main(void){
 			if(!strcmp(secin,"Info")){
 				appinfo(info);
 			}
+		}if(!strcmp(in,"Clock")){
+			mzclock(clck);
 		}
                 if(c==KEY_F(9))
                         break;
