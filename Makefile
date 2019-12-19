@@ -1,5 +1,11 @@
+talk:
+	gcc termtalk.c -o ../bin/TermTalk
+
+Webose:
+	gcc verbose.c -lcurl -o ../bin/webose
+
 desk:
-	gcc drvConf.c MzDesk/clock.c MzDesk/appinfo.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/MzDesk
+	gcc drvConf.c MzDesk/apphelp.c MzDesk/clock.c MzDesk/appinfo.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/MzDesk
 
 enc:
 	gcc enc.c -o ../bin/Encrypt
@@ -86,6 +92,7 @@ clean:
 	rm -rf ../bin/MG
 	rm -rf ../bin/MzDos
 	rm -rf ../bin/Edit
+	rm -rf ../bin/webose
 	rm -rf ../bin/AsciiHex
 	rm -rf ../bin/graphprog
 	rm -rf ../bin/Archive
@@ -104,4 +111,4 @@ clean:
 	rm -rf ../bin/MzDesk
 	rm -rf ../bin
 
-all: clean createBin desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
+all: clean createBin Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello

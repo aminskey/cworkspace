@@ -1,8 +1,7 @@
-#include<stdio.h>                                                                                                                                                                                                                         
-#include<ncurses.h>                                                                                                                                                                                                                       
-#include<string.h>                                                                                                                                                                                                                        
-                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                          
+#include<stdio.h>                                                                                                                                                         
+#include<ncurses.h>                                                                                                                                                        
+#include<string.h>
+
 int main(void){                                                                                                                                                                                                                           
                                                                                                                                                                                                                                           
         initscr();                                                                                                                                                                                                                        

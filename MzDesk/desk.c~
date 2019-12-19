@@ -93,7 +93,7 @@ int main(void){
         WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
 	WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
 	WINDOW *clck=newwin(3,20,rand()%MAXY/2,rand()%MAXX/2);
-	WINDOW *app=newwin(MAXY/2,MAXX,0,0);
+	WINDOW *app=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
 
         MEVENT evnt;
 
