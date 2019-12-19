@@ -1,5 +1,5 @@
 talk:
-	gcc termtalk.c -o ../bin/TermTalk
+	gcc termtalk.c -o ../bin/ttalk
 
 Webose:
 	gcc verbose.c -lcurl -o ../bin/webose
@@ -84,6 +84,7 @@ clean:
 	rm -rf ../bin/Translate
 	rm -rf ../bin/deTranslate
 	rm -rf ../bin/dog
+	rm -rf ../bin/ttalk
 	rm -rf ../bin/bookrep
 	rm -rf ../bin/typeWriter
 	rm -rf ../bin/Time
@@ -111,4 +112,4 @@ clean:
 	rm -rf ../bin/MzDesk
 	rm -rf ../bin
 
-all: clean createBin Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
+all: clean createBin talk Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello

@@ -3,7 +3,7 @@
 int main(int argc, const char *argv[]){
 	FILE *fp=fopen(argv[1],"w+");
 	if(fp==NULL){
-		perror("File Note Available");
+		perror("File Not Available");
 		exit(0);
 	}
 

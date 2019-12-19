@@ -7,23 +7,39 @@
  * 
  ***************************************************************************************/
 
-void putcTerm(void);
+void putcTerm(const char *);
 
-int main(void){
-    putcTerm();
+int main(int argc, const char *argv[]){
+    putcTerm(argv[1]);
     return 0;
 }
 
-void putcTerm(void){
+void putcTerm(const char *type){
 	int a;
 
-	FILE *fp=fopen("/dev/ttys000","w+");
-	FILE *dev1=fopen("/dev/ttys001","w+");
-	FILE *dev2=fopen("/dev/ttys002","w+");
-	FILE *dev3=fopen("/dev/ttys003","w+");
-	FILE *dev4=fopen("/dev/ttys004","w+");
-	FILE *dev5=fopen("/dev/ttys005","w+");
-	FILE *dev6=fopen("/dev/ttys006","w+");
+	char p[100];
+	char d1[100];
+	char d2[100];
+	char d3[100];
+	char d4[100];
+	char d5[100];
+	char d6[100];
+
+	sprintf(p,"/dev/%s0",type);
+	sprintf(d1,"/dev/%s1",type);
+	sprintf(d2,"/dev/%s2",type);
+	sprintf(d3,"/dev/%s3",type);
+	sprintf(d4,"/dev/%s4",type);
+	sprintf(d5,"/dev/%s5",type);
+	sprintf(d6,"/dev/%s6",type);
+	
+	FILE *fp=fopen(p,"w+");
+	FILE *dev1=fopen(d1,"w+");
+	FILE *dev2=fopen(d2,"w+");
+	FILE *dev3=fopen(d3,"w+");
+	FILE *dev4=fopen(d4,"w+");
+	FILE *dev5=fopen(d5,"w+");
+	FILE *dev6=fopen(d6,"w+");
 
 	printf("\x1b[7m");
 
