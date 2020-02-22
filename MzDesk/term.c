@@ -132,8 +132,7 @@ int term(WINDOW *wterm){
 
                 if(!strcmp(cmd,"exit") || !strcmp(cmd,"EXIT")){
                         if(!strcmp(arg1,"_")){
-                                main();
-                                exit(0);
+				return st=0;
                         }
 
                         if(!strcmp(arg1,"desk") || !strcmp(arg1,"DESK")){
@@ -187,8 +186,8 @@ int term(WINDOW *wterm){
                         }
                         sprintf(str," ");
                 }if(!strcmp(cmd,"reset")||!strcmp(cmd,"RESET")){
-                        term(wterm);
-                        exit(0);
+                        st=term(wterm);
+			return st;
                 }if(!strcmp(cmd,"console")||!strcmp(cmd,"CONSOLE")){
                         sprintf(str,"%s %s %s",arg1,arg2,arg3);
                         system(str);

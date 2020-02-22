@@ -81,7 +81,9 @@ int main(void){
         srand(time(0));
 
         WINDOW *menu=newwin(3,MAXX,MAXY-3,0);
+
         WINDOW *note=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
+
         WINDOW *mb2=newwin(24,24,(MAXY-getmaxy(menu)-24),0);
         WINDOW *optm=derwin(mb2,3,getmaxx(mb2)-2,1,1);
         WINDOW *opoff=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm),1);
@@ -156,7 +158,6 @@ int main(void){
                                         }
 		                }
 				if((evnt.bstate >= BUTTON1_PRESSED) && res == 1){
-					res=0;
 					if((evnt.y >= getbegy(trm) && evnt.y <= getmaxy(trm)) && (evnt.x >= getbegx(trm)||evnt.x <= getmaxx(trm))){
 						res=term(trm);
 					}
@@ -276,7 +277,11 @@ int main(void){
                         if(!strcmp(secin,"Prompt"))
                         {
                                 res=term(trm);
-
+				if(res!=1){
+					wclear(trm);
+					wpaint(trm,ch,col);
+				}
+				wrefresh(trm);
                         }
                 }
                 if(!strcmp(in,"Off")){

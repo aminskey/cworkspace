@@ -1,0 +1,29 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<curl/curl.h>
+
+int main(int argc, char *argv[]){
+
+  CURL *curl=curl_easy_init();
+  CURLcode res;
+
+  if(argc <= 0){
+    perror("[[Protocol://]website] [output file]");
+    exit(0);
+  }
+  
+  FILE *fp=fopen(argv[2],"r+");
+  
+  if(curl){
+    curl_easy_setopt(curl,CURLOPT_URL,argv[1]);
+    curl_easy_setopt(curl,CURLOPT_WRITEDATA,(void *)fp);
+    curl_easy_setopt(curl,CURLOPT_DIRLISTONLY,1L);
+    
+    res=curl_easy_perform(curl);
+
+    curl_easy_cleanup(curl);
+  }
+
+  fclose(fp);
+  return 0;
+}

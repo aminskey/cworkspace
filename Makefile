@@ -1,3 +1,6 @@
+show:
+	gcc pass.c -lcurl -o ../bin/webshow
+
 talk:
 	gcc termtalk.c -o ../bin/ttalk
 
@@ -81,6 +84,7 @@ createHello:
 typeWrite:
 	gcc -o ../bin/typeWriter typeWriter.c -lncurses
 clean:
+	rm -rf ../bin/webshow
 	rm -rf ../bin/Translate
 	rm -rf ../bin/deTranslate
 	rm -rf ../bin/dog
@@ -112,4 +116,4 @@ clean:
 	rm -rf ../bin/MzDesk
 	rm -rf ../bin
 
-all: clean createBin talk Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
+all: clean createBin show talk Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
