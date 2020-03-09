@@ -6,6 +6,7 @@
 #include<time.h>
 #include<unistd.h>
 #include<dirent.h>
+#include<panel.h>
 
 #define MAXY getmaxy(stdscr)
 #define MAXX getmaxx(stdscr)
@@ -62,6 +63,8 @@ int main(void){
         int ch=0;
 	int col=0;
 
+	long int maxpan=4;
+
 	short fs=0;
 	short ss=0;
 
@@ -80,9 +83,35 @@ int main(void){
 
         srand(time(0));
 
+	PANEL *panel[5];
+
         WINDOW *menu=newwin(3,MAXX,MAXY-3,0);
 
-        WINDOW *note=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
+	/*P A N E L	W I N D O W S*/
+
+	WINDOW *note=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
+	WINDOW *info=newwin(MAXY/2,MAXX,0,0);
+	WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
+        WINDOW *clck=newwin(3,20,rand()%MAXY/2,rand()%MAXX/2);
+        WINDOW *app=newwin(MAXY/2,MAXX,0,0);
+
+	//int set[]={int pnote=0,int pinfo=1, int ptrm=2, int pclck=3, int papp=4};
+
+	panel[0]=new_panel(note);
+	panel[1]=new_panel(info);
+	panel[2]=new_panel(trm);
+	panel[3]=new_panel(clck);
+	panel[4]=new_panel(app);
+
+	int inote=0;
+	int iInfo=1;
+	int itrm=2;
+	int iclck=3;
+	int iapp=4;
+
+
+	int currp=4; /*current number of panels*/
+	int maxp=currp+1;
 
         WINDOW *mb2=newwin(24,24,(MAXY-getmaxy(menu)-24),0);
         WINDOW *optm=derwin(mb2,3,getmaxx(mb2)-2,1,1);
@@ -91,11 +120,7 @@ int main(void){
 	WINDOW *opbd=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*2,1);
 	WINDOW *opcl=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*4,1);
 	WINDOW *opapp=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*5,1);
-        WINDOW *info=newwin(MAXY/2,MAXX,0,0);
         WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
-	WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
-	WINDOW *clck=newwin(3,20,rand()%MAXY/2,rand()%MAXX/2);
-	WINDOW *app=newwin(MAXY/2,MAXX,0,0);
 
         MEVENT evnt;
 
@@ -134,15 +159,35 @@ int main(void){
         keypad(stdscr, true);
 
         while(1){
+		if(res==0){
+			wclear(trm);
+			wpaint(trm,ch,col);
+			wrefresh(trm);
+		}
+		if(res==1){
+			panel[itrm]=panel[0];
+			wclear(trm);
+			wpaint(trm,32,3);
+
+			box(trm,0,0);
+			mvwprintw(trm,0,0,"*");
+			wrefresh(trm);
+		}
+
                 curs_set(0);
 
                 time(&lctime);
                 loctime=localtime(&lctime);
 
+		wpaint(menu,32,4);
+		mvwprintw(menu,1,1,"start");
+
                 wattron(menu,COLOR_PAIR(4));
                 mvwprintw(menu,1,1,"start");
                 mvwprintw(menu,1,10,"%d:%d",loctime->tm_hour, loctime->tm_min);
                 wattroff(menu,COLOR_PAIR(4));
+
+		wrefresh(menu);
 
                 if(!drvchck())
                         bluescreen(quote);
@@ -193,7 +238,7 @@ int main(void){
                         wattron(optm,COLOR_PAIR(4));
 
                         box(optm,0,0);
-                        mvwprintw(optm,1,1,"MZDos Prompt");
+                        mvwprintw(optm,1,1,"AcornDOS Prompt");
 
 
                         wattroff(optm,COLOR_PAIR(4));
@@ -273,13 +318,14 @@ int main(void){
                         wrefresh(menu);
 
                 }
-                if(!strcmp(in,"MZDos")){
+                if(!strcmp(in,"AcornDOS")||!strcmp(in,"Acorn")){
                         if(!strcmp(secin,"Prompt"))
                         {
                                 res=term(trm);
 				if(res!=1){
 					wclear(trm);
 					wpaint(trm,ch,col);
+					panel[sizeof(itrm)--];
 				}
 				wrefresh(trm);
                         }

@@ -28,7 +28,7 @@ void apphelp(WINDOW *src){
 	fg=bg=0;
 
 	sprintf(str,"%s/.Mzdos/dat",home);
-	sprintf(site,"%s/.Mzdos/apphelp",home);
+	sprintf(site,"%s/.Mzdos/Z/apphelp",home);
 
 	cbreak();
 	curs_set(1);

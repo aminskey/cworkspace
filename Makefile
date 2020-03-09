@@ -8,7 +8,7 @@ Webose:
 	gcc verbose.c -lcurl -o ../bin/webose
 
 desk:
-	gcc drvConf.c MzDesk/apphelp.c MzDesk/clock.c MzDesk/appinfo.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/MzDesk
+	gcc drvConf.c MzDesk/apphelp.c MzDesk/clock.c MzDesk/appinfo.c MzDesk/term.c MzDesk/desk.c -lpanel -lcurl -lncurses -o ../bin/AcornDesk
 
 enc:
 	gcc enc.c -o ../bin/Encrypt
@@ -58,7 +58,7 @@ bookrep:
 AsciiTable:
 	gcc -o ../bin/AsciiTable AsciiTable.c -lncurses
 BOXEmu:
-	gcc -o ../bin/MzDos drvConf.c Mybox.c -lncurses
+	gcc -o ../bin/AcornDos drvConf.c Mybox.c -lncurses
 Edit:
 	gcc -o ../bin/Edit Edit.c -lncurses
 AsciiHex:
@@ -83,6 +83,9 @@ createHello:
 
 typeWrite:
 	gcc -o ../bin/typeWriter typeWriter.c -lncurses
+
+showimg:
+	cimg c.img
 clean:
 	rm -rf ../bin/webshow
 	rm -rf ../bin/Translate
@@ -95,7 +98,7 @@ clean:
 	rm -rf ../bin/StoreCal
 	rm -rf ../bin/WinSh
 	rm -rf ../bin/MG
-	rm -rf ../bin/MzDos
+	rm -rf ../bin/AcornDos
 	rm -rf ../bin/Edit
 	rm -rf ../bin/webose
 	rm -rf ../bin/AsciiHex
@@ -113,7 +116,7 @@ clean:
 	rm -rf ../bin/TTYTALK
 	rm -rf ../bin/N-ll
 	rm -rf ../bin/AsciiTable
-	rm -rf ../bin/MzDesk
+	rm -rf ../bin/AcornDesk
 	rm -rf ../bin
 
-all: clean createBin show talk Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc createHello
+all: clean createBin show talk Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc showimg createHello

@@ -21,6 +21,9 @@ extern int main();
 extern int drvchck();
 extern int bluescreen();
 
+short fs, ss;
+int col, ch;
+
 int dir(WINDOW *,char *,int);
 int more(WINDOW *, char *, int);
 
@@ -30,6 +33,10 @@ void Mzpause(WINDOW *);
 
 
 int term(WINDOW *wterm){
+
+	int winy;
+	int winx;
+
         char cmd[30];
         char arg1[130];
         char arg2[130];
@@ -40,6 +47,11 @@ int term(WINDOW *wterm){
         int ln=0;
         int cd=0;
 	int st=0;
+	int in=0;
+
+
+
+	char srch[]=" ";
 
         char cwd[100];
 
@@ -52,14 +64,23 @@ int term(WINDOW *wterm){
 
 	WINDOW *iterm=derwin(wterm,getmaxy(wterm)-2,getmaxx(wterm)-2,1,1);
 
+
+	sprintf(srch,"%s/.Mzdos/dat",home);
+	FILE *fp=fopen(srch,"r");
+	if(fp == NULL){
+		bluescreen("Your System Is DOWN!!");
+		exit(0);
+	}
+
         start_color();
         init_pair(1,COLOR_WHITE,COLOR_CYAN);
+	init_pair(col,fs,ss);
 
 	wclear(wterm);
 	wclear(iterm);
 
         box(wterm,0,0);
-        mvwprintw(wterm,0,(getmaxx(wterm)-strlen("BOXEmu Terminal"))/2,"BOXEmu Terminal");
+        mvwprintw(wterm,0,(getmaxx(wterm)-strlen("Acorn Terminal"))/2,"Acorn Terminal");
         wrefresh(wterm);
 
 
@@ -139,11 +160,49 @@ int term(WINDOW *wterm){
                                 endwin();
                                 exit(0);
                         }
-                }if(!strcmp(cmd,"pwd")||!strcmp(cmd,"PWD")){
+                }if(!strcmp(cmd,"move")||!strcmp(cmd,"MOVE")){
+			wscanw(iterm,"%d %d",&winy, &winx);
+			wattron(wterm,COLOR_PAIR(col));
+			for(int i=0;i<getmaxy(wterm);i++){
+				for(int j=0;j<getmaxx(wterm);j++)
+					mvwprintw(wterm,i,j,"%c",ch);
+			}
+			mvwin(wterm,winy,winx);
+			wrefresh(wterm);
+
+			return term(wterm);
+
+			wattroff(wterm,COLOR_PAIR(col));
+
+		}if(!strcmp(cmd,"window")||!strcmp(cmd,"WINDOW")){
+			if(!strcmp(arg1,"outer")||!strcmp(arg1,"OUTER")){
+				int yside=getmaxy(wterm),xside=getmaxx(wterm);
+				int y,x;
+				getbegyx(wterm,y,x);
+				wprintw(iterm,"size of window: %dx%d characters squared (ch2)\nwindow placed (%d,%d)\nstatus: window\n",yside,xside,y,x);
+				ln+=5;
+			}
+			if(!strcmp(arg1,"inner")||!strcmp(arg1,"INNER")){
+				int yside=getmaxy(iterm),xside=getmaxx(iterm);
+				int y,x;
+				getbegyx(iterm,y,x);
+				wprintw(iterm,"size of window: %dx%d characters squared (ch2)\nsubwindow placed (%d,%d)\n times cleared: %d\nstatus: subwindow\n",yside,xside,y,x,in);
+				ln+=5;
+			}if(!strcmp(arg1,"all")||!strcmp(arg1,"ALL")){
+				int yside=getmaxy(wterm),xside=getmaxx(wterm);
+				int inyside=getmaxy(iterm),inxside=getmaxx(iterm);
+				int y,x,iy,ix;
+				getbegyx(wterm,y,x);
+				getbegyx(iterm,iy,ix);
+				wprintw(iterm,"size of window: %dx%d characters squared (ch2)\nsize of subwindow: %dx%d characters squared (ch2)\nwindow placed (%d,%d)\nsubwindow placed (%d,%d)\ntimes subwindow cleared: %d\nstatus: reporting both\n",yside,xside,inyside,inxside,y,x,iy,ix,in);
+				ln+=11;
+			}
+		}if(!strcmp(cmd,"pwd")||!strcmp(cmd,"PWD")){
                         wprintw(iterm,"%s\n",cwd);
                 }if(!strcmp(cmd,"cls")||!strcmp(cmd,"CLS")){
 			wclear(iterm);
                         ln=0;
+			in++;
 		}if(!strcmp(cmd,"dir")||!strcmp(cmd,"DIR")){
 			int dr=dir(iterm, arg1,ln);
 			if(dr<=-1){
@@ -168,7 +227,7 @@ int term(WINDOW *wterm){
                         wprintw(iterm,"Help v 1.1\n\n");
                         ln+=2;
                         if(!strcmp(arg1,"_")){
-                                sprintf(str,"%s/.Mzdos/commands.txt",home);
+                                sprintf(str,"%s/.Mzdos/Z/commands.txt",home);
                                 int f=more(iterm,str,ln);
                                 if(f == -1){
                                         wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);
@@ -177,7 +236,7 @@ int term(WINDOW *wterm){
                                 }
                                 continue;
                         }
-                        sprintf(str,"%s/.Mzdos/%s.txt",home,arg1);
+                        sprintf(str,"%s/.Mzdos/Z/%s.txt",home,arg1);
                         int f=more(iterm,str,ln);
                         if(f == -1){
                                 wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);
@@ -308,20 +367,20 @@ void locdrv(WINDOW *src){
 	drvs[3]=drve;
 	drvs[4]=drvz;
 
-	for(int i=0;i<30;i++){
+	for(int i=0;i<45;i++){
 		wprintw(src,"%c",(unsigned char)205);
 		if(i == 15)
 			wprintw(src,"%c",(unsigned char)206);
 	}
 	wprintw(src,"\nDRIVES");
-	for(int i=strlen("\n WHERE"); i<30-strlen("DRIVES");i++){
+	for(int i=strlen("\n WHERE"); i<45-strlen("DRIVES");i++){
 		wprintw(src," ");
 		if(i == 16){
 			wprintw(src,"%c",(unsigned char)186);
 		}
 	}
 	wprintw(src," WHERE\n");
-        for(int i=0;i<30;i++){
+        for(int i=0;i<45;i++){
                 wprintw(src,"%c",(unsigned char)205);
                 if(i == 15)
                         wprintw(src,"%c",(unsigned char)206);
@@ -339,7 +398,7 @@ void locdrv(WINDOW *src){
 		wprintw(src,"%s\n",drvs[i]);
 	}
 
-        for(int i=0;i<30;i++){
+        for(int i=0;i<45;i++){
                 wprintw(src,"%c",(unsigned char)205);
                 if(i == 15)
                         wprintw(src,"%c",(unsigned char)206);

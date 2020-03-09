@@ -586,7 +586,7 @@ int main(int argc, char *argv[])
 			i++;
 			closedir(dp);
 		}if(strcmp(s, "WIN")==false || strcmp(s, "win")==false){
-			system("MzDesk");
+			system("AcornDesk");
 			clear();
 			i=0;
 

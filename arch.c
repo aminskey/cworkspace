@@ -10,6 +10,8 @@
 #define MB KB*KB
 #define GB MB*KB
 
+char home[]="/home/amin";
+
 char arch[16][172] = 
 {
 "               AAA                                                     hhhhhhh               iiii",
@@ -98,7 +100,7 @@ start:
 		mvwscanw(search,1,1,"%s",s);
 
 
-		sprintf(srch,"~/.archive/%s",s);
+		sprintf(srch,"%s/.archive/%s",home,s);
 
 		if(strcmp(s,"end")==false)
 			break;
