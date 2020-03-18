@@ -159,28 +159,6 @@ int main(void){
         keypad(stdscr, true);
 
         while(1){
-		paint(ch,col);
-
-		refresh();
-		wpaint(menu,32,4);
-		wrefresh(menu);
-
-
-                curs_set(0);
-
-                time(&lctime);
-                loctime=localtime(&lctime);
-
-                wpaint(menu,32,4);
-                mvwprintw(menu,1,1,"start");
-
-                wattron(menu,COLOR_PAIR(4));
-                mvwprintw(menu,1,1,"start");
-                mvwprintw(menu,1,10,"%d:%d",loctime->tm_hour, loctime->tm_min);
-                wattroff(menu,COLOR_PAIR(4));
-
-                wrefresh(menu);
-
 
 		if(res==0){
 			wclear(trm);
@@ -369,6 +347,29 @@ int main(void){
                         main();
                         return 0;
                 }
+                paint(ch,col);
+
+                refresh();
+                wpaint(menu,32,4);
+                wrefresh(menu);
+
+
+                curs_set(0);
+
+                time(&lctime);
+                loctime=localtime(&lctime);
+
+                mvwprintw(menu,1,1,"start");
+
+                wattron(menu,COLOR_PAIR(4));
+                mvwprintw(menu,1,1,"start");
+                mvwprintw(menu,1,10,"%d:%d",loctime->tm_hour, loctime->tm_min);
+                wattroff(menu,COLOR_PAIR(4));
+
+                wrefresh(menu);
+
+
+
 		sprintf(in," ");
 		sprintf(secin," ");
 		c=0;

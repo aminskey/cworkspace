@@ -65,11 +65,18 @@ int term(WINDOW *wterm){
 	WINDOW *iterm=derwin(wterm,getmaxy(wterm)-2,getmaxx(wterm)-2,1,1);
 
 
+	MEVENT evnt;
+
+	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
+
+
 	sprintf(srch,"%s/.Mzdos/dat",home);
 	FILE *fp=fopen(srch,"r");
 	if(fp == NULL){
 		bluescreen("Your System Is DOWN!!");
 		exit(0);
+	}else{
+		fscanf(fp,"%d %d %fd %fd",&ch,&col,&fs,&ss);
 	}
 
         start_color();
@@ -160,20 +167,46 @@ int term(WINDOW *wterm){
                                 endwin();
                                 exit(0);
                         }
-                }if(!strcmp(cmd,"move")||!strcmp(cmd,"MOVE")){
-			wscanw(iterm,"%d %d",&winy, &winx);
-			wattron(wterm,COLOR_PAIR(col));
-			for(int i=0;i<getmaxy(wterm);i++){
-				for(int j=0;j<getmaxx(wterm);j++)
-					mvwprintw(wterm,i,j,"%c",ch);
+                }if(!strcmp(cmd,"restart")||!strcmp(cmd,"RESTART")){
+			main();
+			exit(0);
+
+		}if(!strcmp(cmd,"move")||!strcmp(cmd,"MOVE")){
+			keypad(stdscr,TRUE);
+			int c=getch();
+			while(1){
+				if(c==KEY_MOUSE){
+					if(getmouse(&evnt)==OK){
+						if(evnt.bstate >= BUTTON1_PRESSED){
+							winy=evnt.y;
+							winx=evnt.x;
+						}
+					}else{
+						bluescreen("Your Mouse is not functioning, to use the desktop please fix the mouse!!");
+						exit(0);
+					}
+				}
+				break;
 			}
-			mvwin(wterm,winy,winx);
-			wrefresh(wterm);
+                        if(!(winy>=(getmaxy(stdscr)-getmaxy(wterm))||winx>=(getmaxx(stdscr)-getmaxx(wterm)))){
 
-			return term(wterm);
+				wclear(wterm);
+				wattron(wterm,COLOR_PAIR(col));
+				for(int i=0;i<getmaxy(wterm);i++){
+					for(int j=0;j<getmaxx(wterm);j++)
+						mvwprintw(wterm,i,j,"%c",ch);
+				}
+				wattroff(wterm,COLOR_PAIR(col));
+				wrefresh(wterm);
 
-			wattroff(wterm,COLOR_PAIR(col));
-
+				mvwin(wterm,winy,winx);
+				return term(wterm);
+			}
+			else{
+				ln+=3;
+				wprintw(iterm,"You Cannot Place A Window Outside The Screen!!\n");
+				ln++;
+			}
 		}if(!strcmp(cmd,"window")||!strcmp(cmd,"WINDOW")){
 			if(!strcmp(arg1,"outer")||!strcmp(arg1,"OUTER")){
 				int yside=getmaxy(wterm),xside=getmaxx(wterm);

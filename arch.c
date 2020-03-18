@@ -100,7 +100,7 @@ start:
 		mvwscanw(search,1,1,"%s",s);
 
 
-		sprintf(srch,"%s/.archive/%s",home,s);
+		sprintf(srch,"%s/.Mzdos/Z/archive",home,s);
 
 		if(strcmp(s,"end")==false)
 			break;
