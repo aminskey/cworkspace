@@ -41,9 +41,17 @@ void paint(char ch, short clr){
 }
 
 int main(void){
-	if(!drvchck())
-		bluescreen(quote);
+	initscr();
+	cbreak();
+	noecho();
+	printw("starting up");
 
+	int chd;
+	if(chd=!drvchck()){
+		sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
+		bluescreen(quote);
+	}
+	sprintf(quote,"YOUR SYSTEM IS DOWN");
         char str[20]=" ";
 
         sprintf(str,"%s/.Mzdos/dat",home);
@@ -75,19 +83,12 @@ int main(void){
         loctime=localtime(&lctime);
 
 
-        initscr();
-        noecho();
-        cbreak();
-
         curs_set(0);
 
         srand(time(0));
 
-	PANEL *panel[5];
 
         WINDOW *menu=newwin(3,MAXX,MAXY-3,0);
-
-	/*P A N E L	W I N D O W S*/
 
 	WINDOW *note=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
 	WINDOW *info=newwin(MAXY/2,MAXX,0,0);
@@ -95,23 +96,6 @@ int main(void){
         WINDOW *clck=newwin(3,20,rand()%MAXY/2,rand()%MAXX/2);
         WINDOW *app=newwin(MAXY/2,MAXX,0,0);
 
-	//int set[]={int pnote=0,int pinfo=1, int ptrm=2, int pclck=3, int papp=4};
-
-	panel[0]=new_panel(note);
-	panel[1]=new_panel(info);
-	panel[2]=new_panel(trm);
-	panel[3]=new_panel(clck);
-	panel[4]=new_panel(app);
-
-	int inote=0;
-	int iInfo=1;
-	int itrm=2;
-	int iclck=3;
-	int iapp=4;
-
-
-	int currp=4; /*current number of panels*/
-	int maxp=currp+1;
 
         WINDOW *mb2=newwin(24,24,(MAXY-getmaxy(menu)-24),0);
         WINDOW *optm=derwin(mb2,3,getmaxx(mb2)-2,1,1);
@@ -166,7 +150,6 @@ int main(void){
 			wrefresh(trm);
 		}
 		if(res==1){
-			panel[itrm]=panel[0];
 			wclear(trm);
 			wpaint(trm,32,3);
 
@@ -175,8 +158,11 @@ int main(void){
 			wrefresh(trm);
 		}
 
-                if(!drvchck())
-                        bluescreen(quote);
+		if(chd=!drvchck()){
+                	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
+                	bluescreen(quote);
+        	}
+		sprintf(quote,"YOUR SYSTEM IS DOWN");
 
                 c=getch();
                 if(c==KEY_MOUSE){
@@ -311,7 +297,6 @@ int main(void){
 				if(res!=1){
 					wclear(trm);
 					wpaint(trm,ch,col);
-					panel[sizeof(itrm)--];
 				}
 				wrefresh(trm);
                         }
@@ -411,8 +396,6 @@ void bluescreen(char *s){
         getch();
         endwin();
 
-        exit(EOF);
-
 }
 
 int drvchck(void){
@@ -425,10 +408,10 @@ int drvchck(void){
         extern const char drve[];
         extern const char drvz[];
 
-	return !(cd=chdir(drva));
-	return !(cd=chdir(drvc));
-	return !(cd=chdir(drvd));
-	return !(cd=chdir(drve));
-	return !(cd=chdir(drvz));
+	return cd=chdir(drva);
+	return cd=chdir(drvc)+1;
+	return cd=chdir(drvd)+2;
+	return cd=chdir(drve)+3;
+	return cd=chdir(drvz)+4;
 
 }

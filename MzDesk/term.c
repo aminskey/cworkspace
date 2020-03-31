@@ -30,7 +30,7 @@ int more(WINDOW *, char *, int);
 void locdrv(WINDOW *);
 void Mzpause(WINDOW *);
 
-
+char drive[]="ACDEZ";
 
 int term(WINDOW *wterm){
 
@@ -58,9 +58,13 @@ int term(WINDOW *wterm){
         char cdrv='C';
         int drvstate=0;
 
+	int dstate=0;
 
-        if(!drvchck())
-                bluescreen(quote);
+        if(dstate=!drvchck()){
+        	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
+	        bluescreen(quote);
+	}
+	sprintf(quote,"YOUR SYSTEM IS DOWN");
 
 	WINDOW *iterm=derwin(wterm,getmaxy(wterm)-2,getmaxx(wterm)-2,1,1);
 
@@ -73,7 +77,7 @@ int term(WINDOW *wterm){
 	sprintf(srch,"%s/.Mzdos/dat",home);
 	FILE *fp=fopen(srch,"r");
 	if(fp == NULL){
-		bluescreen("Your System Is DOWN!!");
+		bluescreen("Your System Is DOWN!! CALL THE MANUFACTURER AND TELL HIM THAT SOMETHINGS MESSED UP");
 		exit(0);
 	}else{
 		fscanf(fp,"%d %d %fd %fd",&ch,&col,&fs,&ss);
@@ -101,8 +105,11 @@ int term(WINDOW *wterm){
         while(1){
 		getcwd(cwd,180);
 
-                if(!drvchck())
-                        bluescreen(quote);
+	        if(dstate=!drvchck()){
+                	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
+                	bluescreen(quote);
+        	}
+	        sprintf(quote,"YOUR SYSTEM IS DOWN");
 
 
                 wprintw(iterm,"%c:\\>",cdrv);
@@ -121,9 +128,12 @@ int term(WINDOW *wterm){
                         drvstate=5;
                 }
 
-		if(!drvchck()){
-			bluescreen(quote);
-		}
+        	if(dstate=!drvchck()){
+                	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
+                	bluescreen(quote);
+        	}
+	        sprintf(quote,"YOUR SYSTEM IS DOWN");
+
 
                 switch(drvstate){
                         case 1:
@@ -313,6 +323,12 @@ int term(WINDOW *wterm){
                         ln=0;
                         wclear(iterm);
                 }
+
+        	if(dstate=!drvchck()){
+                	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
+                	bluescreen(quote);
+        	}
+	        sprintf(quote,"YOUR SYSTEM IS DOWN");
 
                 sprintf(cmd," ");
 //		sprintf(arg1," ");

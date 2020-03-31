@@ -9,7 +9,7 @@ int main(int argc, char *argv[]){
     curl_easy_setopt(curl,CURLOPT_VERBOSE, 1L);
 
     curl_easy_perform(curl);
-    
+
     curl_easy_cleanup(curl);
   }
   return 0;

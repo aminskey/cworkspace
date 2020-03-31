@@ -1,5 +1,5 @@
 show:
-	gcc pass.c -lcurl -o ../bin/webshow
+	gcc pass.c -lcurl -lncurses -o ../bin/webshow
 
 talk:
 	gcc termtalk.c -o ../bin/ttalk
