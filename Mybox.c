@@ -716,7 +716,7 @@ int main(int argc, char *argv[])
         }
 
 
-        noecho();
+	echo();
         endwin();
 
         return 0;

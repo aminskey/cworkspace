@@ -60,7 +60,7 @@ int term(WINDOW *wterm){
 
 	int dstate=0;
 
-        if(dstate=!drvchck()){
+        if((dstate=drvchck())==-1){
         	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
 	        bluescreen(quote);
 	}
@@ -74,7 +74,7 @@ int term(WINDOW *wterm){
 	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 
-	sprintf(srch,"%s/.Mzdos/dat",home);
+	sprintf(srch,"%s/.Mzdos/A/dat",home);
 	FILE *fp=fopen(srch,"r");
 	if(fp == NULL){
 		bluescreen("Your System Is DOWN!! CALL THE MANUFACTURER AND TELL HIM THAT SOMETHINGS MESSED UP");
@@ -105,7 +105,7 @@ int term(WINDOW *wterm){
         while(1){
 		getcwd(cwd,180);
 
-	        if(dstate=!drvchck()){
+	        if((dstate=drvchck())==-1){
                 	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
                 	bluescreen(quote);
         	}
@@ -128,7 +128,7 @@ int term(WINDOW *wterm){
                         drvstate=5;
                 }
 
-        	if(dstate=!drvchck()){
+        	if((dstate=drvchck())==-1){
                 	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
                 	bluescreen(quote);
         	}
@@ -324,7 +324,7 @@ int term(WINDOW *wterm){
                         wclear(iterm);
                 }
 
-        	if(dstate=!drvchck()){
+        	if((dstate=drvchck())==-1){
                 	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
                 	bluescreen(quote);
         	}

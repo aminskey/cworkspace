@@ -17,7 +17,7 @@ void mzclock(WINDOW *src){
 	short fg=0;
 	short bg=0;
 
-	sprintf(str,"%s/.Mzdos/dat",home);
+	sprintf(str,"%s/.Mzdos/A/dat",home);
 
 	FILE *fp=fopen(str,"r+");
 

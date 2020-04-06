@@ -47,14 +47,14 @@ int main(void){
 	printw("starting up");
 
 	int chd;
-	if(chd=!drvchck()){
+	if((chd=drvchck())==-1){
 		sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
 		bluescreen(quote);
 	}
 	sprintf(quote,"YOUR SYSTEM IS DOWN");
         char str[20]=" ";
 
-        sprintf(str,"%s/.Mzdos/dat",home);
+        sprintf(str,"%s/.Mzdos/A/dat",home);
 
         // add home dir name
         FILE *fp=fopen(str,"r+");
@@ -68,7 +68,7 @@ int main(void){
         char secin[50];
 
 	int res;
-        int ch=0;
+        unsigned int ch=0;
 	int col=0;
 
 	long int maxpan=4;
@@ -111,7 +111,7 @@ int main(void){
         mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 
-        if(!drvchck())
+        if((chd=drvchck())==-1)
                 bluescreen(quote);
 
         fscanf(fp,"%d %d %hd %hd",&ch,&col,&fs,&ss);
@@ -127,7 +127,7 @@ int main(void){
 	init_pair(col,fs,ss);
 
 
-        paint(ch,col);
+	paint(ch,col);
 
         refresh();
         wpaint(menu,32,4);
@@ -143,7 +143,8 @@ int main(void){
         keypad(stdscr, true);
 
         while(1){
-
+		curs_set(0);
+		paint(ch,col);
 		if(res==0){
 			wclear(trm);
 			wpaint(trm,ch,col);
@@ -157,8 +158,19 @@ int main(void){
 			mvwprintw(trm,0,0,"*");
 			wrefresh(trm);
 		}
+		        refresh();
+	        wpaint(menu,32,4);
+	        wrefresh(menu);
 
-		if(chd=!drvchck()){
+	        wattron(menu,COLOR_PAIR(4));
+	        mvwprintw(menu,1,1,"start");
+	        mvwprintw(menu,1,10,"%d:%d",loctime->tm_hour, loctime->tm_min);
+	        wattroff(menu,COLOR_PAIR(4));
+
+	        wrefresh(menu);
+
+
+		if((chd=drvchck())==-1){
                 	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
                 	bluescreen(quote);
         	}
@@ -332,30 +344,7 @@ int main(void){
                         main();
                         return 0;
                 }
-                paint(ch,col);
-
-                refresh();
-                wpaint(menu,32,4);
-                wrefresh(menu);
-
-
-                curs_set(0);
-
-                time(&lctime);
-                loctime=localtime(&lctime);
-
-                mvwprintw(menu,1,1,"start");
-
-                wattron(menu,COLOR_PAIR(4));
-                mvwprintw(menu,1,1,"start");
-                mvwprintw(menu,1,10,"%d:%d",loctime->tm_hour, loctime->tm_min);
-                wattroff(menu,COLOR_PAIR(4));
-
-                wrefresh(menu);
-
-
-
-		sprintf(in," ");
+ 		sprintf(in," ");
 		sprintf(secin," ");
 		c=0;
         }

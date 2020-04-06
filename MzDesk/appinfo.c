@@ -14,7 +14,7 @@ void appinfo(WINDOW *src){
 	int ch=0;
 	short fs,ss;
 
-	sprintf(str,"%s/.Mzdos/dat",home);
+	sprintf(str,"%s/.Mzdos/A/dat",home);
 
 	FILE *fp=fopen(str,"r+");
 

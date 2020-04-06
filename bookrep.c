@@ -6,7 +6,7 @@ void draw(void);
 void paint(WINDOW *,int, char);
 void outline(WINDOW *,int, char *);
 void wmake(WINDOW *, int, int, char, char *);
-void newbie(void);
+char newbie(void);
 
 int main(int argc, char const *argv[])
 {
@@ -230,6 +230,9 @@ void newbie(void){
       wmove(sub,y,x);
       c=wgetch(sub);
 
+      MEVENT ms;
+
+      mousemask(ALL_MOUSE_EVENTS,NULL);
 
       if(c == KEY_UP){
         y--;
@@ -239,6 +242,15 @@ void newbie(void){
         x--;
       }else if(c == KEY_RIGHT){
         x++;
+      }else if(c == KEY_MOUSE){
+	if(getmouse(&ms) == OK){
+	  y=ms.y;
+	  x=ms.x;
+	}else{
+	  endwin();
+	  printf("You don\'t have a mouse");
+	  exit(0);
+	}
       }else if(c == KEY_ENTER || c == 10){
         y++;
       }else if(c == KEY_BACKSPACE){
@@ -253,13 +265,18 @@ void newbie(void){
       wrefresh(sub);
     }
     if(c==KEY_F(1)){
-      return ;
+      return 0;
     }
 
     int mx=getmaxx(sub);
+    int my=getmaxy(sub);
+    int t=0;
     
-    for(int i=0;i<mx;i++){
-      
+    for(int i=0;i<my;i++){
+      for(int j=0;j<mx;j++){
+	t=mvwinch(sub,i,j);
+	attr[i][j]=t;
+      }
     }
 
 
@@ -268,6 +285,25 @@ void newbie(void){
     wrefresh(nf);
     clear();
 
-    mvprintw(0,0,"%s",attr);
+    for(int i=0;i<my-1;i++){
+      for(int j=0;j<mx-1;j++){
+	mvaddch(i,j,attr[i][j]);	
+      }
+    }
+    mvprintw(1,1,"E-mail address:");
+    for(int i=1+strlen("e-mail address:");i<getmaxx(sub)-5;i++)                                                                                                                       
+      mvaddch(2,i,ACS_S1);
+
+    mvprintw(3,1,"Book report name:");                                                                                                                                           
+    for(int i=1+strlen("book report name:");i<getmaxx(sub)-5;i++)
+      mvaddch(4,i,ACS_S1);
+
+    mvprintw(5,1,"Phone number:");
+    for(int i=strlen("Phone number:")+1;i<getmaxx(sub)-5;i++)                                                                                                                         
+      mvaddch(6,i,ACS_S1);
+
+    mvprintw(7,1,"Library name:");
+    for(int i=strlen("Library name:")+1;i<getmaxx(sub)-5;i++)
+      mvaddch(8,i,ACS_S1);
     getch();
 }

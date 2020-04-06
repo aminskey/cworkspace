@@ -64,10 +64,17 @@ int main(int argc, char *argv[]){
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,(void *)fp);
 
     res=curl_easy_perform(curl);
-    if(res==CURLE_OK){
-      mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Request Affirmative"))/2,"Request Affirmative");
-    }else{
-      mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Request Denied"))/2,"Request Denied");
+    for(int i=0;i<3;i++){
+      mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Loading"))/2,"loading");
+      if(res==CURLE_OK){
+	mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Request Affirmative"))/2,"Request Affirmative");
+	break;
+      }else{
+	mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Request Denied"))/2,"Request Denied");
+	break;
+      }
+      printw(".");
+      
     }
     curl_easy_cleanup(curl);
   }
