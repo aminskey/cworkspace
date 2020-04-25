@@ -2,7 +2,8 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<string.h>
-#include<curses.h>
+#include<strings.h>
+#include<ncurses.h>
 #include<time.h>
 #include<unistd.h>
 #include<dirent.h>
@@ -28,9 +29,7 @@ void bluescreen(char *s);
 void wpaint(WINDOW *,char, short);
 void paint(char , short);
 void wprcs(WINDOW *src);
-void appinfo(WINDOW *);
 void mzclock(WINDOW *);
-void apphelp(WINDOW *);
 
 int ststate=1;
 
@@ -41,22 +40,30 @@ void paint(char ch, short clr){
 }
 
 int main(void){
+
+
+	char str[100];
+
 	initscr();
-	cbreak();
+ 	cbreak();
 	noecho();
 	printw("starting up");
+
+	DIR *dp;
+	struct dirent *dir;
+
+ 	char desk[100];
 
 	int chd;
 	if((chd=drvchck())==-1){
 		sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
 		bluescreen(quote);
 	}
-	sprintf(quote,"YOUR SYSTEM IS DOWN");
-        char str[20]=" ";
 
+	sprintf(quote,"YOUR SYSTEM IS DOWN");
+      	sprintf(desk,"%s/.Mzdos/C/Desktop",home);
         sprintf(str,"%s/.Mzdos/A/dat",home);
 
-        // add home dir name
         FILE *fp=fopen(str,"r+");
         if(fp == NULL){
                 bluescreen("Data file doesn\'t exist - Background file");
@@ -96,14 +103,14 @@ int main(void){
         WINDOW *clck=newwin(3,20,rand()%MAXY/2,rand()%MAXX/2);
         WINDOW *app=newwin(MAXY/2,MAXX,0,0);
 
+	WINDOW *ico=newwin(6,7,2,2);
+
 
         WINDOW *mb2=newwin(24,24,(MAXY-getmaxy(menu)-24),0);
         WINDOW *optm=derwin(mb2,3,getmaxx(mb2)-2,1,1);
         WINDOW *opoff=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm),1);
-        WINDOW *oprs=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm)*3,1);
-	WINDOW *opbd=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*2,1);
-	WINDOW *opcl=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*4,1);
-	WINDOW *opapp=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*5,1);
+        WINDOW *oprs=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm)*2,1);
+	WINDOW *opcl=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*3,1);
         WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
 
         MEVENT evnt;
@@ -117,6 +124,25 @@ int main(void){
         fscanf(fp,"%d %d %hd %hd",&ch,&col,&fs,&ss);
         fclose(fp);
 
+        const chtype drvico[7][7]={
+	        {ch,ch,ch,ch,ch,ch,ch},
+	        {ch,ch,'D','R','V',ch,ch},
+	        {ch,ACS_ULCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_URCORNER,ch},
+	        {ch,ACS_VLINE,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_VLINE,ch},
+	        {ch,ACS_LLCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_LRCORNER,ch},
+	        {ch,ch,ch,ch,ch,ch,ch},
+	        {ch,ch,ch,ch,ch,ch,ch}
+	};
+
+        const chtype flico[7][7]={
+                {'F','I','L','E','N','M','E'},
+                {ch,ACS_URCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_URCORNER,ch},
+                {ch,ACS_VLINE,'~','~','~',ACS_VLINE,ch},
+                {ch,ACS_LLCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_LRCORNER,ch},
+                {ch,ch,ch,ch,ch,ch,ch},
+                {ch,ch,ch,ch,ch,ch,ch},
+		{ch,ch,ch,ch,ch,ch,ch}
+        };
 
         start_color();
         init_pair(1,COLOR_WHITE, COLOR_CYAN);
@@ -124,7 +150,12 @@ int main(void){
         init_pair(3,COLOR_WHITE, COLOR_BLACK);
         init_pair(4,COLOR_BLUE, COLOR_WHITE);
 	init_pair(5,COLOR_WHITE, COLOR_RED);
+	init_pair(6,COLOR_BLACK, COLOR_WHITE);
 	init_pair(col,fs,ss);
+
+	int fx, fy;
+	getbegyx(ico,fy,fx);
+	fy*=5;
 
 
 	paint(ch,col);
@@ -143,8 +174,16 @@ int main(void){
         keypad(stdscr, true);
 
         while(1){
-		curs_set(0);
+		if((chd=drvchck())==-1){
+			sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
+			bluescreen(quote);
+			break;
+		}
+
+        	curs_set(0);
 		paint(ch,col);
+
+
 		if(res==0){
 			wclear(trm);
 			wpaint(trm,ch,col);
@@ -158,7 +197,58 @@ int main(void){
 			mvwprintw(trm,0,0,"*");
 			wrefresh(trm);
 		}
-		        refresh();
+		mvwin(ico,1,2);
+		wattron(ico,COLOR_PAIR(col));
+		attron(COLOR_PAIR(col));
+                for(int i=0;i<5;i++){
+                        box(ico,ch,ch);
+
+                        wrefresh(ico);
+			refresh();
+
+			for(int y=0;y<7;y++){
+				for(int x=0;x<7;x++){
+					mvwaddch(ico,y,x,drvico[y][x]);
+				}
+			}
+                        wrefresh(ico);
+			refresh();
+
+			mvprintw(getmaxy(ico),getbegx(ico)+2,"%c:",drives[i]);
+			mvwin(ico,1,(getmaxx(ico)*2)+getbegx(ico));
+
+
+		}
+		wattron(ico,A_REVERSE);
+		getbegyx(ico,fy,fx);
+		dp=opendir(desk);
+		while((dir=readdir(dp))!=NULL){
+			if(strncmp(dir->d_name,".",1)){
+				if(fx>=getmaxx(stdscr)-1){
+					fy+=getmaxy(ico);
+				}
+				for(int i=0;i<7;i++){
+					for(int j=0;j<7;j++){
+						mvwaddch(ico,i,j,flico[i][j]);
+					}
+				}
+				wrefresh(ico);
+				refresh();
+
+				mvprintw(getmaxy(ico)+fy,fx+(getmaxx(ico)-strlen("C D R V"))/2,"C D R V");
+				mvprintw((getmaxy(ico)+fy)-1,fx+(getmaxx(ico)-strlen(dir->d_name))/2,"%s",dir->d_name);
+				mvwin(ico,fy,fx+=getmaxx(ico)*2);
+			}
+		}
+		closedir(dp);
+
+                wattroff(ico,A_REVERSE);
+
+                attron(COLOR_PAIR(col));
+		wattroff(ico,COLOR_PAIR(col));
+
+
+	        refresh();
 	        wpaint(menu,32,4);
 	        wrefresh(menu);
 
@@ -173,6 +263,7 @@ int main(void){
 		if((chd=drvchck())==-1){
                 	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
                 	bluescreen(quote);
+			break;
         	}
 		sprintf(quote,"YOUR SYSTEM IS DOWN");
 
@@ -228,15 +319,6 @@ int main(void){
                         wattroff(optm,COLOR_PAIR(4));
                         wrefresh(optm);
 
-			wpaint(opbd,32,4);
-			wattron(opbd,COLOR_PAIR(4));
-
-			box(opbd,0,0);
-			mvwprintw(opbd,1,1,"App Info");
-
-			wattroff(opbd,COLOR_PAIR(4));
-			wrefresh(opbd);
-
 			wpaint(opcl,32,4);
 			wattron(opcl,COLOR_PAIR(4));
 
@@ -263,15 +345,6 @@ int main(void){
 
                         wattroff(oprs,COLOR_PAIR(4));
                         wrefresh(oprs);
-
-			wpaint(opapp,32,4);
-			wattron(opapp,COLOR_PAIR(4));
-
-			box(opapp,0,0);
-			mvwprintw(opapp,1,1,"App Reference");
-
-			wattroff(opapp,COLOR_PAIR(4));
-			wrefresh(opapp);
 
                         ststate=2;
                 }
@@ -327,14 +400,6 @@ int main(void){
                                 main();
                                 return 0;
                         }
-                }
-		if(!strcmp(in,"App")){
-			if(!strcmp(secin,"Info")){
-				appinfo(info);
-			}
-			if(!strcmp(secin,"Reference")){
-				apphelp(app);
-			}
 		}if(!strcmp(in,"Clock")){
 			mzclock(clck);
 		}
@@ -348,7 +413,6 @@ int main(void){
 		sprintf(secin," ");
 		c=0;
         }
-
         endwin();
         return 0;
 

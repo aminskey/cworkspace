@@ -8,7 +8,7 @@ Webose:
 	gcc verbose.c -lcurl -o ../bin/webose
 
 desk:
-	gcc drvConf.c MzDesk/apphelp.c MzDesk/clock.c MzDesk/appinfo.c MzDesk/term.c MzDesk/desk.c -lpanel -lcurl -lncurses -o ../bin/AcornDesk
+	gcc drvConf.c MzDesk/clock.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/AcornDesk
 
 enc:
 	gcc enc.c -o ../bin/Encrypt

@@ -323,16 +323,9 @@ int term(WINDOW *wterm){
                         ln=0;
                         wclear(iterm);
                 }
-
-        	if((dstate=drvchck())==-1){
-                	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drive[dstate]);
-                	bluescreen(quote);
-        	}
 	        sprintf(quote,"YOUR SYSTEM IS DOWN");
 
                 sprintf(cmd," ");
-//		sprintf(arg1," ");
-//		sprintf(arg2," ");
                 wrefresh(iterm);
         }
         noecho();

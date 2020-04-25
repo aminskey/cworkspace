@@ -65,16 +65,14 @@ int main(int argc, char *argv[]){
 
     res=curl_easy_perform(curl);
     for(int i=0;i<3;i++){
-      mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Loading"))/2,"loading");
       if(res==CURLE_OK){
-	mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Request Affirmative"))/2,"Request Affirmative");
+	mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Request Accepted"))/2,"Request Accepted");
 	break;
       }else{
 	mvwprintw(state,getmaxy(state)/2,(getmaxx(state)-strlen("Request Denied"))/2,"Request Denied");
 	break;
       }
       printw(".");
-      
     }
     curl_easy_cleanup(curl);
   }
@@ -82,11 +80,66 @@ int main(int argc, char *argv[]){
 
   wrefresh(shdw);
   wrefresh(state);
-  
-  getch();
-  endwin();
 
-  
   fclose(fp);
+  getch();
+  clear();
+
+  attron(COLOR_PAIR(1));
+
+  FILE *frp=fopen(argv[2],"r+");
+
+  for(int i=0;i<getmaxy(stdscr);i++)
+     for(int j=0;j<getmaxx(stdscr);j++)
+	mvprintw(i,j," ");
+
+  int ln=0;
+  char buff=0;
+  move(0,0);
+
+  while(!feof(frp)){
+     buff=fgetc(frp);
+     if(buff == '\n')
+	ln++;
+     printw("%c",buff);
+
+     if(ln >= getmaxy(stdscr)-2)
+     {
+        for(int i=0;i<getmaxy(stdscr);i++){
+          for(int j=0;j<getmaxx(stdscr);j++){
+            mvprintw(i,j,"%c",(char)mvinch(i,j));
+          }
+        }
+
+	getch();
+	clear();
+	move(0,0);
+	ln=0;
+     }
+     refresh();
+
+  }
+  for(int i=0;i<getmaxy(stdscr);i++){
+     for(int j=0;j<getmaxx(stdscr);j++){
+        mvprintw(i,j,"%c",(char)mvinch(i,j));
+     }
+  }
+  getch();
+  clear();
+  for(int i=0;i<getmaxy(stdscr);i++){
+     for(int j=0;j<getmaxx(stdscr);j++){
+        mvprintw(i,j,"%c",(char)mvinch(i,j));
+     }
+  }
+
+
+
+  mvprintw(getmaxy(stdscr)/2,(getmaxx(stdscr)-strlen("END OF FILE: -1"))/2,"END OF FILE: -1");
+
+  attroff(COLOR_PAIR(1));
+  getch();
+
+  fclose(frp);
+  endwin();
   return 0;
 }
