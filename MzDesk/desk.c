@@ -238,6 +238,8 @@ int main(void){
 				mvprintw(getmaxy(ico)+fy,fx+(getmaxx(ico)-strlen("C D R V"))/2,"C D R V");
 				mvprintw((getmaxy(ico)+fy)-1,fx+(getmaxx(ico)-strlen(dir->d_name))/2,"%s",dir->d_name);
 				mvwin(ico,fy,fx+=getmaxx(ico)*2);
+
+				doupdate();
 			}
 		}
 		closedir(dp);
