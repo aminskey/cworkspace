@@ -3,9 +3,7 @@
 #include<string.h>
 #include<time.h>
 
-extern void wpaint();
-
-extern const char home[];
+#include "acorn.h"
 
 void mzclock(WINDOW *src){
 	char str[50];

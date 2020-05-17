@@ -81,6 +81,11 @@ int main(int argc, char *argv[])
 	char gcmp[200];
 	char cmp[200];
 
+	char name[100];
+	char nickname[100]="The Super Man Release";
+
+	sprintf(name,"%s Full: Latest Release",argv[0]);
+
 	int dv=2;
 	int conf=0;
 	int chd=0;
@@ -614,7 +619,7 @@ int main(int argc, char *argv[])
 			clear();
 			i=0;
 		}if(strcmp(s,"VER") == false || strcmp(s,"ver")==false){
-			printw("BoxEmu v0.6.3 alpha\n\n\t SUPER SIX");
+			printw("%s\n\n\t %s",name,nickname);
 			i=i+3;
 		}if(strcmp(s, "RM") == false || strcmp(s, "rm")==false){
 			sprintf(s, " ");

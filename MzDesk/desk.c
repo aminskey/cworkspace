@@ -8,41 +8,13 @@
 #include<unistd.h>
 #include<dirent.h>
 
-#define MAXY getmaxy(stdscr)
-#define MAXX getmaxx(stdscr)
-
-extern const char drva[];
-extern const char drvc[];
-extern const char drvd[];
-extern const char drve[];
-extern const char drvz[];
-extern const char home[];
+#include"acorn.h"
 
 char quote[]="YOUR DRIVES ARE DOWN, EDIT THE \'drvConf\' C FILE AND BUILD AGAIN";
-char drives[6]="ACDEZ";
 
-int term(WINDOW *, char *username);
-int touch(int y, int x, int y1, int x1, MEVENT);
-int mtouchwin(WINDOW *,MEVENT);
 
-void drvchck(void);
-void bluescreen(char *s);
-void wpaint(WINDOW *,char, short);
-void paint(char , short);
-void mzclock(WINDOW *);
-
-char *login(char *);
-char *replace(char *, char, char);
-
-// New file-viewing app in process..
-void fileview(WINDOW *,char *);
 
 int ststate=1;
-
-
-void paint(char ch, short clr){
-        wpaint(stdscr,ch,clr);
-}
 
 int main(void){
 
@@ -185,14 +157,14 @@ int main(void){
 		mvwin(ico,1,2);
 		wattron(ico,COLOR_PAIR(col));
 		attron(COLOR_PAIR(col));
-                for(register int i=0;i<5;i++){
+                for(int i=0;i<5;i++){
                         box(ico,ch,ch);
 
                         wrefresh(ico);
 			refresh();
 
-			for(register int y=0;y<7;y++){
-				for(register int x=0;x<7;x++){
+			for(int y=0;y<7;y++){
+				for(int x=0;x<7;x++){
 					mvwaddch(ico,y,x,drvico[y][x]);
 				}
 			}
@@ -207,7 +179,7 @@ int main(void){
 		}
 		wattron(ico,A_REVERSE);
 		getbegyx(ico,fy,fx);
-		
+
 		dp=opendir(desk);
 		while((dir=readdir(dp))!=NULL){
 			if(strncmp(dir->d_name,".",1)){
@@ -429,101 +401,4 @@ int main(void){
         endwin();
         return 0;
 
-}
-
-void wpaint(WINDOW *win, char ch, short clr){
-        wattron(win,COLOR_PAIR(clr));
-
-        for(int i=0;i<getmaxy(win);i++)
-                for(int j=0;j<getmaxx(win);j++)
-                        mvwprintw(win,i,j,"%c",ch);
-
-        wattroff(win, COLOR_PAIR(clr));
-}
-
-void bluescreen(char *s){
-	int t=0;
-
-        curs_set(0);
-
-        start_color();
-        init_pair(1, COLOR_WHITE, COLOR_BLUE);
-        paint(32,1);
-
-        mvprintw(MAXY/6,(MAXX-strlen(s))/2,"%s",s);
-
-        for(int i=0;i<strlen(drives);i++){
-                mvprintw(20+(i+1),40,"DRIVE %c:",drives[i]);
-        }
-        mvprintw(21,50,"%s",drva);
-        mvprintw(22,50,"%s",drvc);
-        mvprintw(23,50,"%s",drvd);
-        mvprintw(24,50,"%s",drve);
-        mvprintw(25,50,"%s",drvz);
-
-	attron(COLOR_PAIR(1));
-	for(int i=0;i<getmaxy(stdscr);i++){
-		for(int j=0;j<getmaxx(stdscr);j++){
-			t=mvinch(i,j);
-			mvaddch(i,j,(const chtype)t);
-		}
-	}
-	attroff(COLOR_PAIR(1));
-
-        getch();
-//        endwin();
-
-}
-
-void drvchck(void){
-
-	register int cd=0;
-	register int state=0;
-
-	char er[100];
-	char err[500];
-	char drvnames[6]="ACDEZ";
-	char *drvs[5];
-
-	drvs[0]=drva;
-	drvs[1]=drvc;
-	drvs[2]=drvd;
-	drvs[3]=drve;
-	drvs[4]=drvz;
-
-	for(int i=0;i<5;i++){
-		switch(chdir(drvs[i])){
-			case -1:
-				sprintf(er,"DRIVE %c IS DOWN, YOU CAN TRY TO CONTINUE, BUT FILES ON THE DRIVE WILL NOT BE SAVED!!\n",drvnames[i]);
-				sprintf(err,"%s",er);
-				state=1;
-				break;
-			default:
-				break;
-		}
-	}
-	if(state==1)
-		bluescreen(err);
-}
-
-char *replace(char *string, char c1, char c2){
-
-	char str[200];
-
-	strcat(str, string);
-
-	for(int i=0;i<strlen(str);i++){
-		if(str[i]==c1)
-			str[i]=c2;
-	}
-	sprintf(string,"%s",str);
-
-	return string;
-}
-/*Checking if the mouse is in a specified coordinate area*/
-int touch(int y, int x, int y1, int x1, MEVENT evnt){
-	return ((evnt.y > y && evnt.y < y1) && (evnt.x > x && evnt. x < x1));
-}
-int mtouchwin(WINDOW *win, MEVENT evnt){
-	return touch(getbegy(win),getbegx(win),getmaxy(win),getmaxx(win),evnt);
 }

@@ -5,20 +5,7 @@
 #include<strings.h>
 #include<ncurses.h>
 
-#define MAXX getmaxx(stdscr)
-#define MAXY getmaxy(stdscr)
-
-extern void wpaint();
-extern void paint();
-extern void drvchck();
-extern void bluescreen();
-
-extern const char drva[];
-extern const char drvc[];
-extern const char drvd[];
-extern const char drve[];
-extern const char drvz[];
-extern const char home[];
+#include "acorn.h"
 
 
 char *login(char *s){

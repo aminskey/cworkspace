@@ -2,37 +2,20 @@
 #include<dirent.h>
 #include<string.h>
 #include<unistd.h>
+#include<stdio.h>
 #include<stdlib.h>
 #include<sys/stat.h>
 #include<sys/types.h>
 
-#define MAXY getmaxy(stdscr)
-#define MAXX getmaxx(stdscr)
-
-extern char drva[];
-extern char drvc[];
-extern char drvd[];
-extern char drve[];
-extern char drvz[];
-extern char quote[];
-extern char home[];
-
-extern int main();
-extern int drvchck();
-extern int bluescreen();
+#include "acorn.h"
+#include "cmd_acornDOS.h"
 
 short fs, ss;
 int col, ch;
 
-int dir(WINDOW *,char *,int);
-int more(WINDOW *, char *, int);
+extern int main();
 
-void locdrv(WINDOW *);
-void Mzpause(WINDOW *);
-
-extern char *replace();
-
-char drive[]="ACDEZ";
+char quote[100];
 
 char window[6][200]= { /*	DECIDED NOT TO CHANGE THE REST		*/
 	{"size of window :"},
@@ -67,6 +50,7 @@ int term(WINDOW *wterm, char *username){
 	char srch[200];
         char cwd[100];
 	char start[100];
+	char rs[100];
 
         int drvstate=0;
 	int dstate=0;
@@ -139,6 +123,8 @@ int term(WINDOW *wterm, char *username){
 
 	sprintf(cmd, " ");
 
+	int strc;
+
         while(1){
 		getbegyx(wterm,wy,wx);
 		getcwd(cwd,180);
@@ -147,9 +133,14 @@ int term(WINDOW *wterm, char *username){
 		chdir(cwd);
 
 		replace(cwd,'/','\\');
+		reverse(cwd);
+		for(int i=0;cwd[i]!=cdrv;i++){
+			rs[i]=cwd[i];
+		}
+		reverse(rs);
+		reverse(cwd);
 
-
-                wprintw(iterm,"%c:\\%s>",cdrv,cwd+2+strlen(drva));
+                wprintw(iterm,"%c:\\%s>",cdrv,rs+1);
                 wscanw(iterm,"%s %s %s %s %s",cmd,arg1,arg2,arg3,arg4);
                 ln++;
 
@@ -372,123 +363,4 @@ int term(WINDOW *wterm, char *username){
 
 	return st;
 
-}
-int dir(WINDOW *src, char d[],int ln){
-
-	int i=0;
-
-	DIR *dp;
-	struct dirent *dir;
-
-	if((dp=opendir(d)) == NULL){
-		return -1;
-	}
-
-	while((dir=readdir(dp)) != NULL){
-		wprintw(src,"%25s",dir->d_name);
-		i++;
-		if(i>=2){
-			ln++;
-			wprintw(src,"\n");
-			i=0;
-		}
-
-		if(ln >= getmaxy(src) - 2){
-			Mzpause(src);
-			wclear(src);
-			ln=0;
-		}
-	}
-        wprintw(src,"\n");
-        closedir(dp);
-
-        return ln;
-}
-int more(WINDOW *src, char *f, int ln){
-        int i=0;
-        char buff;
-
-        FILE *fp=fopen(f,"r+");
-        if(!strcmp(f,"--help")){
-                return -2;
-        }if(!strcmp(f,"--version")){
-                return -3;
-        }if(fp == NULL){
-                return -1;
-        }
-
-
-        while(!feof(fp)){
-                buff = fgetc(fp);
-                i++;
-
-                if(buff == '\n'){
-                        ln++;
-                }
-                if(ln>=getmaxy(src)-1){
-                        Mzpause(src);
-                        wclear(src);
-                        ln=0;
-                }
-		wprintw(src,"%c",buff);
-        }
-        wprintw(src,"\n---%s---\n",f);
-        fclose(fp);
-
-        return (ln++);
-
-}
-void locdrv(WINDOW *src){
-	char drives[]={'A','C','D','E','Z'};
-	char *drvs[]={0,0,0,0,0};
-
-	drvs[0]=drva;
-	drvs[1]=drvc;
-	drvs[2]=drvd;
-	drvs[3]=drve;
-	drvs[4]=drvz;
-
-	for(int i=0;i<45;i++){
-		wprintw(src,"%c",(unsigned char)205);
-		if(i == 15)
-			wprintw(src,"%c",(unsigned char)206);
-	}
-	wprintw(src,"\nDRIVES");
-	for(int i=strlen("\n WHERE"); i<45-strlen("DRIVES");i++){
-		wprintw(src," ");
-		if(i == 16){
-			wprintw(src,"%c",(unsigned char)186);
-		}
-	}
-	wprintw(src," WHERE\n");
-        for(int i=0;i<45;i++){
-                wprintw(src,"%c",(unsigned char)205);
-                if(i == 15)
-                        wprintw(src,"%c",(unsigned char)206);
-        }
-	wprintw(src,"\n");
-
-	for(int i=0;i<5;i++){
-		wprintw(src,"DRIVE %c",drives[i]);
-		for(int i=strlen("DRIVE #");i<20;i++){
-			wprintw(src," ");
-			if(i == 15){
-				wprintw(src,"%c",(unsigned char)186);
-			}
-		}
-		wprintw(src,"%s\n",drvs[i]);
-	}
-
-        for(int i=0;i<45;i++){
-                wprintw(src,"%c",(unsigned char)205);
-                if(i == 15)
-                        wprintw(src,"%c",(unsigned char)206);
-        }
-	wprintw(src,"\n");
-
-
-}
-void Mzpause(WINDOW *src){
-	wprintw(src,"\tPress Anything To Continue ...");
-	wgetch(src);
 }

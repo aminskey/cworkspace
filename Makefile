@@ -8,8 +8,7 @@ Webose:
 	gcc verbose.c -lcurl -o ../bin/webose
 
 desk:
-	gcc drvConf.c MzDesk/login.c MzDesk/clock.c MzDesk/term.c MzDesk/desk.c -lncurses -o ../bin/AcornDesk
-
+	gcc MzDesk/libfuncs/*.c MzDesk/*.h MzDesk/*.c -lncurses -o ~/bin/AcornDesk
 enc:
 	gcc enc.c -o ../bin/Encrypt
 dnc:
