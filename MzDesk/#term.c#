@@ -137,8 +137,7 @@ int term(WINDOW *wterm, char *username){
 	}
 
 
-	sprintf(cmd, " ");
-
+	
         while(1){
 		getbegyx(wterm,wy,wx);
 		getcwd(cwd,180);

@@ -7,7 +7,6 @@
 #include<time.h>
 #include<unistd.h>
 #include<dirent.h>
-#include<panel.h>
 
 #define MAXY getmaxy(stdscr)
 #define MAXX getmaxx(stdscr)
@@ -19,28 +18,33 @@ extern const char drve[];
 extern const char drvz[];
 extern const char home[];
 
-
 char quote[]="YOUR DRIVES ARE DOWN, EDIT THE \'drvConf\' C FILE AND BUILD AGAIN";
+char drives[6]="ACDEZ";
 
-int drvchck(void);
-int term(WINDOW *);
+int term(WINDOW *, char *username);
+int touch(int y, int x, int y1, int x1, MEVENT);
+int mtouchwin(WINDOW *,MEVENT);
 
+void drvchck(void);
 void bluescreen(char *s);
 void wpaint(WINDOW *,char, short);
 void paint(char , short);
-void wprcs(WINDOW *src);
 void mzclock(WINDOW *);
+
+char *login(char *);
+char *replace(char *, char, char);
+
+// New file-viewing app in process..
+void fileview(WINDOW *,char *);
 
 int ststate=1;
 
-char drives[6]="ACDEZ";
 
 void paint(char ch, short clr){
         wpaint(stdscr,ch,clr);
 }
 
 int main(void){
-
 
 	char str[100];
 
@@ -53,15 +57,14 @@ int main(void){
 	struct dirent *dir;
 
  	char desk[100];
-
 	int chd;
-	if((chd=drvchck())==-1){
-		sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
-		bluescreen(quote);
-	}
 
-	sprintf(quote,"YOUR SYSTEM IS DOWN");
-      	sprintf(desk,"%s/.Mzdos/C/Desktop",home);
+	drvchck();
+
+	char username[100];
+	login(username);
+
+      	sprintf(desk,"%s/.Mzdos/C/%s/Desktop",home,username);
         sprintf(str,"%s/.Mzdos/A/dat",home);
 
         FILE *fp=fopen(str,"r+");
@@ -74,11 +77,9 @@ int main(void){
         char in[50];
         char secin[50];
 
-	int res;
+	register int res;
         unsigned int ch=0;
 	int col=0;
-
-	long int maxpan=4;
 
 	short fs=0;
 	short ss=0;
@@ -111,6 +112,7 @@ int main(void){
         WINDOW *opoff=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm),1);
         WINDOW *oprs=derwin(mb2,3,getmaxx(mb2)-2,1+getmaxy(optm)*2,1);
 	WINDOW *opcl=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*3,1);
+	WINDOW *opout=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*4,1);
         WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
 
         MEVENT evnt;
@@ -118,8 +120,7 @@ int main(void){
         mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 
-        if((chd=drvchck())==-1)
-                bluescreen(quote);
+	drvchck();
 
         fscanf(fp,"%d %d %hd %hd",&ch,&col,&fs,&ss);
         fclose(fp);
@@ -174,53 +175,39 @@ int main(void){
         keypad(stdscr, true);
 
         while(1){
-		if((chd=drvchck())==-1){
-			sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
-			bluescreen(quote);
-			break;
-		}
+		refresh();
+
+		drvchck();
 
         	curs_set(0);
 		paint(ch,col);
 
-
-		if(res==0){
-			wclear(trm);
-			wpaint(trm,ch,col);
-			wrefresh(trm);
-		}
-		if(res==1){
-			wclear(trm);
-			wpaint(trm,32,3);
-
-			box(trm,0,0);
-			mvwprintw(trm,0,0,"*");
-			wrefresh(trm);
-		}
 		mvwin(ico,1,2);
 		wattron(ico,COLOR_PAIR(col));
 		attron(COLOR_PAIR(col));
-                for(int i=0;i<5;i++){
+                for(register int i=0;i<5;i++){
                         box(ico,ch,ch);
 
                         wrefresh(ico);
 			refresh();
 
-			for(int y=0;y<7;y++){
-				for(int x=0;x<7;x++){
+			for(register int y=0;y<7;y++){
+				for(register int x=0;x<7;x++){
 					mvwaddch(ico,y,x,drvico[y][x]);
 				}
 			}
                         wrefresh(ico);
-			refresh();
 
 			mvprintw(getmaxy(ico),getbegx(ico)+2,"%c:",drives[i]);
+			refresh();
+
 			mvwin(ico,1,(getmaxx(ico)*2)+getbegx(ico));
 
 
 		}
 		wattron(ico,A_REVERSE);
 		getbegyx(ico,fy,fx);
+		
 		dp=opendir(desk);
 		while((dir=readdir(dp))!=NULL){
 			if(strncmp(dir->d_name,".",1)){
@@ -232,22 +219,35 @@ int main(void){
 						mvwaddch(ico,i,j,flico[i][j]);
 					}
 				}
-				wrefresh(ico);
-				refresh();
 
+				wrefresh(ico);
 				mvprintw(getmaxy(ico)+fy,fx+(getmaxx(ico)-strlen("C D R V"))/2,"C D R V");
 				mvprintw((getmaxy(ico)+fy)-1,fx+(getmaxx(ico)-strlen(dir->d_name))/2,"%s",dir->d_name);
+				refresh();
+
 				mvwin(ico,fy,fx+=getmaxx(ico)*2);
 
-				doupdate();
 			}
 		}
 		closedir(dp);
 
                 wattroff(ico,A_REVERSE);
-
-                attron(COLOR_PAIR(col));
+                attroff(COLOR_PAIR(col));
 		wattroff(ico,COLOR_PAIR(col));
+
+                if(res==0){
+                        wclear(trm);
+                        wpaint(trm,ch,col);
+                        wrefresh(trm);
+                }
+                if(res==1){
+                        wclear(trm);
+                        wpaint(trm,32,3);
+
+                        box(trm,0,0);
+                        wrefresh(trm);
+                }
+
 
 
 	        refresh();
@@ -261,31 +261,29 @@ int main(void){
 
 	        wrefresh(menu);
 
+		drvchck();
 
-		if((chd=drvchck())==-1){
-                	sprintf(quote,"DRIVE %c IS DOWN, YOUR SYSTEM IS DOWN",drives[chd]);
-                	bluescreen(quote);
-			break;
-        	}
 		sprintf(quote,"YOUR SYSTEM IS DOWN");
 
                 c=getch();
                 if(c==KEY_MOUSE){
                         if(getmouse(&evnt) == OK){
                                 if(evnt.bstate >= BUTTON1_PRESSED){
-                                        if((evnt.y >= (MAXY-getmaxy(menu)) && evnt.y <= MAXY) && (evnt.x >= 1 && evnt.x <= strlen("start"))){
-                                                mvwprintw(menu,1,1,"start");
+                                        if(touch(MAXY - getmaxy(menu),0,MAXY,strlen("start")+1,evnt)){
+				  	        mvwprintw(menu,1,1,"start");
                                                 ststate=0;
                                                 wrefresh(menu);
                                         }
 		                }
 				if((evnt.bstate >= BUTTON1_PRESSED) && res == 1){
-					if((evnt.y >= getbegy(trm) && evnt.y <= getmaxy(trm)) && (evnt.x >= getbegx(trm)||evnt.x <= getmaxx(trm))){
-						res=term(trm);
+					if(mtouchwin(trm,evnt)){
+						res=term(trm,username);
 					}
 				}
                         }else{
-                                bluescreen("DESKTOP HAS CRASHED, BECAUSE THERE IS NO MOUSE");
+                                bluescreen("DESKTOP HAS CRASHED, BECAUSE THERE IS NO MOUSE OR THAT THE MOUSE IS UNAVAILABLE");
+				endwin();
+				exit(0);
                         }
                 }
                 if(ststate == 0){
@@ -348,6 +346,15 @@ int main(void){
                         wattroff(oprs,COLOR_PAIR(4));
                         wrefresh(oprs);
 
+			wpaint(opout,32,4);
+			wattron(opout, COLOR_PAIR(4));
+
+			box(opout,0,0);
+			mvwprintw(opout,1,1,"Log Out");
+
+			wattroff(opout, COLOR_PAIR(4));
+			wrefresh(opout);
+
                         ststate=2;
                 }
                 if(ststate==2){
@@ -380,7 +387,7 @@ int main(void){
                 if(!strcmp(in,"AcornDOS")||!strcmp(in,"Acorn")){
                         if(!strcmp(secin,"Prompt"))
                         {
-                                res=term(trm);
+                                res=term(trm,username);
 				if(res!=1){
 					wclear(trm);
 					wpaint(trm,ch,col);
@@ -397,6 +404,11 @@ int main(void){
                                 return 0;
                         }
                 }
+		if(!strcmp(in,"Quit")||(!strcmp(in,"Log") && !strcmp(secin,"Out"))){
+			login(username);
+			main();
+			return 0;
+		}
                 if(!strcmp(in,"Reset")){
                         if(!strcmp(secin,"Computer")){
                                 main();
@@ -413,8 +425,7 @@ int main(void){
                 }
  		sprintf(in," ");
 		sprintf(secin," ");
-		c=0;
-        }
+	}
         endwin();
         return 0;
 
@@ -431,6 +442,8 @@ void wpaint(WINDOW *win, char ch, short clr){
 }
 
 void bluescreen(char *s){
+	int t=0;
+
         curs_set(0);
 
         start_color();
@@ -448,25 +461,69 @@ void bluescreen(char *s){
         mvprintw(24,50,"%s",drve);
         mvprintw(25,50,"%s",drvz);
 
+	attron(COLOR_PAIR(1));
+	for(int i=0;i<getmaxy(stdscr);i++){
+		for(int j=0;j<getmaxx(stdscr);j++){
+			t=mvinch(i,j);
+			mvaddch(i,j,(const chtype)t);
+		}
+	}
+	attroff(COLOR_PAIR(1));
+
         getch();
-        endwin();
+//        endwin();
 
 }
 
-int drvchck(void){
-        int cd=0;
+void drvchck(void){
 
+	register int cd=0;
+	register int state=0;
 
-        extern const char drva[];
-        extern const char drvc[];
-        extern const char drvd[];
-        extern const char drve[];
-        extern const char drvz[];
+	char er[100];
+	char err[500];
+	char drvnames[6]="ACDEZ";
+	char *drvs[5];
 
-	return cd=chdir(drva);
-	return cd=chdir(drvc)+1;
-	return cd=chdir(drvd)+2;
-	return cd=chdir(drve)+3;
-	return cd=chdir(drvz)+4;
+	drvs[0]=drva;
+	drvs[1]=drvc;
+	drvs[2]=drvd;
+	drvs[3]=drve;
+	drvs[4]=drvz;
 
+	for(int i=0;i<5;i++){
+		switch(chdir(drvs[i])){
+			case -1:
+				sprintf(er,"DRIVE %c IS DOWN, YOU CAN TRY TO CONTINUE, BUT FILES ON THE DRIVE WILL NOT BE SAVED!!\n",drvnames[i]);
+				sprintf(err,"%s",er);
+				state=1;
+				break;
+			default:
+				break;
+		}
+	}
+	if(state==1)
+		bluescreen(err);
+}
+
+char *replace(char *string, char c1, char c2){
+
+	char str[200];
+
+	strcat(str, string);
+
+	for(int i=0;i<strlen(str);i++){
+		if(str[i]==c1)
+			str[i]=c2;
+	}
+	sprintf(string,"%s",str);
+
+	return string;
+}
+/*Checking if the mouse is in a specified coordinate area*/
+int touch(int y, int x, int y1, int x1, MEVENT evnt){
+	return ((evnt.y > y && evnt.y < y1) && (evnt.x > x && evnt. x < x1));
+}
+int mtouchwin(WINDOW *win, MEVENT evnt){
+	return touch(getbegy(win),getbegx(win),getmaxy(win),getmaxx(win),evnt);
 }

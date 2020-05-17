@@ -6,11 +6,12 @@ int main(void)
 	cbreak();
 	noecho();
 
-	int d = getmaxy(stdscr);
+	int y = getmaxy(stdscr);
+	int x = getmaxx(stdscr);
 
 	endwin();
 
-	printf("%d",d);
+	printf("y=%d x=%d\n",y,x);
 
 	return 0;
 }
