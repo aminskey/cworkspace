@@ -1,4 +1,7 @@
 #include <ncurses.h>
+#include <stdio.h>
+#include <string.h>
+#include <strings.h>
 
 void wpaint(WINDOW *win, char ch, short clr){
         wattron(win,COLOR_PAIR(clr));
@@ -8,6 +11,19 @@ void wpaint(WINDOW *win, char ch, short clr){
                         mvwprintw(win,i,j,"%c",ch);
 
         wattroff(win, COLOR_PAIR(clr));
+}
+
+int chprint(WINDOW *win, char *fname){
+	FILE *fp=fopen(fname,"r+");
+	wmove(win,0,0);
+	if(fp==NULL)
+		return -1;
+	while(!feof(fp)){
+		wprintw(win,"%c",fgetc(fp));
+	}
+	fclose(fp);
+
+	return 0;
 }
 
 int touch(int y, int x, int y1, int x1, MEVENT evnt){

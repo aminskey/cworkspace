@@ -42,7 +42,6 @@ void bluescreen(char *s){
 
 void drvchck(void){
 
-        register int cd=0;
         register int state=0;
 
         char er[100];

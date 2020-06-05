@@ -41,7 +41,7 @@ int term(WINDOW *wterm, char *username){
         char str[130];
 
         int ln=0;
-        int cd=0;
+
 	int st=0;
 	int in=0;
 	int wy, wx;
@@ -53,7 +53,6 @@ int term(WINDOW *wterm, char *username){
 	char rs[100];
 
         int drvstate=0;
-	int dstate=0;
 
 	drvchck();
 	sprintf(quote,"YOUR SYSTEM IS DOWN");
@@ -78,6 +77,7 @@ int term(WINDOW *wterm, char *username){
         start_color();
         init_pair(1,COLOR_WHITE,COLOR_CYAN);
 	init_pair(col,fs,ss);
+	init_pair(2,COLOR_BLACK,COLOR_GREEN);
 
 	wclear(wterm);
 	wclear(iterm);
@@ -123,9 +123,8 @@ int term(WINDOW *wterm, char *username){
 
 	sprintf(cmd, " ");
 
-	int strc;
-
         while(1){
+
 		getbegyx(wterm,wy,wx);
 		getcwd(cwd,180);
 
@@ -134,13 +133,16 @@ int term(WINDOW *wterm, char *username){
 
 		replace(cwd,'/','\\');
 		reverse(cwd);
+
+		sprintf(rs," ");
+
 		for(int i=0;cwd[i]!=cdrv;i++){
 			rs[i]=cwd[i];
 		}
 		reverse(rs);
 		reverse(cwd);
 
-                wprintw(iterm,"%c:\\%s>",cdrv,rs+1);
+                wprintw(iterm,"%c:\\%s>",cdrv,rs+4);
                 wscanw(iterm,"%s %s %s %s %s",cmd,arg1,arg2,arg3,arg4);
                 ln++;
 
@@ -358,6 +360,11 @@ int term(WINDOW *wterm, char *username){
                 sprintf(cmd," ");
                 wrefresh(iterm);
         }
+
+	attron(COLOR_PAIR(2));
+	mvprintw(getmaxy(stdscr)-1,0,"Hehehehehehehehehehehehehehehehhehehehheehhehehhehehhe");
+	attroff(COLOR_PAIR(2));
+
         noecho();
         curs_set(0);
 

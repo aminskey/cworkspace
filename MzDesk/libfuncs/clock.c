@@ -10,7 +10,6 @@ void mzclock(WINDOW *src){
 
 	int ch=0;
 	int col=0;
-	int c=0;
 
 	short fg=0;
 	short bg=0;

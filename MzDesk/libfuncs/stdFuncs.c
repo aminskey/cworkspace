@@ -17,7 +17,7 @@ char *replace(char *string, char c1, char c2){
 
         strcat(str, string);
 
-        for(int i=0;i<strlen(str);i++){
+        for(int i=0;i<strlen(str)-1;i++){
                 if(str[i]==c1)
                         str[i]=c2;
         }

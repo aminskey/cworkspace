@@ -25,6 +25,7 @@ extern void bluescreen();
 
 extern void wpaint();
 extern int touch();
+extern int chprint();
 
 
 extern void mzclock();

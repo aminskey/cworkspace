@@ -12,7 +12,7 @@ char *login(char *s){
 
 	char lfile[60], binfo[60], name[50], pass[50], inputName[50], inputPass[50];
 	short pair, fg, bg;
-	int bgch, c;
+	int bgch;
 
 	sprintf(lfile,"%s/login",drva);
 	sprintf(binfo,"%s/dat",drva);
@@ -22,7 +22,6 @@ char *login(char *s){
 	FILE *fp1=fopen(lfile,"r");
 	FILE *fp2=fopen(binfo,"r");
 
-	MEVENT evnt;
 	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION,NULL);
 
 	if(fp1 == NULL){

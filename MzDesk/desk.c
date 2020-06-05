@@ -8,9 +8,9 @@
 #include<unistd.h>
 #include<dirent.h>
 
-#include"acorn.h"
+#include"acornlibs/acorn.h"
 
-char quote[]="YOUR DRIVES ARE DOWN, EDIT THE \'drvConf\' C FILE AND BUILD AGAIN";
+char quote[100]="YOUR DRIVES ARE DOWN, EDIT THE \'drvConf\' C FILE AND BUILD AGAIN";
 
 
 
@@ -29,7 +29,6 @@ int main(void){
 	struct dirent *dir;
 
  	char desk[100];
-	int chd;
 
 	drvchck();
 
@@ -53,6 +52,10 @@ int main(void){
         unsigned int ch=0;
 	int col=0;
 
+	int sy, sx;
+
+	char fname[200];
+
 	short fs=0;
 	short ss=0;
 
@@ -70,14 +73,9 @@ int main(void){
 
         WINDOW *menu=newwin(3,MAXX,MAXY-3,0);
 
-	WINDOW *note=newwin(MAXY/2, MAXX/2, MAXY/2 - MAXY/4, MAXX/2 - MAXX/4);
-	WINDOW *info=newwin(MAXY/2,MAXX,0,0);
-	WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
         WINDOW *clck=newwin(3,20,rand()%MAXY/2,rand()%MAXX/2);
-        WINDOW *app=newwin(MAXY/2,MAXX,0,0);
-
 	WINDOW *ico=newwin(6,7,2,2);
-
+        WINDOW *trm=newwin(MAXY/2,MAXX/2,rand()%MAXY/2,rand()%MAXX/2);
 
         WINDOW *mb2=newwin(24,24,(MAXY-getmaxy(menu)-24),0);
         WINDOW *optm=derwin(mb2,3,getmaxx(mb2)-2,1,1);
@@ -87,14 +85,13 @@ int main(void){
 	WINDOW *opout=derwin(mb2,3,getmaxx(oprs),1+getmaxy(oprs)*4,1);
         WINDOW *srch=derwin(mb2,3,getmaxx(mb2)-2,getmaxy(mb2)-4,1);
 
+
         MEVENT evnt;
 
         mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 
-	drvchck();
-
-        fscanf(fp,"%d %d %hd %hd",&ch,&col,&fs,&ss);
+        fscanf(fp,"%d %d %hd %hd %s %d %d",&ch,&col,&fs,&ss,fname,&sy, &sx);
         fclose(fp);
 
         const chtype drvico[7][7]={
@@ -130,7 +127,7 @@ int main(void){
 	getbegyx(ico,fy,fx);
 	fy*=5;
 
-
+	sleep(1);
 	paint(ch,col);
 
         refresh();
@@ -145,13 +142,19 @@ int main(void){
         wrefresh(menu);
 
         keypad(stdscr, true);
+	mvprintw(0,0,"Loading...");
+	refresh();
 
+	sleep(2);
         while(1){
+		usleep(50);
+
 		refresh();
 
 		drvchck();
 
         	curs_set(0);
+		clear();
 		paint(ch,col);
 
 		mvwin(ico,1,2);
@@ -174,7 +177,7 @@ int main(void){
 			refresh();
 
 			mvwin(ico,1,(getmaxx(ico)*2)+getbegx(ico));
-
+                        doupdate();
 
 		}
 		wattron(ico,A_REVERSE);
@@ -198,7 +201,7 @@ int main(void){
 				refresh();
 
 				mvwin(ico,fy,fx+=getmaxx(ico)*2);
-
+                                doupdate();
 			}
 		}
 		closedir(dp);
@@ -359,12 +362,14 @@ int main(void){
                 if(!strcmp(in,"AcornDOS")||!strcmp(in,"Acorn")){
                         if(!strcmp(secin,"Prompt"))
                         {
+
                                 res=term(trm,username);
 				if(res!=1){
 					wclear(trm);
 					wpaint(trm,ch,col);
 				}
 				wrefresh(trm);
+				refresh();
                         }
                 }
                 if(!strcmp(in,"Off")){
@@ -395,8 +400,10 @@ int main(void){
                         main();
                         return 0;
                 }
- 		sprintf(in," ");
+
+		sprintf(in," ");
 		sprintf(secin," ");
+
 	}
         endwin();
         return 0;
