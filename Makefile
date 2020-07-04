@@ -9,6 +9,8 @@ Webose:
 
 desk:
 	gcc MzDesk/libfuncs/*.c MzDesk/*.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/AcornDesk
+game:
+	gcc gameStation/libfuncs/*.c *.c -Ilibs -fdiagnostics-generate-patch -lncurses -o ~/bin/GameStation
 enc:
 	gcc enc.c -o ../bin/Encrypt
 dnc:
@@ -116,6 +118,7 @@ clean:
 	rm -rf ../bin/N-ll
 	rm -rf ../bin/AsciiTable
 	rm -rf ../bin/AcornDesk
+	rm -rf ../bin/GameStation
 	rm -rf ../bin
 
-all: clean createBin show talk Webose desk graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc showimg createHello
+all: clean createBin show talk Webose desk game graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc showimg createHello

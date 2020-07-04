@@ -9,6 +9,37 @@
 
 int main(int argc, char *argv[]){
     
+    struct stat statbuf;
+
+    if(stat(argv[1],&statbuf)!=-1){
+
+	char ch;
+	int nl=0;
+	FILE *fp=fopen(argv[1],"r+");
+
+	while(!feof(fp)){
+		ch=fgetc(fp);
+		if(ch=='\n'){
+			nl++;
+		}
+	}
+
+	printf("ID of containing device [%lx, %x]\n",(long) major(statbuf.st_dev), minor(statbuf.st_dev));
+	printf("Size of file: %ld\nNumber of lines: %d\n",(long)statbuf.st_size,nl);
+	printf("Inode number: %ld\nMode: %lo\n",(long) statbuf.st_ino,(unsigned long)statbuf.st_mode);
+	printf("Ownership: User ID=%ld Group ID=%ld\n",(long) statbuf.st_uid, (long) statbuf.st_gid);
+	printf("Number of blocks allocated: %ld\n",(unsigned long)statbuf.st_blocks);
+	printf("Time of last acces: %s\nTime of last modification: %s\nTime of last status change: %s",ctime(&statbuf.st_atime),ctime(&statbuf.st_mtime),ctime(&statbuf.st_ctime));
+
+	fclose(fp);
+
+    }else{
+	perror("File not found");
+	return -1;
+    }
+
+    getchar();
+
     initscr();
     noecho();
     cbreak();        
@@ -76,23 +107,6 @@ int main(int argc, char *argv[]){
     fclose(fp);
     getch();
     endwin();
-
-    struct stat statbuf;
-
-    if(!strcmp(argv[2],"-i")){
-	stat(argv[1],&statbuf);
-
-        printf("ID of containing device [%lx, %x]\n",(long) major(statbuf.st_dev), minor(statbuf.st_dev));
-        printf("Size of file: %ld\n",(long)statbuf.st_size);
-        printf("Inode number: %ld\nMode: %lo\n",(long) statbuf.st_ino,(unsigned long)statbuf.st_mode);
-        printf("Ownership: User ID=%ld Group ID=%ld\n",(long) statbuf.st_uid, (long) statbuf.st_gid);
-        printf("Number of blocks allocated: %ld\n",(unsigned long)statbuf.st_blocks);
-        printf("Time of last acces: %s\nTime of last modification: %s\nTime of last status change: %s",ctime(&statbuf.st_atime),ctime(&statbuf.st_mtime),ctime(&statbuf.st_ctime));
-
-
-    }else{
-
-    }
 
     return 0;
 }
