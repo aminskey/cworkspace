@@ -10,7 +10,7 @@ Webose:
 desk:
 	gcc MzDesk/libfuncs/*.c MzDesk/*.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/AcornDesk
 game:
-	gcc gameStation/libfuncs/*.c *.c -Ilibs -fdiagnostics-generate-patch -lncurses -o ~/bin/GameStation
+	gcc gameStation/libfuncs/*.c gameStation/*.c -Ilibs -fdiagnostics-generate-patch -lcurl -lncurses -o ~/bin/GameStation
 enc:
 	gcc enc.c -o ../bin/Encrypt
 dnc:

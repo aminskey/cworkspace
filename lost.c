@@ -5,7 +5,7 @@
 #include<time.h>
 #include<stdlib.h>
 
-void wpaint(WINDOW *, int , int , int);
+void wpaint(WINDOW *, int , int , const chtype);
 
 int moveNotOk(int, int);
 
@@ -44,7 +44,7 @@ int main(void)
 
 
 
-	int d,b;
+	unsigned int d,b;
 
 	int c=0;
 
@@ -81,7 +81,7 @@ start:
 	
 		
 	attron(COLOR_PAIR(a));
-	mvprintw(d,b,"X");
+	mvaddch(d,b,96|A_ALTCHARSET);
 	attroff(COLOR_PAIR(a));
 	
 	refresh();
@@ -106,7 +106,7 @@ start:
 
 	while(1)
 	{
-		plc=(unsigned char)178;
+		plc='-';
 		if(py == d && px == b)
 			break;
 
@@ -122,6 +122,7 @@ start:
 					py=py;
 				}else{
 					py=py-1;
+					plc='|';
 				}
 				
 				break;
@@ -131,6 +132,7 @@ start:
 					py=py;
                                 }else{
 					py=py+1;
+					plc='|';
 				}				
 
 				break;
@@ -140,6 +142,7 @@ start:
 					px=px;
 				}else{
 					px=px-1;
+					plc='<';
 				}
 				
 				break;
@@ -148,6 +151,7 @@ start:
 					px=px;
                                 }else{
 					px++;
+					plc='>';
 				}
 				break;
 			
@@ -169,13 +173,16 @@ start:
 	refresh();
 	wattron(win,A_REVERSE);
 
-	wpaint(win,getmaxy(win),getmaxx(win),32);
+	wpaint(win,getmaxy(win),getmaxx(win),(const chtype)97|A_ALTCHARSET);
 	box(win,0,0);
 
 
 	wattroff(win,A_REVERSE);
 	wrefresh(win);
 
+	attron(COLOR_PAIR(a));
+	mvaddch(d,b,96|A_ALTCHARSET);
+	attroff(COLOR_PAIR(a));
 
 	wattron(win,COLOR_PAIR(a=rand()%3));
 	mvwprintw(win,getmaxy(win)/2,(getmaxx(win)-strlen("you made it, you opened the secret door!"))/2,"You Made It, You Opened The Secret Door!");
@@ -201,14 +208,14 @@ start:
 	endwin();
 }
 
-void wpaint(WINDOW *win, int a, int b, int c)
+void wpaint(WINDOW *win, int a, int b, const chtype c)
 {
 	int i=0,j=0;
 
 	for(i=0;i<a;i++)
 	{
 		for(j=0;j<b;j++)
-			mvwprintw(win,i,j,"%c",(unsigned char)c);
+			mvwaddch(win,i,j,c);
 	}
 }
 
