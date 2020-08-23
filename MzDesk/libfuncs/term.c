@@ -200,7 +200,7 @@ int term(WINDOW *wterm, char *username){
 
                         if(!strcmp(arg1,"desk") || !strcmp(arg1,"DESK")){
                                 endwin();
-                                exit(0);
+                                return SYS_SHUTDOWN;
                         }
 		}if(!strcmp(cmd,"move")||!strcmp(cmd,"MOVE")){
 			keypad(stdscr,TRUE);
@@ -319,9 +319,7 @@ int term(WINDOW *wterm, char *username){
 			return st;
                 }if(!strcmp(cmd,"reboot")||!strcmp(cmd,"REBOOT")){
 			endwin();
-			main();
-			exit(0);
-
+			return SYS_RESTART;
 		}if(!strcmp(cmd,"console")||!strcmp(cmd,"CONSOLE")){
                         sprintf(str,"%s %s %s",arg1,arg2,arg3);
                         system(str);
@@ -360,10 +358,6 @@ int term(WINDOW *wterm, char *username){
                 sprintf(cmd," ");
                 wrefresh(iterm);
         }
-
-	attron(COLOR_PAIR(2));
-	mvprintw(getmaxy(stdscr)-1,0,"Hehehehehehehehehehehehehehehehhehehehheehhehehhehehhe");
-	attroff(COLOR_PAIR(2));
 
         noecho();
         curs_set(0);

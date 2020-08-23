@@ -44,4 +44,7 @@ extern char* login();
 #define MAXY getmaxy(stdscr)
 #define MAXX getmaxx(stdscr)
 
+#define SYS_SHUTDOWN 12
+#define SYS_RESTART 11
+
 #endif
