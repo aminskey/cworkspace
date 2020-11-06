@@ -27,7 +27,8 @@ extern void wpaint();
 extern int touch();
 extern int chprint();
 
-
+extern void fbrowse();
+extern int edit();
 extern void mzclock();
 extern int term();
 extern char *login();

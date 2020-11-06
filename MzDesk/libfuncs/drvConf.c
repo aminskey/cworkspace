@@ -1,7 +1,7 @@
-char drva[]="/home/amin/.Mzdos/A";
-char drvc[]="/home/amin/.Mzdos/C";
-char drvd[]="/home/amin/.Mzdos/D";
-char drve[]="/home/amin/.Mzdos/E";
-char drvz[]="/home/amin/.Mzdos/Z";
-char home[]="/home/amin";
+char drva[]="/home/aminskey/.Mzdos/A";
+char drvc[]="/home/aminskey/.Mzdos/C";
+char drvd[]="/home/aminskey/.Mzdos/D";
+char drve[]="/home/aminskey/.Mzdos/E";
+char drvz[]="/home/aminskey/.Mzdos/Z";
+char home[]="/home/aminskey";
 char drives[]="ACDEZ";

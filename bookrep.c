@@ -247,7 +247,7 @@ char *newbie(void){
       x--;
     }else if(c == KEY_RIGHT){
       x++;
-    }else if(c == KEY_MOUSE){
+    }if(c == KEY_MOUSE){
       if(getmouse(&ms) == OK){
 	y=ms.y;
 	x=ms.x;

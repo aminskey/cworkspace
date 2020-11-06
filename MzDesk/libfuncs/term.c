@@ -34,11 +34,11 @@ int term(WINDOW *wterm, char *username){
 	int winx;
 
         char cmd[30];
-        char arg1[130];
-        char arg2[130];
-        char arg3[130];
-        char arg4[130];
-        char str[130];
+        char arg1[100];
+        char arg2[100];
+        char arg3[100];
+        char arg4[100];
+        char str[400];
 
         int ln=0;
 
@@ -195,13 +195,18 @@ int term(WINDOW *wterm, char *username){
 
                 if(!strcmp(cmd,"exit") || !strcmp(cmd,"EXIT")){
                         if(!strcmp(arg1,"_")){
-				return st=0;
+				st=0;
+				break;
                         }
 
                         if(!strcmp(arg1,"desk") || !strcmp(arg1,"DESK")){
                                 endwin();
                                 return SYS_SHUTDOWN;
                         }
+		}if(!strcmp(cmd,"edit")||!strcmp(cmd,"EDIT")){
+			st=SYS_RESTART;
+			edit();
+			break;
 		}if(!strcmp(cmd,"move")||!strcmp(cmd,"MOVE")){
 			keypad(stdscr,TRUE);
 			int c=getch();
