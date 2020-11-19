@@ -6,6 +6,7 @@
 #include<stdlib.h>
 #include<sys/stat.h>
 #include<sys/types.h>
+#include<fcntl.h>
 
 #include "acorn.h"
 #include "cmd_acornDOS.h"
@@ -207,7 +208,12 @@ int term(WINDOW *wterm, char *username){
 			st=SYS_RESTART;
 			edit();
 			break;
-		}if(!strcmp(cmd,"move")||!strcmp(cmd,"MOVE")){
+		}if(!strcmp(cmd,"touch")||!strcmp(cmd,"TOUCH")){
+			if(creat(arg1,S_IRWXO|S_IRWXG|S_IRWXU)==-1)
+				wprintw(iterm,"Cannot Create File:-1\n");
+			ln+=2;
+		}
+		if(!strcmp(cmd,"move")||!strcmp(cmd,"MOVE")){
 			keypad(stdscr,TRUE);
 			int c=getch();
 			while(1){

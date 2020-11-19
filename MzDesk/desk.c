@@ -114,13 +114,13 @@ int main(void){
 	};
 
 	const chtype flico[7][7]={
-			{'F','I','L','E','N','M','E'},
-			{ch,ACS_URCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_URCORNER,ch},
-			{ch,ACS_VLINE,'~','~','~',ACS_VLINE,ch},
-			{ch,ACS_LLCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_LRCORNER,ch},
-			{ch,ch,ch,ch,ch,ch,ch},
-			{ch,ch,ch,ch,ch,ch,ch},
-			{ch,ch,ch,ch,ch,ch,ch}
+		{'F','I','L','E','N','M','E'},
+		{ch,ACS_URCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_URCORNER,ch},
+		{ch,ACS_VLINE,'~','~','~',ACS_VLINE,ch},
+		{ch,ACS_LLCORNER,ACS_HLINE,ACS_HLINE,ACS_HLINE,ACS_LRCORNER,ch},
+		{ch,ch,ch,ch,ch,ch,ch},
+		{ch,ch,ch,ch,ch,ch,ch},
+		{ch,ch,ch,ch,ch,ch,ch}
 	};
 
 	start_color();
@@ -160,293 +160,303 @@ int main(void){
 
 	sleep(2);
 
+	pid_t proc;
+	if((proc=fork())==-1)
+		bluescreen("Forking process not working");
+
 	while(1){
-		clear();
-		paint(ch,col);
-		refresh();
 
-		drvchck();
-		refresh();
-		attron(COLOR_PAIR(col));
-		for(int i=0;i<5;i++){
-		/*	box(ico,ch,ch);
-
-			wrefresh(ico);
+		if(proc!=0){
+			clear();
+			paint(ch,col);
 			refresh();
 
-			for(int y=0;y<7;y++){
-				for(int x=0;x<7;x++){
-					mvwaddch(ico,y,x,drvico[y][x]);
-				}
-			}
-			wrefresh(ico);
-
-			mvprintw(getmaxy(ico),getbegx(ico)+2,"%c:",drives[i]);
+			drvchck();
 			refresh();
+			attron(COLOR_PAIR(col));
+			mvwin(ico,1,1);
 
-			mvwin(ico,1,(getmaxx(ico)*2)+getbegx(ico));
-			doupdate();
-		*/
-			en[i]=newwin(6,7,1,(getmaxx(en[i])*2)+getbegx(en[i]));
-			wattron(en[i],COLOR_PAIR(col));
+			wattron(ico,COLOR_PAIR(1));
+			for(int i=0;i<5;i++){
+				box(ico,ch,ch);
 
-			refresh();
+				wrefresh(ico);
+				refresh();
 
-			box(en[i],ch,ch);
-
-			wrefresh(en[i]);
-			refresh();
-
-			for(int y=0;y<7;y++){
-				for(int x=0;x<7;x++){
-					mvwaddch(en[i],y,x,drvico[y][x]);
-				}
-			}
-			wrefresh(en[i]);
-
-			mvprintw(getmaxy(en[i]), getbegx(en[i])+2,"%c:"drives[i]);
-			refresh();
-
-		}
-		getbegyx(ico,fy,fx);
-
-		dp=opendir(desk);
-		while((dir=readdir(dp))!=NULL){
-			if(strncmp(dir->d_name,".",1)){
-				if(fx>=getmaxx(stdscr)-1){
-					fy+=getmaxy(ico);
-				}
-				for(int i=0;i<7;i++){
-					for(int j=0;j<7;j++){
-						mvwaddch(ico,i,j,flico[i][j]);
+				for(int y=0;y<7;y++){
+					for(int x=0;x<7;x++){
+						mvwaddch(ico,y,x,drvico[y][x]);
 					}
 				}
 				wrefresh(ico);
-				mvprintw(getmaxy(ico)+fy,fx+(getmaxx(ico)-strlen("C D R V"))/2,"C D R V");
-				mvprintw((getmaxy(ico)+fy)-1,fx+(getmaxx(ico)-strlen(dir->d_name))/2,"%s",dir->d_name);
+
+				mvprintw(getmaxy(ico),getbegx(ico)+2,"%c:",drives[i]);
 				refresh();
 
-				mvwin(ico,fy,fx+=getmaxx(ico)*2);
+				mvwin(ico,1,(getmaxx(ico)*2)+getbegx(ico));
 				doupdate();
+
 			}
-		}
-		closedir(dp);
-		refresh();
-		wpaint(menu,32,4);
-		wrefresh(menu);
+			getbegyx(ico,fy,fx);
 
-		wattron(menu,COLOR_PAIR(4));
-		mvwprintw(menu,1,1,"start");
-		mvwprintw(menu,1,10,"%d:%d.%d",loctime->tm_hour, loctime->tm_min,loctime->tm_sec);
-		wattroff(menu,COLOR_PAIR(4));
-
-		wrefresh(menu);
-		wattroff(ico,A_REVERSE);
-		attroff(COLOR_PAIR(col));
-		wattroff(ico,COLOR_PAIR(col));
-
-		if(res==0){
-			wclear(trm);
-			wpaint(trm,ch,col);
-			wrefresh(trm);
-			mvwin(trm,MAXY,MAXX);
-		}
-		if(res==1){
-			wclear(trm);
-			wpaint(trm,32,3);
-
-			box(trm,0,0);
-			wrefresh(trm);
-		}
-		if(res==SYS_SHUTDOWN||ret==SYS_SHUTDOWN){
-			break;
-		}
-		if(res==SYS_RESTART||ret==SYS_RESTART){
-			main();
-			exit(EXIT_SUCCESS);
-		}
-		sprintf(quote,"YOUR SYSTEM IS DOWN");
-
-		c=getch();
-		if(c==KEY_MOUSE){
-			if(getmouse(&evnt) == OK){
-				if(evnt.bstate >= BUTTON1_PRESSED){
-					if(touch(MAXY - getmaxy(menu),0,MAXY,strlen("start")+1,evnt)){
-						mvwprintw(menu,1,1,"start");
-							ststate=0;
-							wrefresh(menu);
-						}
-				}
-				if((evnt.bstate >= BUTTON1_PRESSED) && res == 1){
-					if(mtouchwin(trm,evnt)){
-						res=term(trm,username);
+			dp=opendir(desk);
+			while((dir=readdir(dp))!=NULL){
+				if(strncmp(dir->d_name,".",1)){
+					if(fx>=getmaxx(stdscr)-1){
+						fy+=getmaxy(ico);
 					}
+					for(int i=0;i<7;i++){
+						for(int j=0;j<7;j++){
+							mvwaddch(ico,i,j,flico[i][j]);
+						}
+					}
+					wrefresh(ico);
+					mvprintw(getmaxy(ico)+fy,fx+(getmaxx(ico)-strlen("C D R V"))/2,"C D R V");
+					mvprintw((getmaxy(ico)+fy)-1,fx+(getmaxx(ico)-strlen(dir->d_name))/2,"%s",dir->d_name);
+					refresh();
+
+					mvwin(ico,fy,fx+=getmaxx(ico)*2);
+					doupdate();
 				}
-			}else{
-				bluescreen("DESKTOP HAS CRASHED, BECAUSE THERE IS NO MOUSE OR THAT THE MOUSE IS UNAVAILABLE");
-				endwin();
-				exit(0);
 			}
-		}
-		if(ststate == 0){
-			usleep(250);
-
+			closedir(dp);
 			refresh();
-/* ###################################################################################
-		C R E A T I N G   M E N U
-###################################################################################
+			wpaint(menu,32,4);
+			wattroff(ico,COLOR_PAIR(1));
+			wrefresh(menu);
+/*
+		        time(&lctime);
+		        loctime=localtime(&lctime);
 */
-
-
-			wpaint(mb2,32,4);
-			wattron(mb2,COLOR_PAIR(4));
-
-			box(mb2,0,0);
-
-			wattroff(mb2,COLOR_PAIR(4));
-			wrefresh(mb2);
-
-
-/* ####################################################################################
-			C R E A T I N G  A P P S
-####################################################################################
-*/
-			wpaint(optm,32,4);
-			wattron(optm,COLOR_PAIR(4));
-
-			box(optm,0,0);
-			mvwprintw(optm,1,1,"AcornDOS Prompt");
-
-
-			wattroff(optm,COLOR_PAIR(4));
-			wrefresh(optm);
-
-			wpaint(opcl,32,4);
-			wattron(opcl,COLOR_PAIR(4));
-
-			box(opcl,0,0);
-			mvwprintw(opcl,1,1,"Clock");
-
-			wattroff(opcl,COLOR_PAIR(4));
-			wrefresh(opcl);
-
-			wpaint(opoff,32,4);
-			wattron(opoff,COLOR_PAIR(4));
-
-			box(opoff,0,0);
-			mvwprintw(opoff,1,1,"Off Button");
-
-			wattroff(opoff,COLOR_PAIR(4));
-			wrefresh(opoff);
-
-			wpaint(oprs,32,4);
-			wattron(oprs,COLOR_PAIR(4));
-
-			box(oprs,0,0);
-			mvwprintw(oprs,1,1,"Reset Computer");
-
-			wattroff(oprs,COLOR_PAIR(4));
-			wrefresh(oprs);
-
-			wpaint(opout,32,4);
-			wattron(opout, COLOR_PAIR(4));
-
-			box(opout,0,0);
-			mvwprintw(opout,1,1,"Log Out");
-
-			wattroff(opout, COLOR_PAIR(4));
-			wrefresh(opout);
-
-			wpaint(oped,32,4);
-			wattron(oped, COLOR_PAIR(4));
-
-			box(oped,0,0);
-			mvwprintw(oped,1,1,"Editor");
-
-			wattroff(oped, COLOR_PAIR(4));
-			wrefresh(oped);
-
-			ststate=2;
-		}
-		if(ststate==2){
-			echo();
-
-			wpaint(srch,32,4);
-			wattron(srch,COLOR_PAIR(4));
-
-			box(srch,0,0);
-			mvwprintw(srch,0,(getmaxx(srch)-strlen("Search"))/2,"Search");
-			mvwscanw(srch,1,1,"%s %s",in,secin);
-
-			wattroff(srch,COLOR_PAIR(4));
-			wrefresh(srch);
-
-			ststate=1;
-			noecho();
-		}
-		if(ststate==1){
-			wpaint(mb2,ch,col);
-			wrefresh(mb2);
 
 			wattron(menu,COLOR_PAIR(4));
 			mvwprintw(menu,1,1,"start");
-			wattron(menu,COLOR_PAIR(4));
+//			mvwprintw(menu,1,10,"%d:%d.%d",loctime->tm_hour, loctime->tm_min,loctime->tm_sec);
+			wattroff(menu,COLOR_PAIR(4));
 
 			wrefresh(menu);
+			wattroff(ico,A_REVERSE);
+			attroff(COLOR_PAIR(col));
+			wattroff(ico,COLOR_PAIR(col));
 
-		}
-
-		if(!strcmp(in,"Acorn")||!strcmp(in,"AcornDOS")||!strcmp(in,"cmd")){
-			if(!strcmp(secin,"Prompt")||!strcmp(in,"cmd"))
-			{
-				res=term(trm,username);
-				if(res!=1){
-					wclear(trm);
-					wpaint(trm,ch,col);
-				}
+			if(res==0){
+				wclear(trm);
+				wpaint(trm,ch,col);
 				wrefresh(trm);
+				mvwin(trm,MAXY,MAXX);
+			}
+			if(res==1){
+				wclear(trm);
+				wpaint(trm,32,3);
+
+				box(trm,0,0);
+				wrefresh(trm);
+			}
+			if(res==SYS_SHUTDOWN||ret==SYS_SHUTDOWN){
+				res=ret=0;
+				break;
+			}
+			if(res==SYS_RESTART||ret==SYS_RESTART){
+				res=ret=0;
+				main();
+				exit(EXIT_SUCCESS);
+			}
+			sprintf(quote,"YOUR SYSTEM IS DOWN");
+
+			c=getch();
+			if(c==KEY_MOUSE){
+				if(getmouse(&evnt) == OK){
+					if(evnt.bstate >= BUTTON1_PRESSED){
+						if(touch(MAXY - getmaxy(menu),0,MAXY,strlen("start")+1,evnt)){
+							mvwprintw(menu,1,1,"start");
+								ststate=0;
+								wrefresh(menu);
+							}
+					}
+					if((evnt.bstate >= BUTTON1_PRESSED) && res == 1){
+						if(mtouchwin(trm,evnt)){
+							res=term(trm,username);
+						}
+					}
+				}else{
+					bluescreen("DESKTOP HAS CRASHED, BECAUSE THERE IS NO MOUSE OR THAT THE MOUSE IS UNAVAILABLE");
+					endwin();
+					exit(0);
+				}
+			}
+			if(ststate == 0){
+				usleep(250);
+
 				refresh();
+	/* ###################################################################################
+			C R E A T I N G   M E N U
+	###################################################################################
+	*/
+
+
+				wpaint(mb2,32,4);
+				wattron(mb2,COLOR_PAIR(4));
+
+				box(mb2,0,0);
+
+				wattroff(mb2,COLOR_PAIR(4));
+				wrefresh(mb2);
+
+
+	/* ####################################################################################
+				C R E A T I N G  A P P S
+	####################################################################################
+	*/
+				wpaint(optm,32,4);
+				wattron(optm,COLOR_PAIR(4));
+
+				box(optm,0,0);
+				mvwprintw(optm,1,1,"AcornDOS Prompt");
+
+
+				wattroff(optm,COLOR_PAIR(4));
+				wrefresh(optm);
+
+				wpaint(opcl,32,4);
+				wattron(opcl,COLOR_PAIR(4));
+
+				box(opcl,0,0);
+				mvwprintw(opcl,1,1,"Clock");
+
+				wattroff(opcl,COLOR_PAIR(4));
+				wrefresh(opcl);
+
+				wpaint(opoff,32,4);
+				wattron(opoff,COLOR_PAIR(4));
+
+				box(opoff,0,0);
+				mvwprintw(opoff,1,1,"Off Button");
+
+				wattroff(opoff,COLOR_PAIR(4));
+				wrefresh(opoff);
+
+				wpaint(oprs,32,4);
+				wattron(oprs,COLOR_PAIR(4));
+
+				box(oprs,0,0);
+				mvwprintw(oprs,1,1,"Reset Computer");
+
+				wattroff(oprs,COLOR_PAIR(4));
+				wrefresh(oprs);
+
+				wpaint(opout,32,4);
+				wattron(opout, COLOR_PAIR(4));
+
+				box(opout,0,0);
+				mvwprintw(opout,1,1,"Log Out");
+
+				wattroff(opout, COLOR_PAIR(4));
+				wrefresh(opout);
+
+				wpaint(oped,32,4);
+				wattron(oped, COLOR_PAIR(4));
+
+				box(oped,0,0);
+				mvwprintw(oped,1,1,"Editor");
+
+				wattroff(oped, COLOR_PAIR(4));
+				wrefresh(oped);
+
+				ststate=2;
 			}
-		}
-		if(!strcmp(in,"Off")){
-			if(!strcmp(secin,"Button")){
-				clear();
-				mvprintw(0,0,"Turning Off");
-				usleep(1500);
-				endwin();
-				return 0;
+			if(ststate==2){
+				echo();
+
+				wpaint(srch,32,4);
+				wattron(srch,COLOR_PAIR(4));
+
+				box(srch,0,0);
+				mvwprintw(srch,0,(getmaxx(srch)-strlen("Search"))/2,"Search");
+				mvwscanw(srch,1,1,"%s %s",in,secin);
+
+				wattroff(srch,COLOR_PAIR(4));
+				wrefresh(srch);
+
+				ststate=1;
+				noecho();
 			}
-		}
-		if(!strcmp(in,"Quit")||(!strcmp(in,"Log") && !strcmp(secin,"Out"))){
-			login(username);
-			main();
-			return 0;
-		}
-		if(!strcmp(in,"Reset")){
-			if(!strcmp(secin,"Computer")){
+			if(ststate==1){
+				wpaint(mb2,ch,col);
+				wrefresh(mb2);
+
+				wattron(menu,COLOR_PAIR(4));
+				mvwprintw(menu,1,1,"start");
+				wattron(menu,COLOR_PAIR(4));
+
+				wrefresh(menu);
+
+			}
+
+			if(!strcmp(in,"Acorn")||!strcmp(in,"AcornDOS")||!strcmp(in,"cmd")){
+				if(!strcmp(secin,"Prompt")||!strcmp(in,"cmd"))
+				{
+					res=term(trm,username);
+					if(res!=1){
+						wclear(trm);
+						wpaint(trm,ch,col);
+					}
+					wrefresh(trm);
+					refresh();
+				}
+			}
+			if(!strcmp(in,"Off")){
+				if(!strcmp(secin,"Button")){
+					clear();
+					mvprintw(0,0,"Turning Off");
+					usleep(1500);
+					endwin();
+					return 0;
+				}
+			}
+			if(!strcmp(in,"Quit")||(!strcmp(in,"Log") && !strcmp(secin,"Out"))){
+				login(username);
 				main();
 				return 0;
 			}
-		}if(!strcmp(in,"Clock")){
-			mzclock(clck);
-		}if(!strcmp(in,"edit")||!strcmp(in,"Editor")){
-			ret=edit(evnt);
-		}
-		if(c==KEY_F(9))
-			break;
-		if(c==KEY_F(12)){
-			main();
-			break;
-		}
+			if(!strcmp(in,"Reset")){
+				if(!strcmp(secin,"Computer")){
+					main();
+					return 0;
+				}
+			}if(!strcmp(in,"Clock")){
+				mzclock(clck);
+			}if(!strcmp(in,"edit")||!strcmp(in,"Editor")){
+				ret=edit(evnt);
+			}
+			if(c==KEY_F(9))
+				break;
+			if(c==KEY_F(12)){
+				main();
+				break;
+			}
 
-		sprintf(in," ");
-		sprintf(secin," ");
-	//	wait(NULL);
-//		}
+			sprintf(in," ");
+			sprintf(secin," ");
 
-	
+			wait(NULL);
+	//		}
+
+		}else{
+			time(&lctime);
+	                loctime=localtime(&lctime);
+
+
+                	wattron(menu,COLOR_PAIR(4));
+        //        	mvwprintw(menu,1,1,"start");
+        	        mvwprintw(menu,1,20,"%d:%d.%d",loctime->tm_hour, loctime->tm_min,loctime->tm_sec);
+	                wattroff(menu,COLOR_PAIR(4));
+			delay_output(100);
+			wrefresh(menu);
+
+		}
 	}
         endwin();
         return 0;
 
 }
+

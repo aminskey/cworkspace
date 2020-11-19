@@ -50,6 +50,7 @@ int main(void)
 
 
 start:
+	srand(time(NULL));
 	b=rand()%getmaxy(stdscr)-5;
 	d=rand()%getmaxx(stdscr)-5;
 
@@ -76,14 +77,13 @@ start:
 		mvprintw(0,0,"Volcano Rim|");
 		mvprintw(1,0,"------------");
 	}
-	
+
 	attroff(COLOR_PAIR(a));
-	
-		
+
 	attron(COLOR_PAIR(a));
 	mvaddch(d,b,96|A_ALTCHARSET);
 	attroff(COLOR_PAIR(a));
-	
+
 	refresh();
 	delay_output(800);
 
@@ -98,10 +98,8 @@ start:
 	mvprintw(py,px,"%c",plc);
 
 
-	
 	refresh();
 
-	
 	keypad(stdscr, true);
 
 	while(1)
@@ -111,7 +109,6 @@ start:
 			break;
 
 		refresh();
-	
 		c=getch();
 		switch(c)
 		{
@@ -124,7 +121,6 @@ start:
 					py=py-1;
 					plc='|';
 				}
-				
 				break;
 			case KEY_DOWN:
 				if(moveNotOk(py+1,px)==TRUE)
