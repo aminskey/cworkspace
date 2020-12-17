@@ -66,7 +66,7 @@ int term(WINDOW *wterm, char *username){
 	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);
 
 
-	sprintf(srch,"%s/.Mzdos/A/dat",home);
+	sprintf(srch,"%s/dat",drva);
 	FILE *fp=fopen(srch,"r");
 	if(fp == NULL){
 		bluescreen("Your System Is DOWN!! CALL THE MANUFACTURER AND TELL HIM THAT SOMETHING\'S MESSED UP");
@@ -308,7 +308,7 @@ int term(WINDOW *wterm, char *username){
                         wprintw(iterm,"Help v 1.1\n\n");
                         ln+=2;
                         if(!strcmp(arg1,"_")){
-                                sprintf(str,"%s/.Mzdos/Z/commands.txt",home);
+                                sprintf(str,"%s/commands.txt",drvz);
                                 int f=more(iterm,str,ln);
                                 if(f == -1){
                                         wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);
@@ -317,7 +317,7 @@ int term(WINDOW *wterm, char *username){
                                 }
                                 continue;
                         }
-                        sprintf(str,"%s/.Mzdos/Z/%s.txt",home,arg1);
+                        sprintf(str,"%s/%s.txt",drvz,arg1);
                         int f=more(iterm,str,ln);
                         if(f == -1){
                                 wprintw(iterm,"[more] : Cannot Open Requested File \'%s\' - \"--help\" for help\nif you do help _ , then it will display help page\n",str);

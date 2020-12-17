@@ -233,9 +233,9 @@ int main(int argc, char *argv[]){
 
 	for(int k=0;k<5;k++){
 		if(errnums[k]>=131 || errnums[k]<=0)
-			printf("On Drive %c errornum: %d - error report: Succes\n",drvNames[k],errnums[k]);
+			printf("On Drive %c errornum: %10d - error report: Succes\n",drvNames[k],errnums[k]);
 		else{
-			printf("On Drive %c errornum: %d - error report: %s\n",drvNames[k],errnums[k],strerror(errnums[k]));
+			printf("On Drive %c errornum: %10d - error report: %s\n",drvNames[k],errnums[k],strerror(errnums[k]));
 		}
 	}
 	return 0;

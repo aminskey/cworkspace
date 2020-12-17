@@ -39,9 +39,9 @@ int main(void){
 	char username[100];
 	login(username);
 
-      	sprintf(desk,"%s/.Mzdos/C/%s/Desktop",home,username);
+      	sprintf(desk,"%s/%s/Desktop",drvc,username);
         sprintf(bgnd,"%s/cworkspace/Mzdesk/dragon.txt",home);
-	sprintf(str,"%s/.Mzdos/A/dat",home);
+	sprintf(str,"%s/dat",drva);
 
         FILE *fp=fopen(str,"r+");
         if(fp == NULL){
