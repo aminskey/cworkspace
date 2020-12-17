@@ -6,7 +6,8 @@ talk:
 
 Webose:
 	gcc verbose.c -lcurl -o ../bin/webose
-
+setup:
+	gcc MzDesk/libfuncs/*.c setup.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/AcornDesk
 desk:
 	gcc MzDesk/libfuncs/*.c MzDesk/*.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/AcornDesk
 game:
