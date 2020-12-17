@@ -92,12 +92,12 @@ int main(int argc, char *argv[]){
 	}
 
 
-	mvwscanw(setup,2,2+strlen("What is your username:"),"%s",usname);
-	mvwscanw(setup,4,6+strlen("Where do you want to store your drives:"),"%s",drvs);
-	mvwscanw(setup,6,6+strlen("Choose fore- and background colors (use numbers):"),"%d %d",&f,&b);
+	mvwscanw(setup,2,2+strlen("What is your username: "),"%s",usname);
+	mvwscanw(setup,4,6+strlen("Where do you want to store your drives: "),"%s",drvs);
+	mvwscanw(setup,6,6+strlen("Choose fore- and background colors (use numbers): "),"%d %d",&f,&b);
 
 	noecho();
-	mvwscanw(setup,8,2+strlen("New Password:"),"%s",pas);
+	mvwscanw(setup,8,2+strlen("New Password: "),"%s",pas);
 
 
 
