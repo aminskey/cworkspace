@@ -7,7 +7,7 @@ talk:
 Webose:
 	gcc verbose.c -lcurl -o ../bin/webose
 setup:
-	gcc MzDesk/libfuncs/*.c setup.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/AcornDesk
+	gcc MzDesk/libfuncs/*.c setup.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/setup
 desk:
 	gcc MzDesk/libfuncs/*.c MzDesk/*.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/AcornDesk
 game:
@@ -120,6 +120,7 @@ clean:
 	rm -rf ../bin/AsciiTable
 	rm -rf ../bin/AcornDesk
 	rm -rf ../bin/GameStation
+	rm -rf ../bin/setup
 	rm -rf ../bin
 
-all: clean createBin show talk Webose desk game graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc showimg createHello
+all: clean createBin show talk Webose setup desk game graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc showimg createHello
