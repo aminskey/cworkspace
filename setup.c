@@ -21,14 +21,17 @@ int main(int argc, char *argv[]){
 
 	char drives[5][50];
 	char drvNames[6]="ACDEZ";
-	char muser[20];
-	char mdesk[60];
+	char muser[60];
+	char mdesk[120];
 
 	char config[100];
 	char login[200];
+	char data[200];
 
 	int errnums[6];
 	int i=0;
+
+	int f=0,b=0;
 
 	struct stat *statbuf;
 
@@ -78,16 +81,23 @@ int main(int argc, char *argv[]){
 		mvwaddch(setup,5,i,111|A_ALTCHARSET);
 	}
 
-	mvwprintw(setup,6,2,"New Password:");
+	mvwprintw(setup,6,2,"Choose fore- and background colors (use numbers):");
+        for(int i=2+strlen("Choose fore- and background colors (use numbers):");i<16+strlen("Choose fore- and background colors (use numbers):");i++){
+                mvwaddch(setup,7,i,111|A_ALTCHARSET);
+        }
+
+	mvwprintw(setup,8,2,"New Password:");
 	for(int i=2+strlen("New Password:");i<16+strlen("New Password:");i++){
-		mvwaddch(setup,7,i,111|A_ALTCHARSET);
+		mvwaddch(setup,9,i,111|A_ALTCHARSET);
 	}
+
 
 	mvwscanw(setup,2,2+strlen("What is your username:"),"%s",usname);
 	mvwscanw(setup,4,6+strlen("Where do you want to store your drives:"),"%s",drvs);
+	mvwscanw(setup,6,6+strlen("Choose fore- and background colors (use numbers):"),"%d %d",&f,&b);
 
 	noecho();
-	mvwscanw(setup,6,2+strlen("New Password:"),"%s",pas);
+	mvwscanw(setup,8,2+strlen("New Password:"),"%s",pas);
 
 
 
@@ -165,7 +175,7 @@ int main(int argc, char *argv[]){
 	for(int j=0;j<5;j++){
 		fprintf(fp,"char drv%c[50] = \"%s\";\n",tolower(drvNames[j]),drives[j]);
 	}
-	fprintf(fp,"char home[50] = \"%s\";",usname);
+	fprintf(fp,"char home[50] = \"/home/%s\";\nchar drives[6] = \"ACDEZ\";",usname);
 	fclose(fp);
 
         wattron(sub,COLOR_PAIR(4));
@@ -175,10 +185,10 @@ int main(int argc, char *argv[]){
 	sleep(1);
 
 	sprintf(login,"%s/A/login",head);
-/*	if(creat(config,0777)==-1){
-		bluescreen(strerror(errno));
+	if(creat(login,0777)==-1){
+
 	}
-*/
+
 	FILE *log=fopen(login,"r+");
 	if(fp == NULL){
 		bluescreen(strerror(errno));
@@ -186,12 +196,34 @@ int main(int argc, char *argv[]){
 		exit(-1);
 	}
 
-//	fprintf(log,"%s %s",usname, pas);
+	fprintf(log,"%s %s",usname, pas);
 	fclose(log);
+
+	sprintf(data,"%s/A/dat",head);
+	if(creat(data,0777)==-1){
+
+	}
+
+	FILE *fdata=fopen(data,"r+");
+	if(fdata == NULL){
+		bluescreen(strerror(errno));
+		endwin();
+		printf("Mission Abort\n\a");
+		exit(-1);
+	}
+
+	fprintf(fdata,"32 10 %d %d", f, b);
+	fclose(fdata);
+
+        wattron(sub,COLOR_PAIR(4));
+        mvwprintw(sub,1,(i+=2)+1,"##");
+        wattroff(sub,COLOR_PAIR(4));
+        wrefresh(sub);
+	sleep(1);
 
 
 	wattron(setup,COLOR_PAIR(2));
-	mvwprintw(setup,9,9,"replace the old config file with the new one in cworkspace/MzDesk/libfuncs");
+	mvwprintw(setup,18,9,"replace the old config file with the new one in cworkspace/MzDesk/libfuncs");
 	wattroff(setup,COLOR_PAIR(2));
 	wrefresh(setup);
 
@@ -200,7 +232,11 @@ int main(int argc, char *argv[]){
 	endwin();
 
 	for(int k=0;k<5;k++){
-		printf("On Drive %c errornum: %d - error report: %s\n",drvNames[k],errnums[k],strerror(errnums[k]));
+		if(errnums[k]>=131 || errnums[k]<=0)
+			printf("On Drive %c errornum: %d - error report: Succes\n",drvNames[k],errnums[k]);
+		else{
+			printf("On Drive %c errornum: %d - error report: %s\n",drvNames[k],errnums[k],strerror(errnums[k]));
+		}
 	}
 	return 0;
 }

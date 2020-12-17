@@ -66,8 +66,7 @@ Edit:
 AsciiHex:
 	gcc -o ../bin/AsciiHex AsciiHex.c -lncurses
 Archive:
-	gcc -o ../bin/Archive arch.c -lncurses
-
+	gcc MzDesk/libfuncs/*.c arch.c -IMzDesk/acornlibs -fdiagnostics-generate-patch -lncurses -o ~/bin/Archive
 getMax:
 	gcc -o ../bin/GetScrMax getsMax.c -lncurses
 hRead:

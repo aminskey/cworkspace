@@ -5,12 +5,11 @@
 #include<stdlib.h>
 #include<string.h>
 
+#include<acorn.h>
 
 #define KB 1000
 #define MB KB*KB
 #define GB MB*KB
-
-char home[]="/home/amin";
 
 char arch[16][172] = 
 {
@@ -100,7 +99,7 @@ start:
 		mvwscanw(search,1,1,"%s",s);
 
 
-		sprintf(srch,"%s/.Mzdos/Z/archive",home,s);
+		sprintf(srch,"%s/archive",drvz);
 
 		if(strcmp(s,"end")==false)
 			break;

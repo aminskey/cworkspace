@@ -1,7 +1,7 @@
-char drva[]="/home/aminskey/.Mzdos/A";
-char drvc[]="/home/aminskey/.Mzdos/C";
-char drvd[]="/home/aminskey/.Mzdos/D";
-char drve[]="/home/aminskey/.Mzdos/E";
-char drvz[]="/home/aminskey/.Mzdos/Z";
-char home[]="/home/aminskey";
-char drives[]="ACDEZ";
+char drva[50] = "/home/lukeskywalker/.AcornDOS/A";
+char drvc[50] = "/home/lukeskywalker/.AcornDOS/C";
+char drvd[50] = "/home/lukeskywalker/.AcornDOS/D";
+char drve[50] = "/home/lukeskywalker/.AcornDOS/E";
+char drvz[50] = "/home/lukeskywalker/.AcornDOS/Z";
+char home[50] = "/home/lukeskywalker";
+char drives[6] = "ACDEZ";
