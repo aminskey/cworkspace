@@ -60,7 +60,7 @@ bookrep:
 AsciiTable:
 	gcc -o ../bin/AsciiTable AsciiTable.c -lncurses
 BOXEmu:
-	gcc -o ../bin/AcornDos Mzdesk/libfuncs/drvConf.c Mybox.c -lncurses
+	gcc -o ../bin/AcornDos MzDesk/libfuncs/drvConf.c Mybox.c -lncurses
 Edit:
 	gcc -o ../bin/Edit Edit.c -lncurses
 AsciiHex:
