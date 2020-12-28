@@ -127,7 +127,7 @@ int main(void){
 	init_pair(1,COLOR_WHITE, COLOR_CYAN);
 	init_pair(2,COLOR_WHITE, COLOR_BLUE);
 	init_pair(3,COLOR_WHITE, COLOR_BLACK);
-	init_pair(4,COLOR_BLUE, COLOR_WHITE);
+	init_pair(4, ss, fs);
 	init_pair(5,COLOR_WHITE, COLOR_RED);
 	init_pair(6,COLOR_BLACK, COLOR_WHITE);
 	init_pair(col,fs,ss);
@@ -177,7 +177,7 @@ int main(void){
 		attron(COLOR_PAIR(col));
 		mvwin(ico,1,1);
 
-		wattron(ico,COLOR_PAIR(1));
+		wattron(ico,COLOR_PAIR(col));
 		for(int i=0;i<5;i++){
 			box(ico,ch,ch);
 
@@ -223,7 +223,7 @@ int main(void){
 		closedir(dp);
 		refresh();
 		wpaint(menu,32,4);
-		wattroff(ico,COLOR_PAIR(1));
+		wattroff(ico,COLOR_PAIR(col));
 		wrefresh(menu);
 /*
 	        time(&lctime);

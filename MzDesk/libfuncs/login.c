@@ -38,23 +38,21 @@ char *login(char *s){
 	WINDOW *shdw=newwin(getmaxy(lwin),getmaxx(lwin),getbegy(lwin)+1,getbegx(lwin)+2);
 
 	start_color();
-	init_pair(1,COLOR_WHITE, COLOR_BLACK);
-	init_pair(2,COLOR_BLUE, COLOR_WHITE);
-	init_pair(3,COLOR_WHITE, COLOR_RED);
-	init_pair(4,COLOR_WHITE, COLOR_GREEN);
-	init_pair(pair,fg,bg);
+	init_pair(1, COLOR_WHITE, COLOR_BLACK);
+	init_pair(2, COLOR_BLUE, COLOR_WHITE);
+	init_pair(3, bg, fg);
+	init_pair(pair, fg, bg);
 
 	paint(bgch,pair);
 	refresh();
 
 	wpaint(shdw, bgch, 1);
-	wpaint(lwin, 32, 2);
+	wpaint(lwin, 32, 3);
 
 	wrefresh(shdw);
-
 	wrefresh(lwin);
 
-	wattron(swin,COLOR_PAIR(2));
+	wattron(swin,COLOR_PAIR(3));
 
 	mvwprintw(swin,5,2,"User Name:");
 	for(int i=2+strlen("User Name:");i<40;i++)
@@ -87,7 +85,7 @@ char *login(char *s){
 		login(s);
 	}
 
-	wattroff(swin, COLOR_PAIR(2));
+	wattroff(swin, COLOR_PAIR(3));
 	wrefresh(swin);
 
 	sprintf(s,"%s",inputName);

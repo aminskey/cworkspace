@@ -23,6 +23,8 @@ int main(int argc, char *argv[]){
 	char drvNames[6]="ACDEZ";
 	char muser[60];
 	char mdesk[120];
+	char msg[]="replace the old config file with the new one in cworkspace/MzDesk/libfuncs";
+
 
 	char config[100];
 	char login[200];
@@ -223,7 +225,7 @@ int main(int argc, char *argv[]){
 
 
 	wattron(setup,COLOR_PAIR(2));
-	mvwprintw(setup,18,9,"replace the old config file with the new one in cworkspace/MzDesk/libfuncs");
+	mvwprintw(setup,20,(getmaxx(setup)-strlen(msg))/2,"%s",msg);
 	wattroff(setup,COLOR_PAIR(2));
 	wrefresh(setup);
 

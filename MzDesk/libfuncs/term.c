@@ -79,12 +79,21 @@ int term(WINDOW *wterm, char *username){
         init_pair(1,COLOR_WHITE,COLOR_CYAN);
 	init_pair(col,fs,ss);
 	init_pair(2,COLOR_BLACK,COLOR_GREEN);
+	init_pair(4,ss, fs);
 
 	wclear(wterm);
 	wclear(iterm);
 
+	wpaint(wterm, 32, 4);
+	wpaint(iterm, 32, 4);
+
+
+	wattron(wterm, COLOR_PAIR(4));
+
         box(wterm,0,0);
         mvwprintw(wterm,0,(getmaxx(wterm)-strlen("Acorn Terminal"))/2,"Acorn Terminal");
+
+	wattroff(wterm, COLOR_PAIR(4));
         wrefresh(wterm);
 
 
@@ -123,8 +132,13 @@ int term(WINDOW *wterm, char *username){
 
 
 	sprintf(cmd, " ");
+	char print[212];
+
 
         while(1){
+
+		wattron(iterm, COLOR_PAIR(4));
+		wattron(wterm, COLOR_PAIR(4));
 
 		getbegyx(wterm,wy,wx);
 		getcwd(cwd,180);
@@ -143,8 +157,10 @@ int term(WINDOW *wterm, char *username){
 		reverse(rs);
 		reverse(cwd);
 
-                wprintw(iterm,"%c:\\%s>",cdrv,rs+4);
-                wscanw(iterm,"%s %s %s %s %s",cmd,arg1,arg2,arg3,arg4);
+		sprintf(print,"%c:\\%s>",cdrv, rs+4);
+
+                mvwprintw(iterm,ln,0,"%s",print);
+                mvwscanw(iterm,ln,3+strlen(print),"%s %s %s %s %s",cmd,arg1,arg2,arg3,arg4);
                 ln++;
 
                 if(!strcmp(cmd,"A:")||!strcmp(cmd,"a:")){
@@ -233,12 +249,7 @@ int term(WINDOW *wterm, char *username){
                         if(!(winy>=(getmaxy(stdscr)-getmaxy(wterm))||winx>=(getmaxx(stdscr)-getmaxx(wterm)))){
 
 				wclear(wterm);
-				wattron(wterm,COLOR_PAIR(col));
-				for(int i=0;i<getmaxy(wterm);i++){
-					for(int j=0;j<getmaxx(wterm);j++)
-						mvwprintw(wterm,i,j,"%c",ch);
-				}
-				wattroff(wterm,COLOR_PAIR(col));
+				wpaint(wterm, 32, col);
 				wrefresh(wterm);
 
 				mvwin(wterm,winy,winx);
@@ -249,6 +260,7 @@ int term(WINDOW *wterm, char *username){
 				wprintw(iterm,"You Cannot Place A Window Outside The Screen!!\n");
 				ln++;
 			}
+			ln++;
 		}if(!strcmp(cmd,"window")||!strcmp(cmd,"WINDOW")){
 			if(!strcmp(arg1,"outer")||!strcmp(arg1,"OUTER")){
 				int yside=getmaxy(wterm),xside=getmaxx(wterm);
@@ -282,7 +294,8 @@ int term(WINDOW *wterm, char *username){
                         wprintw(iterm,"%s\n",cwd);
                 }if(!strcmp(cmd,"cls")||!strcmp(cmd,"CLS")){
 			wclear(iterm);
-                        ln=0;
+			wpaint(iterm, 32, 4);
+			ln=0;
 			in++;
 		}if(!strcmp(cmd,"dir")||!strcmp(cmd,"DIR")){
 			int dr=dir(iterm, arg1,ln);
@@ -292,6 +305,7 @@ int term(WINDOW *wterm, char *username){
                         else{
                                 ln=dr;
                         }
+			ln++;
                 }if(!strcmp(cmd,"more")||!strcmp(cmd,"MORE")){
                         int f=more(iterm, arg1, ln);
 			if(f == -1)
@@ -302,8 +316,9 @@ int term(WINDOW *wterm, char *username){
                         }if(f==-3){
                                 wprintw(iterm,"[Version]: 1\n");
                         }else{
-                                ln=f;
+                                ln+=f;
                         }
+			ln++;
                 }if(!strcmp(cmd,"help")||!strcmp(cmd,"HELP")){
                         wprintw(iterm,"Help v 1.1\n\n");
                         ln+=2;
@@ -325,6 +340,7 @@ int term(WINDOW *wterm, char *username){
                                 ln=f;
                         }
                         sprintf(str," ");
+			ln += 2;
                 }if(!strcmp(cmd,"reset")||!strcmp(cmd,"RESET")){
                         st=term(wterm,username);
 			return st;
@@ -334,6 +350,7 @@ int term(WINDOW *wterm, char *username){
 		}if(!strcmp(cmd,"console")||!strcmp(cmd,"CONSOLE")){
                         sprintf(str,"%s %s %s",arg1,arg2,arg3);
                         system(str);
+			ln += 2;
                 }if(!strcmp(cmd,"winout")||!strcmp(cmd,"WINOUT")){
 			mvwprintw(wterm,0,0,"*");
 			wrefresh(wterm);
@@ -341,16 +358,21 @@ int term(WINDOW *wterm, char *username){
 			break;
 		}if(!strcmp(cmd,"wheredrv")||!strcmp(cmd,"WHEREDRV")){
 			locdrv(iterm);
+			ln += 10;
 		}if(!strcmp(cmd,"del")||!strcmp(cmd,"DEL")){
 			int rm=remove(arg1);
 			if(rm == -1){
 				wprintw(iterm,"Cannot delete %s: %d",arg1,rm);
 			}
 			wprintw(iterm,"\n");
+			ln+=2;
 		}if(!strcmp(cmd,"cd")||!strcmp(cmd,"CD")||!strcmp(cmd,"chdir")||!strcmp(cmd,"CHDIR")){
 			int cd=chdir(arg1);
 			if(cd == -1){
 				wprintw(iterm,"Cannot Access Directory: %d\n",cd);
+				ln+=2;
+			}else{
+				ln++;
 			}
 		}
 		if(!strcmp(cmd,"mkdir")||!strcmp(cmd,"MKDIR")){
@@ -359,6 +381,7 @@ int term(WINDOW *wterm, char *username){
 				wprintw(iterm,"Ooops Cannot Create Directory: %d",stat);
 			}
 			wprintw(iterm,"\n");
+			ln += 2;
 		}
                 if(ln >= getmaxy(iterm)-1){
                         ln=0;
@@ -367,6 +390,16 @@ int term(WINDOW *wterm, char *username){
 	        sprintf(quote,"YOUR SYSTEM IS DOWN");
 
                 sprintf(cmd," ");
+
+		for(int i=0;i<getmaxy(wterm);i++){
+			for(int j=0;j<getmaxx(wterm);j++){
+				int t = mvwinch(wterm, i, j);
+				mvwaddch(wterm, i, j, t);
+			}
+		}
+
+		wattroff(iterm, COLOR_PAIR(4));
+		wattroff(wterm, COLOR_PAIR(4));
                 wrefresh(iterm);
         }
 
