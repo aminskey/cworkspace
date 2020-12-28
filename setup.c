@@ -1,15 +1,15 @@
-#include<ncurses.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<acorn.h>
+#include <ncurses.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <acorn.h>
 
-#include<fcntl.h>
-#include<unistd.h>
-#include<sys/stat.h>
-#include<sys/types.h>
-#include<errno.h>
-#include<ctype.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <errno.h>
+#include <ctype.h>
 
 int main(int argc, char *argv[]){
 
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]){
 
 	char drives[5][50];
 	char drvNames[6]="ACDEZ";
-	char muser[60];
+	char muser[100];
 	char mdesk[120];
 	char msg[]="replace the old config file with the new one in cworkspace/MzDesk/libfuncs";
 
@@ -29,6 +29,8 @@ int main(int argc, char *argv[]){
 	char config[100];
 	char login[200];
 	char data[200];
+
+	char user[25];
 
 	int errnums[6];
 	int i=0;
@@ -88,18 +90,24 @@ int main(int argc, char *argv[]){
                 mvwaddch(setup,7,i,111|A_ALTCHARSET);
         }
 
-	mvwprintw(setup,8,2,"New Password:");
-	for(int i=2+strlen("New Password:");i<16+strlen("New Password:");i++){
+	mvwprintw(setup,8,2,"New Username:");
+	for(int i=2+strlen("New Username:");i<16+strlen("New Username:");i++){
 		mvwaddch(setup,9,i,111|A_ALTCHARSET);
+	}
+	mvwprintw(setup,10,2,"New Password:");
+	for(int i=2+strlen("New Password:");i<16+strlen("New Password:");i++){
+		mvwaddch(setup,11,i,111|A_ALTCHARSET);
 	}
 
 
 	mvwscanw(setup,2,2+strlen("What is your username: "),"%s",usname);
 	mvwscanw(setup,4,6+strlen("Where do you want to store your drives: "),"%s",drvs);
 	mvwscanw(setup,6,6+strlen("Choose fore- and background colors (use numbers): "),"%d %d",&f,&b);
+	mvwscanw(setup,8,2+strlen("New Username: "),"%s",user);
+
 
 	noecho();
-	mvwscanw(setup,8,2+strlen("New Password: "),"%s",pas);
+	mvwscanw(setup,10,2+strlen("New Password: "),"%s",pas);
 
 
 
@@ -134,7 +142,7 @@ int main(int argc, char *argv[]){
 	}
 
 
-	sprintf(muser, "%s/%s",drives[1],usname);
+	sprintf(muser, "%s/%s",drives[1], user);
 	sprintf(mdesk,"%s/Desktop",muser);
 
 	if(mkdir(muser,0777)==-1){
@@ -198,7 +206,7 @@ int main(int argc, char *argv[]){
 		exit(-1);
 	}
 
-	fprintf(log,"%s %s",usname, pas);
+	fprintf(log,"%s %s", user, pas);
 	fclose(log);
 
 	sprintf(data,"%s/A/dat",head);
