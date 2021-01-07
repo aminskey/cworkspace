@@ -11,6 +11,8 @@
 #include <errno.h>
 #include <ctype.h>
 
+
+
 int main(int argc, char *argv[]){
 
 	char drvs[30];
@@ -18,6 +20,12 @@ int main(int argc, char *argv[]){
 	char head[100];
 	char pas[20];
 
+
+#if __APPLE__
+	char headName[10]="Users";
+#elif __linux__
+	char headName[10]="Users";
+#endif
 
 	char drives[5][50];
 	char drvNames[6]="ACDEZ";
@@ -114,7 +122,7 @@ int main(int argc, char *argv[]){
 	wattroff(setup,COLOR_PAIR(2));
 	wrefresh(setup);
 
-	sprintf(head,"/home/%s/%s",usname,drvs);
+	sprintf(head,"%s/%s/%s",headName, usname,drvs);
 	if(mkdir(head,0777)==-1){
 		bluescreen(strerror(errno));
 	}
