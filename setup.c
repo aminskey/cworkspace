@@ -22,9 +22,9 @@ int main(int argc, char *argv[]){
 
 
 #if __APPLE__
-	char headName[10]="Users";
+	char headName[10]="/Users";
 #elif __linux__
-	char headName[10]="Users";
+	char headName[10]="/home";
 #endif
 
 	char drives[5][50];
