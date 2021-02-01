@@ -8,7 +8,7 @@
 #include<sys/sysmacros.h>
 
 int main(int argc, char *argv[]){
-    
+
     struct stat statbuf;
 
     if(stat(argv[1],&statbuf)!=-1){
@@ -42,7 +42,7 @@ int main(int argc, char *argv[]){
 
     initscr();
     noecho();
-    cbreak();        
+    cbreak();
 
     int d=0;
 
@@ -68,10 +68,11 @@ int main(int argc, char *argv[]){
     }else{
         while(!feof(fp))
         {
-            
-            file=fgetc(fp);
+
+            file = fgetc(fp);
+
             printw("%c",file);
-	   
+
 	    if(file == 10){
 		ln++;
 	    	delay_output(10);
@@ -79,11 +80,11 @@ int main(int argc, char *argv[]){
 	    }
 
 
-	    if(ln  == getmaxy(stdscr)){
+	    if(ln  >= getmaxy(stdscr)){
                 getch();
 		clear();
 		ln=0;
-	    }            
+	    }
 
 	}
         printw("\b");
@@ -92,17 +93,13 @@ int main(int argc, char *argv[]){
 
         refresh();
         box(win,0,0);
-        
-        
+
         wattron(win,A_REVERSE);
         mvwprintw(win,2,(getmaxx(win) - strlen(argv[1]))/2,"FILE :: %s",argv[1]);
         wattroff(win,A_REVERSE);
-        
+
         wrefresh(win);
-        
-        
-        
-        
+
     }
     fclose(fp);
     getch();
