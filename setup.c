@@ -31,7 +31,7 @@ int main(int argc, char *argv[]){
 	char drvNames[6]="ACDEZ";
 	char muser[100];
 	char mdesk[120];
-	char msg[]="replace the old config file with the new one in cworkspace/MzDesk/libfuncs";
+	char msg[]="Process done! Make sure to recompile everything in the cworkspace directory for it to work! \"make all\" :)";
 
 
 	char config[100];
@@ -122,7 +122,9 @@ int main(int argc, char *argv[]){
 	wattroff(setup,COLOR_PAIR(2));
 	wrefresh(setup);
 
-	sprintf(head,"%s/%s/%s",headName, usname,drvs);
+//	Creating Directory for Drives
+
+	sprintf(head,"%s/%s/%s",headName, usname, drvs);
 	if(mkdir(head,0777)==-1){
 		bluescreen(strerror(errno));
 	}
@@ -149,9 +151,11 @@ int main(int argc, char *argv[]){
 		sleep(1);
 	}
 
+//	Creating User Directory
 
 	sprintf(muser, "%s/%s",drives[1], user);
 	sprintf(mdesk,"%s/Desktop",muser);
+
 
 	if(mkdir(muser,0777)==-1){
 		bluescreen(strerror(errno));
@@ -164,6 +168,7 @@ int main(int argc, char *argv[]){
         wrefresh(sub);
 	sleep(1);
 
+//	Creating Desktop directory in drive C
 	if(mkdir(mdesk,0777)==-1){
 		bluescreen(strerror(errno));
 		endwin();
@@ -176,7 +181,19 @@ int main(int argc, char *argv[]){
         wrefresh(sub);
 	sleep(1);
 
-	sprintf(config,"%s/drvConf.c",head);
+
+//	Updating drvConf file
+
+	sprintf(config,"%s/%s/cworkspace/MzDesk/libfuncs/drvConf.c", headName, usname);
+
+	if(remove(config) == -1){
+		bluescreen(strerror(errno));
+		bluescreen("At drive config");
+		bluescreen(config);
+		endwin();
+		exit(-1);
+	}
+
 	if(creat(config,0777)==-1){
 		bluescreen(strerror(errno));
 	}
@@ -202,6 +219,7 @@ int main(int argc, char *argv[]){
         wrefresh(sub);
 	sleep(1);
 
+//	Creating Login File
 	sprintf(login,"%s/A/login",head);
 	if(creat(login,0777)==-1){
 
@@ -210,6 +228,7 @@ int main(int argc, char *argv[]){
 	FILE *log=fopen(login,"r+");
 	if(fp == NULL){
 		bluescreen(strerror(errno));
+		bluescreen("At Login");
 		endwin();
 		exit(-1);
 	}
@@ -217,6 +236,7 @@ int main(int argc, char *argv[]){
 	fprintf(log,"%s %s", user, pas);
 	fclose(log);
 
+//	Creating Data file
 	sprintf(data,"%s/A/dat",head);
 	if(creat(data,0777)==-1){
 
@@ -225,6 +245,7 @@ int main(int argc, char *argv[]){
 	FILE *fdata=fopen(data,"r+");
 	if(fdata == NULL){
 		bluescreen(strerror(errno));
+		bluescreen("At Data file");
 		endwin();
 		printf("Mission Abort\n\a");
 		exit(-1);
@@ -240,6 +261,9 @@ int main(int argc, char *argv[]){
 	sleep(1);
 
 
+//	Showing Message
+
+	curs_set(0);
 	wattron(setup,COLOR_PAIR(2));
 	mvwprintw(setup,20,(getmaxx(setup)-strlen(msg))/2,"%s",msg);
 	wattroff(setup,COLOR_PAIR(2));
