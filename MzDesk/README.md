@@ -15,7 +15,7 @@ Some programs in the CWorkspace repo rely on the libraries in this repo.
 There is a program in the CWorkspace, that has a very nice GUI for installing this desktop.    
 But first we have to build it, and the rest of the cworkspace.    
 
-	**Run make all**:    
+**Run make all**:    
 	Username@Computer> pwd    
 	/home/UsrName/cworkspace    
 	Username@Computer> make all    
@@ -50,6 +50,9 @@ After that restart your terminal
 
 	Username@Computer> setup    
 
+**Don't Worry!** _The setup command has consideration of the type of OS you're running    
+Sad thing is that it only works for Mac and Linux_    
+    
 You'll have to answer a few questions.   
 Here are the background and forground numbers:    
 
@@ -62,11 +65,6 @@ Here are the background and forground numbers:
         COLOR_CYAN    6    
         COLOR_WHITE   7    
 When you're Done setting up your system.    
-Replace the **_Username/cworkspace/MzDesk/libfuncs/drvConf.c_** file with the new one in your new fs.
-
-**Like This**:    
-
-	Username@Computer> mv (Your File system name)/drvConf.c ~/cworkspace/MzDesk/libfuncs/drvConf.c    
 
 **After that build the system again**:    
 
