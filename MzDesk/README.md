@@ -16,6 +16,7 @@ There is a program in the CWorkspace, that has a very nice GUI for installing th
 But first we have to build it, and the rest of the cworkspace.    
 
 **Run make all**:    
+
 	Username@Computer> pwd    
 	/home/UsrName/cworkspace    
 	Username@Computer> make all    
