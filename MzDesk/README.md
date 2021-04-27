@@ -14,8 +14,8 @@ Some programs in the CWorkspace repo rely on the libraries in this repo.
 ## Well Enough of that let's set up our repos - Must be done!!
 There is a program in the CWorkspace, that has a very nice GUI for installing this desktop.    
 But first we have to build it, and the rest of the cworkspace.    
-
 **Run make all**:    
+    
 
 	Username@Computer> pwd    
 	/home/UsrName/cworkspace    
