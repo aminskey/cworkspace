@@ -7,6 +7,10 @@
 #include<sys/stat.h>
 #include<sys/types.h>
 
+/**
+	Another update is on its way. And will fix some concepts
+**/
+
 int call(const char *s);
 
 int crt(const char *s);
