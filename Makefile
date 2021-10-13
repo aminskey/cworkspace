@@ -52,7 +52,7 @@ MoveProj:
 deTranslate:
 	gcc -o ../bin/deTranslate detranslate.c
 dog:
-	gcc -o ../bin/dog dog.c -lncurses
+	gcc -o ../bin/Dog dog.c -lncurses
 
 bookrep:
 	gcc -o ../bin/bookrep bookrep.c -lncurses
