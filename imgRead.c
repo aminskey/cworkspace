@@ -30,19 +30,19 @@ int main(int argc, const char *argv[])
 				addch((unsigned char)173);
 				break;
 			case '5':
-                                addch((unsigned char)174);
+                addch((unsigned char)174);
 				break;
 			case '6':
-                                addch((unsigned char)175);
-                                break;
+                addch((unsigned char)175);
+                break;
 			case '7':
-                                addch((unsigned char)176);
-                                break;
+                addch((unsigned char)176);
+                break;
 			case '8':
-                                addch((unsigned char)177);
-                                break;
-                      	case '9':
-				addch((unsigned char)178);
+                addch(96|A_ALTCHARSET);
+                break;
+            case '9':
+				addch(97|A_ALTCHARSET);
 				break;
 			default:
 				addch(ch);

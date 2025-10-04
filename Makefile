@@ -74,7 +74,7 @@ hRead:
 imgRead:
 	gcc -o ../bin/cimg imgRead.c -lncurses
 lost:
-	gcc -o ../bin/Lost lost.c -lncurses
+	gcc -o ../bin/Lost lost.c -g -lncurses -I/usr/include/SDL2 -lSDL2 -lSDL2_mixer
 read:
 	gcc read.c -o ../bin/binaryFileTotext
 storeCal:
@@ -86,7 +86,7 @@ typeWrite:
 	gcc -o ../bin/typeWriter typeWriter.c -lncurses
 
 showimg:
-	cimg c.img
+	../bin/cimg c.img
 clean:
 	rm -rf ../bin/webshow
 	rm -rf ../bin/Translate
@@ -122,4 +122,4 @@ clean:
 	rm -rf ../bin/setup
 	rm -rf ../bin
 
-all: clean createBin show talk Webose setup desk game graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit Archive getMax hRead imgRead lost read storeCal dnc enc showimg createHello
+all: clean createBin show talk Webose graph OpsTable tty FourTerm MySh dir Translate bookrep dog deTranslate MoveProj typeWrite  StoreCal AsciiTable testSh AsciiHex BOXEmu Edit getMax hRead imgRead lost read storeCal dnc enc showimg createHello
